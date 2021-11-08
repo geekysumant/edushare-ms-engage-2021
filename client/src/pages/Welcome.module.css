@@ -1,0 +1,167 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Roboto&display=swap");
+
+.OuterContainer {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  padding: 10px;
+}
+.OuterContainer span {
+  font-size: 38px;
+  color: #2c3454;
+  text-align: center;
+  font-weight: bolder;
+  font-family: "Montserrat", sans-serif;
+  line-height: normal;
+}
+.InnerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  margin-top: 65px;
+}
+.InnerContainer div {
+  margin-right: 20px;
+}
+.FeatureContainer {
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  padding: 10px;
+}
+
+.FeatureContainer .Feature h2 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: -0.25px;
+  line-height: 44px;
+  width: 45%;
+}
+.InnerFeatureContainer {
+  display: flex;
+  justify-content: space-between;
+}
+.InnerFeatureContainer .FeatureText div {
+  /* border-left: 1px solid black; */
+  width: 80%;
+  /* transform: translateX(200px); */
+}
+.InnerFeatureContainer .FeatureText div ul li {
+  font-size: small;
+  font-weight: 100;
+  color: #2c3454;
+  margin-bottom: 20px;
+  list-style: none;
+}
+.InnerFeatureContainer .FeatureText div ul li {
+  position: relative;
+}
+.InnerFeatureContainer .FeatureText div ul li p::before {
+  content: "";
+  position: absolute;
+  background-color: black;
+  border-radius: 50%;
+  width: 6px;
+  height: 6px;
+  bottom: calc(100% - 14 px);
+  top: 10px;
+  left: -20px;
+}
+.InnerFeatureContainer .FeatureText div ul li p::after {
+  content: "";
+  position: absolute;
+  background-color: black;
+  width: 1px;
+  height: 85px;
+  bottom: -132px;
+  top: -26px;
+  left: -17px;
+}
+
+.InnerFeatureContainer .Feature1 img {
+  width: 498px;
+  height: 450px;
+}
+.FeatureContainer .Feature .RightAlign {
+  margin: auto;
+  margin-right: 0;
+  width: 57%;
+}
+.FeatureContainer .Feature .RightAlign h2 {
+  /* text-align: left; */
+  width: 80%;
+}
+
+.Testimonials {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  width: 80%;
+  margin: auto;
+  /* background-image: url("../assets/images/pec.png"); */
+}
+.Testimonials .TopUniversities {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.Testimonials .TestimonialsHeading h3 {
+  font-size: 38px;
+  color: #2c3454;
+  text-align: center;
+  font-weight: bolder;
+  font-family: "Montserrat", sans-serif;
+  line-height: normal;
+}
+
+.Testimonials .TopUniversities .UniName {
+  width: 220px;
+  height: 150px;
+}
+
+section:nth-child(odd) {
+  border-radius: 20px;
+  padding: 50px 50px;
+  background-color: rgba(243, 243, 243, 0.986);
+}
+section:nth-child(even) {
+  padding: 75px 50px;
+}
+
+@media (max-width: 900px) {
+  .InnerContainer {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .InnerContainer div {
+    margin-bottom: 30px;
+    width: 300px;
+  }
+
+  .FeatureContainer .Feature h2 {
+    width: 70%;
+  }
+  .InnerFeatureContainer {
+    flex-direction: column;
+  }
+  .InnerFeatureContainer .Feature1 img {
+    height: 70%;
+    width: 80%;
+  }
+  .Testimonials .TopUniversities {
+    flex-direction: column;
+  }
+  .Testimonials .TopUniversities .UniName {
+    width: 110px;
+    height: 75px;
+  }
+  .Testimonials .TopUniversities div {
+    margin-bottom: 10px;
+  }
+}

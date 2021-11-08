@@ -1,0 +1,59 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Roboto&display=swap");
+
+.Spacer {
+  aspect-ratio: 900/300;
+  width: 100%;
+  height: 300px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.Layer1 {
+  background-image: url("../../../assets/svg/layered-waves-haikei.svg");
+}
+footer {
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.FootNotes {
+  /* text-align: center; */
+  width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.FootNotes h2 {
+  margin-top: 140px;
+  width: 50%;
+  font-weight: 700;
+  font-size: 2.5em;
+  line-height: 44px;
+  color: rgb(162, 184, 255);
+  font-weight: bolder;
+  font-family: "Montserrat", sans-serif;
+  line-height: normal;
+}
+.FootNotes h5 {
+  margin-top: 140px;
+  /* width: 50%; */
+  font-weight: 700;
+  line-height: 44px;
+  color: rgb(231, 231, 231);
+  font-family: "Montserrat", sans-serif;
+}
+
+@media (max-width: 900px) {
+  .FootNotes {
+    flex-direction: column;
+    width: 100%;
+  }
+  .FootNotes h2 {
+    margin-top: 70px;
+  }
+  .FootNotes h5 {
+    margin-top: 0px;
+    margin-bottom: 0;
+  }
+}

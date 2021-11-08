@@ -1,0 +1,12 @@
+.Input label {
+  /* display: flex;
+  flex-direction: column;
+  justify-content: space-between; */
+  display: block;
+}
+.Input input {
+  width: 300px;
+  height: 30px;
+  border-radius: 5px;
+  border: 1px solid black;
+}
