@@ -4,16 +4,17 @@ import Welcome from "./pages/Welcome";
 import { BrowserRouter, Navigate } from "react-router-dom";
 import Footer from "./components/UI/Footer/Footer";
 import TeacherLogin from "./pages/TeacherLogin/TeacherLogin";
+import Home from "./pages/Home";
 
 function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <Header />
         <Routes>
           <Route path="/" element={<Navigate to="/welcome" />} exact />
           <Route path="/welcome" element={<Welcome />} />
           <Route path="/login/teacher" element={<TeacherLogin />} />
+          <Route path="/home" element={<Home />} />
         </Routes>
         {/* <Footer /> */}
       </div>

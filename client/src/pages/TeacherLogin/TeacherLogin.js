@@ -23,7 +23,7 @@ const TeacherLogin = (props) => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/welcome");
+      navigate("/home");
     }
   }, [userInfo]);
 

@@ -2,6 +2,7 @@ import React from "react";
 import classes from "./Welcome.module.css";
 import TeacherCard from "../components/TeacherCard/TeacherCard";
 import StudentCard from "../components/StudentCard/StudentCard";
+import Header from "../components/UI/Header/Header";
 
 import Pec from "../assets/images/pec.png";
 import Harvard from "../assets/images/harvard.png";
@@ -15,6 +16,7 @@ import MIT from "../assets/images/mit.png";
 const Welcome = () => {
   return (
     <>
+      <Header />
       <section className={classes.OuterContainer}>
         <span>Seamlessly manage your classroom</span>
         <div className={classes.InnerContainer}>

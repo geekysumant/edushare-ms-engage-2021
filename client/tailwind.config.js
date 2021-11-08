@@ -14,9 +14,9 @@ module.exports = {
       md: { max: "767px" },
       sm: { max: "639px" },
     },
-    colors: {
-      glass: "rgb(146 151 179 / 13%)",
-    },
+    // colors: {
+    //   glass: "rgb(146 151 179 / 13%)",
+    // },
   },
   variants: {
     extend: {},
