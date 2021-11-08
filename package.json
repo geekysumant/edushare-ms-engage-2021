@@ -9,8 +9,10 @@
   "author": "sumantpathak",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "google-auth-library": "^7.10.2",
-    "jsonwebtoken": "^8.5.1"
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.0.12"
   }
 }
