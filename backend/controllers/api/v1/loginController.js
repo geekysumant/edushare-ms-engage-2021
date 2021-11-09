@@ -48,7 +48,7 @@ module.exports.loginUser = async (req, res) => {
           email,
           name,
           picture,
-          newToken,
+          token: newToken,
         },
       });
     } else {
@@ -62,7 +62,7 @@ module.exports.loginUser = async (req, res) => {
           email,
           name,
           picture,
-          newToken,
+          token: newToken,
         },
       });
     }

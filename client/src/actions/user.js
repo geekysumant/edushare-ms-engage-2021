@@ -6,7 +6,7 @@ import {
 } from "./actionTypes";
 
 export const userLogin = (token) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     dispatch({ type: USER_LOGIN_REQUEST });
     try {
       const config = {
@@ -16,10 +16,15 @@ export const userLogin = (token) => {
         token,
       };
       const { data } = await axios.post("/api/v1/login", user, config);
+
       dispatch({
         type: USER_LOGIN_SUCCESS,
-        payload: data,
+        payload: data.message,
       });
+      localStorage.setItem(
+        "userDetails",
+        JSON.stringify(getState().userDetails)
+      );
     } catch (error) {
       dispatch({ type: USER_LOGIN_FAIL, payload: error });
     }
