@@ -19,12 +19,14 @@ const userSchema = mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Class",
+        unique: true,
       },
     ],
     joinedClasses: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Class",
+        unique: true,
       },
     ],
   },

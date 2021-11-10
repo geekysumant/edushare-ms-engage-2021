@@ -15,17 +15,9 @@ export default function CreateClassForm({
   const [className, setClassName] = useState("");
   const [subject, setSubject] = useState("");
   const [room, setRoom] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState("");
-  const [isEnabled, setIsEnabled] = useState(false);
 
-  const { loading, error } = useSelector((state) => state.classDetails);
+  const { loading, success, error } = useSelector((state) => state.createClass);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (loading) setIsLoading(true);
-    if (error) setIsError(error);
-  }, [loading, error]);
 
   const onCreateHandler = () => {
     if (!className && !subject && !room) return;
@@ -39,7 +31,7 @@ export default function CreateClassForm({
         active={showCreateClass}
         toggler={() => setShowCreateClass(false)}
       >
-        {isError && <p>{error}</p>}
+        {error && <p>{error}</p>}
         <ModalHeader toggler={() => setShowCreateClass(false)}>
           Create class
         </ModalHeader>

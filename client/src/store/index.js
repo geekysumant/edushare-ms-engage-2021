@@ -7,7 +7,11 @@ const middlewares = [thunk];
 
 const initialLoginState = localStorage.getItem("userDetails")
   ? JSON.parse(localStorage.getItem("userDetails"))
-  : null;
+  : {
+      isAuthenticated: false,
+      loading: false,
+      userInfo: null,
+    };
 export const store = createStore(
   reducers,
   { userDetails: initialLoginState },

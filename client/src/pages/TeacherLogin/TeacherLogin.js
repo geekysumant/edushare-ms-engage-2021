@@ -11,21 +11,17 @@ import { useNavigate } from "react-router-dom";
 import OnlineClass from "../../assets/svg/online_learning.svg";
 
 const TeacherLogin = (props) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   const dispatch = useDispatch();
-  const { isAuthenticated, userInfo, loading, error } = useSelector(
-    (state) => state.userDetails
-  );
+  const userDetails = useSelector((state) => state.userDetails);
+  const { isAuthenticated, userInfo, loading, error } = userDetails;
   const navigate = useNavigate();
 
   useEffect(() => {
     if (userInfo) {
       navigate("/home");
     }
-  }, [userInfo]);
+    console.log(userDetails);
+  }, [userDetails]);
 
   const submitFormHandler = (e) => {
     e.preventDefault();

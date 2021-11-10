@@ -1,5 +1,9 @@
 import { userLogin } from "./users";
-import { createClassReducer, fetchClassesReducer } from "./class";
+import {
+  createClassReducer,
+  fetchClassesReducer,
+  joinClassReducer,
+} from "./class";
 import { combineReducers } from "redux";
 
 export default combineReducers({
@@ -7,4 +11,6 @@ export default combineReducers({
   //dont keep crated class details here, instead call the fetchClass api to also request the created classes
   classDetails: fetchClassesReducer,
   // fetchClasses: fetchClassesReducer,
+  createClass: createClassReducer,
+  joinClass: joinClassReducer,
 });

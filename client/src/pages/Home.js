@@ -8,12 +8,9 @@ import { createClass, fetchClasses } from "../actions/class";
 
 const Home = () => {
   const { isAuthenticated } = useSelector((state) => state.userDetails);
-  const fetchedClasses = useSelector((state) => state.classDetails);
-  // const [createdClasses, setCreatedClasses] = useState([]);
-  // const [joinedClasses, setJoinedClasses] = useState([]);
-  const { fetchClassesLoading } = fetchedClasses;
-
-  const { createdClasses, joinedClasses } = fetchedClasses.classDetails;
+  const { createdClasses, joinedClasses, loading } = useSelector(
+    (state) => state.classDetails
+  );
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -25,17 +22,13 @@ const Home = () => {
     dispatch(fetchClasses());
   }, []);
 
-  useEffect(() => {
-    console.log(fetchedClasses.fetchClassesLoading);
-  }, [fetchedClasses]);
-
   return (
     <div>
       <HeaderHome />
       <section>
         <h3>Classes you've created </h3>
         <div className="my-6 flex flex-row justify-between flex-wrap">
-          {fetchClassesLoading && <p>Loading......</p>}
+          {loading && <p>Loading......</p>}
           {createdClasses &&
             createdClasses.map((element) => {
               return (
@@ -48,7 +41,24 @@ const Home = () => {
                 </div>
               );
             })}
-          {/* <ClassCard /> */}
+        </div>
+      </section>
+      <section>
+        <h3>Classes you've joined </h3>
+        <div className="my-6 flex flex-row justify-between flex-wrap">
+          {loading && <p>Loading......</p>}
+          {joinedClasses &&
+            joinedClasses.map((element) => {
+              return (
+                <div key={element.id} className="w-72 m-6">
+                  <ClassCard
+                    classTitle={element.className}
+                    classRoom={element.classRoom}
+                    classTeacher="Teacher"
+                  />
+                </div>
+              );
+            })}
         </div>
       </section>
     </div>

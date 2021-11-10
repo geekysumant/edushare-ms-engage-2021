@@ -1,9 +1,12 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 
 const Class = require("../../../models/Class");
 const User = require("../../../models/User");
 
+//  CONTROLLER: createClass
+//  DESC.: This method creates new class with the given parameters by the user
 module.exports.createClass = async (req, res) => {
   try {
     const createdBy = req.user._id;
@@ -42,9 +45,11 @@ module.exports.createClass = async (req, res) => {
   }
 };
 
+//  CONTROLLER: fetchClasses
+//  DESC.: This method returns all the classes the user has created and joined
 module.exports.fetchClasses = async (req, res) => {
   try {
-    //fetching all the classes user has created/joined and only selecting part of it
+    //fetching all the classes user has created/joined and populating required
 
     const userClasses = await User.findById(
       req.user.id,
@@ -53,6 +58,7 @@ module.exports.fetchClasses = async (req, res) => {
       .sort({ createdAt: "desc" })
       .populate("createdClasses", "subject className room")
       .populate("joinedClasses", "subject className room");
+
     res.json({
       classes: userClasses,
     });
@@ -61,5 +67,41 @@ module.exports.fetchClasses = async (req, res) => {
     res.json({
       message: err.message,
     });
+  }
+};
+
+//  CONTROLLER: joinClass
+//  DESC.: This method after performing validations allows the user to join the requested classroom
+module.exports.joinClass = async (req, res) => {
+  try {
+    const requestedClassId = req.body.classId;
+    const requestedClass = await Class.findById(requestedClassId);
+
+    //if requested class does not exist
+    if (!requestedClass) {
+      throw new Error("No class with that class code!");
+    }
+
+    //check if the request is being made by the classroom's owner
+    if (requestedClass.createdBy == req.user.id) {
+      throw new Error("Error! You are the owner of this classroom");
+    }
+
+    const currentUser = await User.findById(req.user.id);
+
+    //check if user has already joined the clasroom
+    if (currentUser.joinedClasses.includes(requestedClassId)) {
+      throw new Error("You have already joined this classroom");
+    }
+
+    //all checks are performed, now user can join the classroom
+    currentUser.joinedClasses.push(requestedClass);
+    currentUser.save();
+
+    res.json({
+      joinedClass: requestedClass,
+    });
+  } catch (err) {
+    res.status(400).send(err.message);
   }
 };

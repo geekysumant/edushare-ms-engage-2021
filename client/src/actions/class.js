@@ -5,6 +5,9 @@ import {
   FETCH_CLASS_FAIL,
   FETCH_CLASS_REQUEST,
   FETCH_CLASS_SUCCESS,
+  JOIN_CLASS_FAIL,
+  JOIN_CLASS_REQUEST,
+  JOIN_CLASS_SUCCESS,
 } from "./actionTypes";
 import axios from "axios";
 
@@ -33,6 +36,14 @@ export const createClass = (className, subject, room) => {
         type: CREATE_CLASS_SUCCESS,
         payload: data.message,
       });
+
+      dispatch({
+        type: FETCH_CLASS_SUCCESS,
+        payload: {
+          createdClasses: [data.message.class],
+          joinedClasses: [],
+        },
+      });
     } catch (e) {
       dispatch({
         type: CREATE_CLASS_FAIL,
@@ -59,17 +70,64 @@ export const fetchClasses = () => {
       const { data } = await axios.get("/api/v1/class/fetch", config);
       const { joinedClasses, createdClasses } = data.classes;
 
+      const payload = {
+        joinedClasses: joinedClasses,
+        createdClasses: createdClasses,
+      };
+      console.log("herer*************", payload);
       dispatch({
         type: FETCH_CLASS_SUCCESS,
         payload: {
-          joinedClasses,
-          createdClasses,
+          joinedClasses: joinedClasses,
+          createdClasses: createdClasses,
         },
       });
     } catch (err) {
       dispatch({
         type: FETCH_CLASS_FAIL,
-        payload: err.message,
+        payload: err,
+      });
+    }
+  };
+};
+
+export const joinClass = (classId) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: JOIN_CLASS_REQUEST,
+      });
+
+      const { userInfo } = getState().userDetails;
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.post(
+        "/api/v1/class/join",
+        {
+          classId,
+        },
+        config
+      );
+      dispatch({
+        type: JOIN_CLASS_SUCCESS,
+      });
+
+      dispatch({
+        type: FETCH_CLASS_SUCCESS,
+        payload: {
+          createdClasses: [],
+          joinedClasses: [data.joinedClass],
+        },
+      });
+    } catch (err) {
+      dispatch({
+        type: JOIN_CLASS_FAIL,
+        payload: err.response.data,
       });
     }
   };

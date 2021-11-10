@@ -5,76 +5,99 @@ import {
   FETCH_CLASS_FAIL,
   FETCH_CLASS_REQUEST,
   FETCH_CLASS_SUCCESS,
+  JOIN_CLASS_FAIL,
+  JOIN_CLASS_REQUEST,
+  JOIN_CLASS_SUCCESS,
 } from "../actions/actionTypes";
 
-const intialClassState = {
-  createClassLoading: false,
-  fetchClassesLoading: true,
-  classDetails: {
-    joinedClasses: [],
-    createdClasses: [],
-  },
+//Reducer Name: createClassReducer
+//DESC: This reducer manages the state of create class request
+const initialCreateClassState = {
+  loading: false,
+  success: false,
 };
-
-// export const createClassReducer = (state = intialClassState, action) => {
-//   switch (action.type) {
-
-//   }
-// };
-
-export const fetchClassesReducer = (state = intialClassState, action) => {
+export const createClassReducer = (state = initialCreateClassState, action) => {
   switch (action.type) {
     case CREATE_CLASS_REQUEST:
       return {
-        createClassLoading: true,
-        fetchClassesLoading: state.fetchClassesLoading,
-        classDetails: state.classDetails,
+        loading: true,
+        success: false,
       };
     case CREATE_CLASS_SUCCESS:
       return {
-        createClassLoading: false,
-        fetchClassesLoading: state.fetchClassesLoading,
-        classDetails: {
-          joinedClasses: state.classDetails.joinedClasses,
-          createdClasses: [
-            ...state.classDetails.createdClasses,
-            action.payload.class,
-          ],
-        },
+        loading: false,
+        success: true,
       };
     case CREATE_CLASS_FAIL:
       return {
-        createClassLoading: true,
-        fetchClassesLoading: state.fetchClassesLoading,
-        classDetails: state.classDetails,
+        loading: false,
+        success: false,
         error: action.payload,
       };
+    default:
+      return state;
+  }
+};
 
+const intialClassState = {
+  loading: false,
+  joinedClasses: [],
+  createdClasses: [],
+};
+
+export const fetchClassesReducer = (state = intialClassState, action) => {
+  switch (action.type) {
     case FETCH_CLASS_REQUEST:
       return {
-        createClassLoading: state.createClassLoading,
-        fetchClassesLoading: true,
-        classDetails: state.classDetails,
+        loading: true,
+        joinedClasses: [...state.joinedClasses],
+        createdClasses: [...state.createdClasses],
       };
     case FETCH_CLASS_SUCCESS:
       return {
-        createClassLoading: state.createClassLoading,
-        fetchClassesLoading: false,
-        classDetails: {
-          joinedClasses: [
-            ...state.classDetails.joinedClasses,
-            ...action.payload.joinedClasses,
-          ],
-          createdClasses: [
-            ...state.classDetails.createdClasses,
-            ...action.payload.createdClasses,
-          ],
-        },
+        loading: false,
+        joinedClasses: [
+          ...action.payload.joinedClasses,
+          ...state.joinedClasses,
+        ],
+        createdClasses: [
+          ...action.payload.createdClasses,
+          ...state.createdClasses,
+        ],
       };
     case FETCH_CLASS_FAIL:
       return {
-        createClassLoading: state.createClassLoading,
-        fetchClassesLoading: false,
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+const initialJoinClassState = {
+  loading: false,
+  success: false,
+};
+
+//Reducer Name: joinClassReducer
+//DESC: This reducer manages the state of join class request
+export const joinClassReducer = (state = initialJoinClassState, action) => {
+  switch (action.type) {
+    case JOIN_CLASS_REQUEST:
+      return {
+        loading: true,
+        success: false,
+      };
+    case JOIN_CLASS_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case JOIN_CLASS_FAIL:
+      return {
+        loading: false,
+        success: false,
         error: action.payload,
       };
     default:
