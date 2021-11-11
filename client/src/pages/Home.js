@@ -27,7 +27,7 @@ const Home = () => {
       <HeaderHome />
       <section>
         <h3>Classes you've created </h3>
-        <div className="my-6 flex flex-row justify-between flex-wrap">
+        <div className="my-6 flex flex-row flex-wrap">
           {loading && <p>Loading......</p>}
           {createdClasses &&
             createdClasses.map((element) => {
@@ -37,6 +37,7 @@ const Home = () => {
                     classTitle={element.className}
                     classRoom={element.classRoom}
                     classTeacher="Teacher"
+                    classCode={element._id}
                   />
                 </div>
               );
@@ -50,11 +51,12 @@ const Home = () => {
           {joinedClasses &&
             joinedClasses.map((element) => {
               return (
-                <div key={element.id} className="w-72 m-6">
+                <div key={element._id} className="w-72 m-6">
                   <ClassCard
                     classTitle={element.className}
                     classRoom={element.classRoom}
                     classTeacher="Teacher"
+                    classCode={element._id}
                   />
                 </div>
               );

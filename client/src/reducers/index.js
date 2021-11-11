@@ -5,6 +5,7 @@ import {
   joinClassReducer,
 } from "./class";
 import { combineReducers } from "redux";
+import { addQuestion, addQuestionReducer } from "./question";
 
 export default combineReducers({
   userDetails: userLogin,
@@ -13,4 +14,5 @@ export default combineReducers({
   // fetchClasses: fetchClassesReducer,
   createClass: createClassReducer,
   joinClass: joinClassReducer,
+  questions: addQuestionReducer,
 });

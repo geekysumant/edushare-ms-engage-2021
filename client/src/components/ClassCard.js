@@ -9,8 +9,14 @@ import Button from "@material-tailwind/react/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchClasses } from "../actions/class";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
-export default function ClassCard({ classTitle, classRoom, classTeacher }) {
+export default function ClassCard({
+  classTitle,
+  classRoom,
+  classTeacher,
+  classCode,
+}) {
   return (
     <Card>
       <CardImage src="/images/student.jpeg" alt="Card Image" />
@@ -24,9 +30,11 @@ export default function ClassCard({ classTitle, classRoom, classTeacher }) {
         <p>{classTeacher}</p>
       </CardBody>
 
-      <Button color="green" size="sm" ripple="light">
-        Enter class
-      </Button>
+      <Link to={`/enter/class/${classCode}`}>
+        <Button color="green" size="sm" ripple="light">
+          Enter class
+        </Button>
+      </Link>
     </Card>
   );
 }
