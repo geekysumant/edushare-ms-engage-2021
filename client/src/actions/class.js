@@ -2,6 +2,9 @@ import {
   CREATE_CLASS_FAIL,
   CREATE_CLASS_REQUEST,
   CREATE_CLASS_SUCCESS,
+  FETCH_CLASS_DETAILS_FAIL,
+  FETCH_CLASS_DETAILS_REQUEST,
+  FETCH_CLASS_DETAILS_SUCCESS,
   FETCH_CLASS_FAIL,
   FETCH_CLASS_REQUEST,
   FETCH_CLASS_SUCCESS,
@@ -36,14 +39,7 @@ export const createClass = (className, subject, room) => {
         type: CREATE_CLASS_SUCCESS,
         payload: data.message,
       });
-
-      dispatch({
-        type: FETCH_CLASS_SUCCESS,
-        payload: {
-          createdClasses: [data.message.class],
-          joinedClasses: [],
-        },
-      });
+      dispatch(fetchClasses());
     } catch (e) {
       dispatch({
         type: CREATE_CLASS_FAIL,
@@ -117,17 +113,45 @@ export const joinClass = (classId) => {
         type: JOIN_CLASS_SUCCESS,
       });
 
-      dispatch({
-        type: FETCH_CLASS_SUCCESS,
-        payload: {
-          createdClasses: [],
-          joinedClasses: [data.joinedClass],
-        },
-      });
+      dispatch(fetchClasses());
     } catch (err) {
       dispatch({
         type: JOIN_CLASS_FAIL,
         payload: err.response.data,
+      });
+    }
+  };
+};
+
+export const fetchEnterClassDetails = (classId) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: FETCH_CLASS_DETAILS_REQUEST,
+      });
+      const { userInfo } = getState().userDetails;
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.get(
+        `/api/v1/class/fetch/${classId}`,
+        config
+      );
+
+      dispatch({
+        type: FETCH_CLASS_DETAILS_SUCCESS,
+        payload: {
+          createdBy: data.createdBy,
+        },
+      });
+    } catch (err) {
+      dispatch({
+        type: FETCH_CLASS_DETAILS_FAIL,
+        payload: err,
       });
     }
   };

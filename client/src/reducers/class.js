@@ -2,6 +2,9 @@ import {
   CREATE_CLASS_FAIL,
   CREATE_CLASS_REQUEST,
   CREATE_CLASS_SUCCESS,
+  FETCH_CLASS_DETAILS_FAIL,
+  FETCH_CLASS_DETAILS_REQUEST,
+  FETCH_CLASS_DETAILS_SUCCESS,
   FETCH_CLASS_FAIL,
   FETCH_CLASS_REQUEST,
   FETCH_CLASS_SUCCESS,
@@ -41,8 +44,8 @@ export const createClassReducer = (state = initialCreateClassState, action) => {
 
 const intialClassState = {
   loading: false,
-  joinedClasses: [],
-  createdClasses: [],
+  // joinedClasses: [],
+  // createdClasses: [],
 };
 
 export const fetchClassesReducer = (state = intialClassState, action) => {
@@ -50,19 +53,19 @@ export const fetchClassesReducer = (state = intialClassState, action) => {
     case FETCH_CLASS_REQUEST:
       return {
         loading: true,
-        joinedClasses: [...state.joinedClasses],
-        createdClasses: [...state.createdClasses],
+        // joinedClasses: [...state.joinedClasses],
+        // createdClasses: [...state.createdClasses],
       };
     case FETCH_CLASS_SUCCESS:
       return {
         loading: false,
         joinedClasses: [
           ...action.payload.joinedClasses,
-          ...state.joinedClasses,
+          // ...state.joinedClasses,
         ],
         createdClasses: [
           ...action.payload.createdClasses,
-          ...state.createdClasses,
+          // ...state.createdClasses,
         ],
       };
     case FETCH_CLASS_FAIL:
@@ -98,6 +101,36 @@ export const joinClassReducer = (state = initialJoinClassState, action) => {
       return {
         loading: false,
         success: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+const initialEnterClassState = {
+  //posts and announcements
+
+  createdBy: "",
+};
+
+export const fetchEnterClassDetailsReducer = (
+  state = initialEnterClassState,
+  action
+) => {
+  switch (action.type) {
+    case FETCH_CLASS_DETAILS_REQUEST:
+      return {
+        loading: true,
+      };
+    case FETCH_CLASS_DETAILS_SUCCESS:
+      return {
+        loading: false,
+        createdBy: action.payload.createdBy,
+      };
+    case FETCH_CLASS_DETAILS_FAIL:
+      return {
+        loading: false,
         error: action.payload,
       };
     default:

@@ -2,6 +2,7 @@ import { userLogin } from "./users";
 import {
   createClassReducer,
   fetchClassesReducer,
+  fetchEnterClassDetailsReducer,
   joinClassReducer,
 } from "./class";
 import { combineReducers } from "redux";
@@ -16,6 +17,7 @@ export default combineReducers({
   createClass: createClassReducer,
   joinClass: joinClassReducer,
   assignmentDetails: fetchAssignmentsReducer,
+  enterClassDetails: fetchEnterClassDetailsReducer,
 
   //not needed questions state
   // allQuestions: addQuestionReducer,

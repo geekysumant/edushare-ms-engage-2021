@@ -14,6 +14,7 @@ const router = express.Router();
 //the route here is of form: /api/v1/class/ <route>
 router.post("/create", protect, classController.createClass);
 router.get("/fetch", protect, classController.fetchClasses);
+router.get("/fetch/:classId", protect, classController.fetchClass);
 router.post("/join", protect, classController.joinClass);
 
 module.exports = router;

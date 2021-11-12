@@ -24,7 +24,6 @@ const Home = () => {
 
   return (
     <div>
-      <HeaderHome />
       <section>
         <h3>Classes you've created </h3>
         <div className="my-6 flex flex-row flex-wrap">

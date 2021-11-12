@@ -56,8 +56,8 @@ module.exports.fetchClasses = async (req, res) => {
       "createdClasses joinedClasses"
     )
       .sort({ createdAt: "desc" })
-      .populate("createdClasses", "subject className room")
-      .populate("joinedClasses", "subject className room");
+      .populate("createdClasses", "createdBy subject className room")
+      .populate("joinedClasses", "createdBy subject className room");
     // .populate([
     //   { path: "createdClasses", populate: { path: "quizzes" } },
     //   { path: "joinedClasses", populate: { path: "quizzes" } },
@@ -107,5 +107,21 @@ module.exports.joinClass = async (req, res) => {
     });
   } catch (err) {
     res.status(400).send(err.message);
+  }
+};
+
+module.exports.fetchClass = async (req, res) => {
+  try {
+    const classId = req.params.classId;
+
+    const classCreatedBy = await Class.findById(classId, "createdBy");
+
+    res.json({
+      createdBy: classCreatedBy.createdBy,
+    });
+  } catch (err) {
+    res.status(400).send({
+      message: err.message,
+    });
   }
 };

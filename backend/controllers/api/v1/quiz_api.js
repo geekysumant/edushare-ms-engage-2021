@@ -39,6 +39,7 @@ module.exports.fetchAssignments = async (req, res) => {
     const quizzes = await Class.findById(classId).populate("quizzes");
 
     res.json({
+      createdBy: quizzes.createdBy,
       quizzes: quizzes,
     });
   } catch (err) {

@@ -1,20 +1,29 @@
 import React, { useState } from "react";
 import Button from "@material-tailwind/react/Button";
 import AddQuestionForm from "../components/AddQuestionForm";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import QuestionContainer from "../components/QuestionContainer";
 import Banner from "../components/UI/Banner";
+import { createQuiz } from "../actions/assignment";
+import { useLocation } from "react-router";
 
 const CreateMcq = () => {
   const [showAddQuestion, setShowAddQuestion] = useState(false);
   // const { totalMarks } = useSelector((state) => state.questions);
   const [totalMarks, setTotalMarks] = useState(0);
-
   const [questions, setQuestions] = useState([]);
 
+  const dispatch = useDispatch();
+  const location = useLocation();
+
+  const classId = location.pathname.split("/")[3];
+
   const addQuestionHandler = () => {
-    console.log(JSON.stringify(questions));
     setShowAddQuestion(true);
+  };
+
+  const createQuizHandler = () => {
+    dispatch(createQuiz(classId, questions));
   };
   return (
     <>
@@ -59,7 +68,7 @@ const CreateMcq = () => {
                 <Button
                   color="indigo"
                   ripple="light"
-
+                  onClick={createQuizHandler}
                   // disabled={true}
                 >
                   Create quiz

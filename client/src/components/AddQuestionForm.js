@@ -11,8 +11,6 @@ import { useLocation } from "react-router-dom";
 
 import Spinner from "./UI/Spinner";
 import Option from "./UI/Option";
-import { ADD_QUESTION } from "../actions/actionTypes";
-import { addQuestion } from "../actions/question";
 
 export default function AddQuestionForm({
   showAddQuestion,
@@ -44,6 +42,7 @@ export default function AddQuestionForm({
     setCorrectMarks(1);
     setIncorrectMarks(0);
     setError("");
+    setShowAddQuestion(false);
   };
 
   const createQuestionHandler = () => {
@@ -60,6 +59,7 @@ export default function AddQuestionForm({
     };
     setQuestions((prevQuestions) => [...prevQuestions, questionBody]);
     setTotalMarks((totalMarks) => totalMarks + correctMarks);
+
     resetFields();
   };
   const addOptionsHandler = (e) => {
