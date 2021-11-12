@@ -14,5 +14,6 @@ export default combineReducers({
   // fetchClasses: fetchClassesReducer,
   createClass: createClassReducer,
   joinClass: joinClassReducer,
-  questions: addQuestionReducer,
+  //not needed questions state
+  // allQuestions: addQuestionReducer,
 });

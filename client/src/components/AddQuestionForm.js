@@ -7,6 +7,7 @@ import ModalHeader from "@material-tailwind/react/ModalHeader";
 import ModalBody from "@material-tailwind/react/ModalBody";
 import ModalFooter from "@material-tailwind/react/ModalFooter";
 import Button from "@material-tailwind/react/Button";
+import { useLocation } from "react-router-dom";
 
 import Spinner from "./UI/Spinner";
 import Option from "./UI/Option";
@@ -16,6 +17,8 @@ import { addQuestion } from "../actions/question";
 export default function AddQuestionForm({
   showAddQuestion,
   setShowAddQuestion,
+  setQuestions,
+  setTotalMarks,
 }) {
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState([]);
@@ -25,8 +28,12 @@ export default function AddQuestionForm({
   const [correctMarks, setCorrectMarks] = useState(1);
   const [incorrectMarks, setIncorrectMarks] = useState(0);
 
+  const location = useLocation();
   const currentOptionRef = useRef();
   const dispatch = useDispatch();
+
+  const urlPath = location.pathname;
+  const classId = urlPath.split("/")[3];
 
   const resetFields = () => {
     setQuestion("");
@@ -51,7 +58,8 @@ export default function AddQuestionForm({
       correctMarks,
       incorrectMarks,
     };
-    dispatch(addQuestion(questionBody));
+    setQuestions((prevQuestions) => [...prevQuestions, questionBody]);
+    setTotalMarks((totalMarks) => totalMarks + correctMarks);
     resetFields();
   };
   const addOptionsHandler = (e) => {
