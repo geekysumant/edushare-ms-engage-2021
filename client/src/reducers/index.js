@@ -6,6 +6,7 @@ import {
 } from "./class";
 import { combineReducers } from "redux";
 import { addQuestion, addQuestionReducer } from "./question";
+import { fetchAssignmentsReducer } from "./assignment";
 
 export default combineReducers({
   userDetails: userLogin,
@@ -14,6 +15,8 @@ export default combineReducers({
   // fetchClasses: fetchClassesReducer,
   createClass: createClassReducer,
   joinClass: joinClassReducer,
+  assignmentDetails: fetchAssignmentsReducer,
+
   //not needed questions state
   // allQuestions: addQuestionReducer,
 });

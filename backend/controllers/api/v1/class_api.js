@@ -58,6 +58,10 @@ module.exports.fetchClasses = async (req, res) => {
       .sort({ createdAt: "desc" })
       .populate("createdClasses", "subject className room")
       .populate("joinedClasses", "subject className room");
+    // .populate([
+    //   { path: "createdClasses", populate: { path: "quizzes" } },
+    //   { path: "joinedClasses", populate: { path: "quizzes" } },
+    // ]);
 
     res.json({
       classes: userClasses,

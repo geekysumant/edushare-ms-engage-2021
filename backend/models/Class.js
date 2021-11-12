@@ -24,10 +24,10 @@ const classSchema = mongoose.Schema(
         ref: "User",
       },
     ],
-    assignments: [
+    quizzes: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Assignment",
+        ref: "Quiz",
       },
     ],
   },

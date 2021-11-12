@@ -13,6 +13,7 @@ const CreateMcq = () => {
   const [questions, setQuestions] = useState([]);
 
   const addQuestionHandler = () => {
+    console.log(JSON.stringify(questions));
     setShowAddQuestion(true);
   };
   return (
