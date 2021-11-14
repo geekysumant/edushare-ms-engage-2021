@@ -7,7 +7,11 @@ import {
 } from "./class";
 import { combineReducers } from "redux";
 import { addQuestion, addQuestionReducer } from "./question";
-import { fetchAssignmentsReducer } from "./assignment";
+import {
+  createQuizReducer,
+  fetchAssignmentsReducer,
+  fetchQuizReducer,
+} from "./assignment";
 
 export default combineReducers({
   userDetails: userLogin,
@@ -18,7 +22,8 @@ export default combineReducers({
   joinClass: joinClassReducer,
   assignmentDetails: fetchAssignmentsReducer,
   enterClassDetails: fetchEnterClassDetailsReducer,
-
+  createQuiz: createQuizReducer,
+  fetchQuiz: fetchQuizReducer,
   //not needed questions state
   // allQuestions: addQuestionReducer,
 });

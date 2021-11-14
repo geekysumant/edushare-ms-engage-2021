@@ -6,6 +6,9 @@ import {
   FETCH_ASSIGNMENTS_REQUEST,
   FETCH_ASSIGNMENTS_SUCCESS,
   FETCH_CLASS_DETAILS_SUCCESS,
+  FETCH_QUIZ_FAIL,
+  FETCH_QUIZ_REQUEST,
+  FETCH_QUIZ_SUCCESS,
 } from "./actionTypes";
 
 import axios from "axios";
@@ -76,6 +79,40 @@ export const createQuiz = (classId, questions) => {
     } catch (err) {
       dispatch({
         type: CREATE_QUIZ_FAIL,
+        payload: err.message,
+      });
+    }
+  };
+};
+
+export const fetchQuiz = (quizId) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: FETCH_QUIZ_REQUEST,
+      });
+
+      const { userInfo } = getState().userDetails;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.get(
+        `/api/v1/quiz/fetch/quiz/${quizId}`,
+        config
+      );
+      dispatch({
+        type: FETCH_QUIZ_SUCCESS,
+        payload: {
+          createdBy: data.data.createdBy,
+          questions: data.data.questions,
+        },
+      });
+    } catch (err) {
+      dispatch({
+        type: FETCH_QUIZ_FAIL,
         payload: err.message,
       });
     }

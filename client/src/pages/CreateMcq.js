@@ -6,10 +6,12 @@ import QuestionContainer from "../components/QuestionContainer";
 import Banner from "../components/UI/Banner";
 import { createQuiz } from "../actions/assignment";
 import { useLocation } from "react-router";
+import Spinner from "../components/UI/Spinner";
+import Alert from "../components/UI/Alert";
 
 const CreateMcq = () => {
   const [showAddQuestion, setShowAddQuestion] = useState(false);
-  // const { totalMarks } = useSelector((state) => state.questions);
+  const { loading, error } = useSelector((state) => state.createQuiz);
   const [totalMarks, setTotalMarks] = useState(0);
   const [questions, setQuestions] = useState([]);
 
@@ -41,8 +43,8 @@ const CreateMcq = () => {
         <div className="bg-white py-2 flex flex-col items-center border rounded">
           <h2 className="font-bold text-2xl my-2">List of Question(s):</h2>
 
-          <div className="flex flex-row space-between">
-            <div>
+          <div className="flex flex-row  justify-center min-w-full">
+            <div className="">
               {questions.length > 0 &&
                 questions.map((question, index) => {
                   return (
@@ -56,23 +58,29 @@ const CreateMcq = () => {
                     />
                   );
                 })}
-              <div className="flex flex-row justify-between w-3/5 px-6">
+              {error && <Alert color={"red"} message={error} />}
+              <div className="flex flex-row justify-between w-full px-6">
                 <Button
                   color="indigo"
                   ripple="light"
                   onClick={addQuestionHandler}
+                  className="mr-12"
                   // disabled={true}
                 >
                   Add question
                 </Button>
-                <Button
-                  color="indigo"
-                  ripple="light"
-                  onClick={createQuizHandler}
-                  // disabled={true}
-                >
-                  Create quiz
-                </Button>
+                {loading ? (
+                  <Spinner />
+                ) : (
+                  <Button
+                    color="indigo"
+                    ripple="light"
+                    onClick={createQuizHandler}
+                    // disabled={true}
+                  >
+                    Create quiz
+                  </Button>
+                )}
               </div>
             </div>
             <div>

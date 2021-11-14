@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-const Option = ({ optionNumber, optionDesc }) => {
+const Option = ({ optionNumber, optionDesc, questionNumber }) => {
   return (
     <label className="my-2 block flex items-center">
       <input
         className="w-4 h-4"
-        name="optionSelect"
+        name={`optionSelect-${questionNumber}`}
         type="radio"
         value={optionNumber}
       />

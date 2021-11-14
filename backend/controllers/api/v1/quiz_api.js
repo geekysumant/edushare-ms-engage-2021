@@ -46,3 +46,24 @@ module.exports.fetchAssignments = async (req, res) => {
     res.status(400).send("Error!");
   }
 };
+
+module.exports.fetchQuiz = async (req, res) => {
+  try {
+    const quizId = req.params.quizId;
+
+    // also check is quiz id is valid object id
+
+    const requestedQuiz = await Quiz.findById(quizId);
+    if (!requestedQuiz) {
+      throw new Error("Oops, no such quiz found!");
+    }
+    res.json({
+      data: {
+        createdBy: requestedQuiz.createdBy,
+        questions: requestedQuiz.questions,
+      },
+    });
+  } catch (err) {
+    res.status(400).send("We've encountered an error, please try again");
+  }
+};
