@@ -15,5 +15,6 @@ const router = express.Router();
 router.post("/create", protect, quizController.createQuiz);
 router.get("/fetch/:classId", protect, quizController.fetchAssignments);
 router.get("/fetch/quiz/:quizId", protect, quizController.fetchQuiz);
+router.post("/submit/:quizId", protect, quizController.submitQuiz);
 
 module.exports = router;

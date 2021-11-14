@@ -42,7 +42,12 @@ const quizSchema = mongoose.Schema(
         },
       },
     ],
-    // submissions : []
+    submissions: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "QuizSubmission",
+      },
+    ],
   },
   { timestamps: true }
 );
