@@ -7,6 +7,7 @@ module.exports = {
         prism: "url('/src/assets/svg/subtle-prism.svg')",
         cheese: "url('/src/assets/svg/liquid-cheese.svg')",
         tornado: "url('/src/assets/svg/tornado.svg')",
+        constellation: "url('/src/assets/svg/dp_background.svg')",
       },
     },
     // screens: {

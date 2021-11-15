@@ -8,6 +8,9 @@ import {
   FETCH_QUIZ_FAIL,
   FETCH_QUIZ_REQUEST,
   FETCH_QUIZ_SUCCESS,
+  FETCH_SUBMISSIONS_FAIL,
+  FETCH_SUBMISSIONS_REQUEST,
+  FETCH_SUBMISSIONS_SUCCESS,
   SUBMIT_QUIZ_FAIL,
   SUBMIT_QUIZ_REQUEST,
   SUBMIT_QUIZ_SUCCESS,
@@ -120,6 +123,34 @@ export const submitQuizReducer = (state = initialSubmitQuizState, action) => {
       return {
         loading: false,
         error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+const initialFetchSubmissionsState = {
+  submissions: [],
+};
+
+export const fetchSubmissionsReducer = (
+  state = initialFetchSubmissionsState,
+  action
+) => {
+  switch (action.type) {
+    case FETCH_SUBMISSIONS_REQUEST:
+      return {
+        loading: true,
+      };
+    case FETCH_SUBMISSIONS_SUCCESS:
+      return {
+        loading: false,
+        submissions: action.payload.submissions,
+      };
+    case FETCH_SUBMISSIONS_FAIL:
+      return {
+        loading: false,
+        error: action.payload.error,
       };
     default:
       return state;

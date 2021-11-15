@@ -1,0 +1,35 @@
+import Button from "@material-tailwind/react/Button";
+import React from "react";
+
+const UserCard = ({ picture, name, email }) => {
+  return (
+    <div className="w-1/4 max-w-sm mx-4  mt-8 bg-white shadow-xl rounded-lg text-gray-900">
+      <div className="rounded-t-lg h-32 overflow-hidden bg-constellation"></div>
+      <div className="mx-auto w-24 h-24 relative -mt-16 border-4 border-white rounded-full overflow-hidden">
+        <img
+          className="object-cover object-center h-32"
+          src={picture}
+          alt="Woman looking front"
+        />
+      </div>
+      <div className="text-center mt-2 p-2">
+        <h2 className="font-semibold break-words">{name}</h2>
+        <p className="text-gray-500 break-words">{email}</p>
+      </div>
+
+      <div className="p-4 border-t mt-2">
+        <div className="rounded-full py-2 flex items-center justify-evenly">
+          <Button
+            color="green"
+            ripple="light"
+            // disabled={true}
+          >
+            View submission
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default UserCard;

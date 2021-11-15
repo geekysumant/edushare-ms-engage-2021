@@ -37,11 +37,9 @@ module.exports.loginUser = async (req, res) => {
         name: name,
         email: email,
         password: randomPassword,
+        picture,
       });
-      const newToken = jwt.sign({ id: newUser.id }, JWT_SECRET, {
-        expiresIn: "2d",
-      });
-      console.log(newToken);
+      const newToken = jwt.sign({ id: newUser.id }, JWT_SECRET);
       res.json({
         message: {
           id: newUser._id,

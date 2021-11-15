@@ -15,18 +15,19 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    picture: {
+      type: "String",
+    },
     createdClasses: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Class",
-        unique: true,
       },
     ],
     joinedClasses: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Class",
-        unique: true,
       },
     ],
   },

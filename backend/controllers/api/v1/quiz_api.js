@@ -106,7 +106,7 @@ module.exports.submitQuiz = async (req, res) => {
       throw new Error("You can't give the quiz.");
     }
     const usersSubmission = await QuizSubmission.findOne({
-      quizId,
+      user: req.user._id,
     });
     if (usersSubmission) {
       throw new Error("You have already taken the quiz.");
@@ -154,5 +154,41 @@ module.exports.submitQuiz = async (req, res) => {
     });
   } catch (error) {
     res.status(400).send(error.message);
+  }
+};
+
+module.exports.fetchSubmissions = async (req, res) => {
+  try {
+    const quizId = req.params.quizId;
+    const isValidQuizId = mongoose.Types.ObjectId.isValid(quizId);
+
+    if (!isValidQuizId) {
+      throw new Error("No quiz found!");
+    }
+
+    //if the user that is hitting this api is not the creator of quiz, return them error
+
+    const quiz = await Quiz.findById(quizId).populate([
+      {
+        path: "submissions",
+        populate: { path: "user", select: "id name email" },
+      },
+      // { path: "joinedClasses", populate: { path: "quizzes" } },
+    ]);
+
+    // if (quiz.createdBy !== req.user._id) {
+    //   throw new Error("Not authorised!");
+    // }
+
+    res.json({
+      data: {
+        submissions: quiz.submissions,
+      },
+    });
+    if (!quiz) {
+      throw new Error("No quiz found!");
+    }
+  } catch (error) {
+    res.status(401).send(error.message);
   }
 };

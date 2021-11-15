@@ -9,6 +9,7 @@ const User = require("../../../models/User");
 //  DESC.: This method creates new class with the given parameters by the user
 module.exports.createClass = async (req, res) => {
   try {
+    console.log(req.user);
     const createdBy = req.user._id;
     const { className, subject, room } = req.body;
 
