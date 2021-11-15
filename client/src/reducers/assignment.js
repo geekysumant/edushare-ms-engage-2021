@@ -8,6 +8,9 @@ import {
   FETCH_QUIZ_FAIL,
   FETCH_QUIZ_REQUEST,
   FETCH_QUIZ_SUCCESS,
+  SUBMIT_QUIZ_FAIL,
+  SUBMIT_QUIZ_REQUEST,
+  SUBMIT_QUIZ_SUCCESS,
 } from "../actions/actionTypes";
 
 const initialAssignmentState = {
@@ -70,6 +73,7 @@ const initialFetchQuizState = {
 };
 
 export const fetchQuizReducer = (state = initialFetchQuizState, action) => {
+  console.log(action);
   switch (action.type) {
     case FETCH_QUIZ_REQUEST:
       return {
@@ -80,6 +84,10 @@ export const fetchQuizReducer = (state = initialFetchQuizState, action) => {
         loading: false,
         questions: [...action.payload.questions],
         createdBy: action.payload.createdBy,
+        hasSubmitted: action.payload.hasSubmitted,
+        submission: [...action.payload.submission],
+        totalQuizScore: action.payload.totalQuizScore,
+        totalUserScore: action.payload.totalUserScore,
       };
     case FETCH_QUIZ_FAIL:
       return {
@@ -88,6 +96,31 @@ export const fetchQuizReducer = (state = initialFetchQuizState, action) => {
         error: action.payload,
       };
 
+    default:
+      return state;
+  }
+};
+
+const initialSubmitQuizState = {
+  loading: false,
+};
+
+export const submitQuizReducer = (state = initialSubmitQuizState, action) => {
+  switch (action.type) {
+    case SUBMIT_QUIZ_REQUEST:
+      return {
+        loading: true,
+      };
+    case SUBMIT_QUIZ_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case SUBMIT_QUIZ_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
     default:
       return state;
   }

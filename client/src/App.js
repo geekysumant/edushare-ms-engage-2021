@@ -11,6 +11,7 @@ import CreateMcq from "./pages/CreateMcq";
 import HeaderClass from "./components/UI/HeaderClass";
 import HeaderHome from "./components/UI/HeaderHome";
 import QuizScreen from "./pages/QuizScreen";
+import QuizResult from "./pages/QuizResult";
 
 function App() {
   const location = useLocation();
@@ -38,6 +39,11 @@ function App() {
           path="/enter/class/:classId/classwork/quiz/:quizId"
           exact
           element={<QuizScreen />}
+        />
+        <Route
+          path="/enter/class/:classId/classwork/quiz/:quizId/results"
+          exact
+          element={<QuizResult />}
         />
       </Routes>
       {/* <Footer /> */}

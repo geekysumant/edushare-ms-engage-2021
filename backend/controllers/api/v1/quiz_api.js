@@ -58,10 +58,26 @@ module.exports.fetchQuiz = async (req, res) => {
     if (!requestedQuiz) {
       throw new Error("Oops, no such quiz found!");
     }
+    const quizSubmissionOfUser = await QuizSubmission.findOne({
+      user: req.user._id,
+    });
+
+    let hasSubmitted = false;
+    if (quizSubmissionOfUser) {
+      hasSubmitted = true;
+    }
+    let totalQuizScore = 0;
+    requestedQuiz.questions.forEach(
+      (ques) => (totalQuizScore = totalQuizScore + ques.correctMarks)
+    );
     res.json({
       data: {
+        totalQuizScore,
+        totalUserScore: hasSubmitted ? quizSubmissionOfUser.totalScore : 0,
+        hasSubmitted,
         createdBy: requestedQuiz.createdBy,
         questions: requestedQuiz.questions,
+        submission: quizSubmissionOfUser ? quizSubmissionOfUser : [],
       },
     });
   } catch (err) {
@@ -71,7 +87,7 @@ module.exports.fetchQuiz = async (req, res) => {
 
 module.exports.submitQuiz = async (req, res) => {
   try {
-    const quizId = req.params.quizId;
+    const quizId = req.body.quizId;
     const userSubmittedResponse = req.body.submission;
     // console.log(userSubmittedResponse);
 
@@ -85,6 +101,9 @@ module.exports.submitQuiz = async (req, res) => {
     //check if the quiz exists or not
     if (!quiz) {
       throw new Error("No quiz found.");
+    }
+    if (quiz.createdBy === req.user._id) {
+      throw new Error("You can't give the quiz.");
     }
     const usersSubmission = await QuizSubmission.findOne({
       quizId,
@@ -117,6 +136,7 @@ module.exports.submitQuiz = async (req, res) => {
     });
 
     const newSubmission = await QuizSubmission.create({
+      user: req.user._id,
       createdBy: quiz.createdBy,
       classId: quiz.classId,
       quizId,
@@ -133,6 +153,6 @@ module.exports.submitQuiz = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(400).send(error.message);
   }
 };

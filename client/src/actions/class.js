@@ -70,7 +70,6 @@ export const fetchClasses = () => {
         joinedClasses: joinedClasses,
         createdClasses: createdClasses,
       };
-      console.log("herer*************", payload);
       dispatch({
         type: FETCH_CLASS_SUCCESS,
         payload: {

@@ -36,7 +36,7 @@ const Classwork = () => {
 
   return (
     <div className="mx-36 my-8">
-      {userInfo.id === createdBy && <Dropdown />}
+      {userInfo && userInfo.id === createdBy && <Dropdown />}
       {loading ? (
         <Spinner />
       ) : error ? (

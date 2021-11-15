@@ -9,6 +9,9 @@ import {
   FETCH_QUIZ_FAIL,
   FETCH_QUIZ_REQUEST,
   FETCH_QUIZ_SUCCESS,
+  SUBMIT_QUIZ_FAIL,
+  SUBMIT_QUIZ_REQUEST,
+  SUBMIT_QUIZ_SUCCESS,
 } from "./actionTypes";
 
 import axios from "axios";
@@ -103,17 +106,60 @@ export const fetchQuiz = (quizId) => {
         `/api/v1/quiz/fetch/quiz/${quizId}`,
         config
       );
+      console.log(data);
       dispatch({
         type: FETCH_QUIZ_SUCCESS,
         payload: {
           createdBy: data.data.createdBy,
           questions: data.data.questions,
+          hasSubmitted: data.data.hasSubmitted,
+          submission: data.data.submission.submission
+            ? data.data.submission.submission
+            : [],
+          totalQuizScore: data.data.totalQuizScore,
+          totalUserScore: data.data.totalUserScore,
         },
       });
     } catch (err) {
       dispatch({
         type: FETCH_QUIZ_FAIL,
         payload: err.message,
+      });
+    }
+  };
+};
+
+export const submitQuiz = (quizId, submission) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: SUBMIT_QUIZ_REQUEST,
+      });
+
+      const { userInfo } = getState().userDetails;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const postData = {
+        quizId,
+        submission,
+      };
+      const { data } = await axios.post(
+        "/api/v1/quiz/submit",
+        postData,
+        config
+      );
+
+      dispatch({
+        type: SUBMIT_QUIZ_SUCCESS,
+      });
+    } catch (err) {
+      dispatch({
+        type: SUBMIT_QUIZ_FAIL,
+        payload: err.response.data,
       });
     }
   };
