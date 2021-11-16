@@ -6,6 +6,7 @@ const Quiz = require("../../../models/Quiz");
 const Class = require("../../../models/Class");
 const User = require("../../../models/User");
 const QuizSubmission = require("../../../models/QuizSubmission");
+const Assignment = require("../../../models/Assignment.js");
 
 module.exports.createQuiz = async (req, res) => {
   try {
@@ -227,5 +228,45 @@ module.exports.fetchUsersQuizSubmission = async (req, res) => {
     });
   } catch (error) {
     res.status(401).send(error.message);
+  }
+};
+
+module.exports.createAssignment = async (req, res) => {
+  try {
+    Assignment.uploadedFile(req, res, async (err) => {
+      if (err) {
+        throw new Error("Some error occurred");
+      }
+      // console.log(req.file);
+      const classId = req.body.classId;
+      const { title, instructions } = req.body;
+      console.log(title);
+      const requestedClass = await Class.findById(classId);
+
+      console.log(req.user._id);
+      console.log(requestedClass.createdBy);
+      if (!requestedClass.createdBy.equals(req.user._id)) {
+        throw new Error("Not authorised!");
+      }
+
+      const newAssignment = await Assignment.create({
+        createdBy: req.user._id,
+        classId,
+        title,
+        instructions,
+      });
+
+      if (req.file) {
+        newAssignment.file = Assignment.filePath + "/" + req.file.filename;
+        await newAssignment.save();
+      }
+      res.json({
+        data: {
+          createdAssignment: newAssignment,
+        },
+      });
+    });
+  } catch (error) {
+    res.status(500).send(error.message);
   }
 };

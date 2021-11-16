@@ -14,6 +14,7 @@ import QuizScreen from "./pages/QuizScreen";
 import QuizResult from "./pages/QuizResult";
 import QuizSubmissions from "./pages/QuizSubmissions";
 import ViewUserQuizSubmission from "./pages/ViewUserQuizSubmission";
+import CreateAssignment from "./pages/CreateAssignment";
 
 function App() {
   const location = useLocation();
@@ -36,6 +37,11 @@ function App() {
           path="/enter/class/:classId/classwork/create-mcq"
           exact
           element={<CreateMcq />}
+        />
+        <Route
+          path="/enter/class/:classId/classwork/create-assignment"
+          exact
+          element={<CreateAssignment />}
         />
         <Route
           path="/enter/class/:classId/classwork/quiz/:quizId"
