@@ -80,7 +80,7 @@ export const fetchClasses = () => {
     } catch (err) {
       dispatch({
         type: FETCH_CLASS_FAIL,
-        payload: err,
+        payload: err.message,
       });
     }
   };

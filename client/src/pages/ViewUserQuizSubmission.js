@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
-import { fetchQuiz } from "../actions/assignment";
+import { fetchQuiz, fetchUsersQuizSubmission } from "../actions/assignment";
 import QuizResultDisplay from "../components/QuizResultDisplay";
 import Alert from "../components/UI/Alert";
+import Banner from "../components/UI/Banner";
 import Spinner from "../components/UI/Spinner";
+import QuizSVG from "../assets/svg/quiz.svg";
 
-const QuizResult = () => {
+const ViewUserQuizSubmission = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -16,41 +18,48 @@ const QuizResult = () => {
     loading,
     error,
     hasSubmitted,
-    submission,
     totalQuizScore,
     totalUserScore,
   } = useSelector((state) => state.fetchQuiz);
   const { userInfo, isAuthenticated } = useSelector(
     (state) => state.userDetails
   );
+  const { submission } = useSelector((state) => state.fetchUsersQuizSubmission);
 
   const quizId = location.pathname.split("/")[6];
   const classId = location.pathname.split("/")[3];
+  const userId = location.pathname.split("/")[8];
 
   useEffect(() => {
     if (!isAuthenticated) {
       return navigate("/login/teacher");
     }
     dispatch(fetchQuiz(quizId));
+    dispatch(fetchUsersQuizSubmission(quizId, userId));
   }, []);
   return (
     <div>
+      <Banner
+        SVGComponent={QuizSVG}
+        heading="Result"
+        bannerBackground="greencheese"
+        customText="View individual student's results"
+      />
       {loading ? (
         <Spinner />
       ) : error ? (
         <Alert color="red" message={error} />
       ) : (
-        hasSubmitted && (
+        submission && (
           <QuizResultDisplay
-            totalUserScore={totalUserScore}
+            totalUserScore={submission.totalScore}
             totalQuizScore={totalQuizScore}
             questions={questions}
-            submission={submission}
+            submission={submission.submission}
           />
         )
       )}
     </div>
   );
 };
-
-export default QuizResult;
+export default ViewUserQuizSubmission;

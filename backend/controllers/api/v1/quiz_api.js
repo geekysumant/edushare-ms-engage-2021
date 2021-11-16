@@ -60,6 +60,7 @@ module.exports.fetchQuiz = async (req, res) => {
     }
     const quizSubmissionOfUser = await QuizSubmission.findOne({
       user: req.user._id,
+      quizId: quizId,
     });
 
     let hasSubmitted = false;
@@ -107,6 +108,7 @@ module.exports.submitQuiz = async (req, res) => {
     }
     const usersSubmission = await QuizSubmission.findOne({
       user: req.user._id,
+      quizId: quizId,
     });
     if (usersSubmission) {
       throw new Error("You have already taken the quiz.");
@@ -171,23 +173,58 @@ module.exports.fetchSubmissions = async (req, res) => {
     const quiz = await Quiz.findById(quizId).populate([
       {
         path: "submissions",
-        populate: { path: "user", select: "id name email" },
+        populate: { path: "user", select: "id name email picture" },
       },
       // { path: "joinedClasses", populate: { path: "quizzes" } },
     ]);
 
-    // if (quiz.createdBy !== req.user._id) {
-    //   throw new Error("Not authorised!");
-    // }
+    if (!quiz.createdBy.equals(req.user._id)) {
+      throw new Error("Not authorised!");
+    }
+
+    if (!quiz) {
+      throw new Error("No quiz found!");
+    }
 
     res.json({
       data: {
         submissions: quiz.submissions,
       },
     });
-    if (!quiz) {
+  } catch (error) {
+    res.status(401).send(error.message);
+  }
+};
+
+module.exports.fetchUsersQuizSubmission = async (req, res) => {
+  try {
+    const quizId = req.query.quizId;
+    const userId = req.query.userId;
+
+    const isValidQuizId = mongoose.Types.ObjectId.isValid(quizId);
+
+    if (!isValidQuizId) {
       throw new Error("No quiz found!");
     }
+
+    const quizSubmission = await QuizSubmission.findOne({
+      quizId,
+      user: userId,
+    }).populate("user", "name email");
+
+    if (!quizSubmission) {
+      throw new Error("No submission found!");
+    }
+    //if the user that is hitting this api is not the creator of quiz, return them error
+    if (!quizSubmission.createdBy.equals(req.user._id)) {
+      throw new Error("Not authorised!");
+    }
+
+    res.json({
+      data: {
+        submission: quizSubmission,
+      },
+    });
   } catch (error) {
     res.status(401).send(error.message);
   }

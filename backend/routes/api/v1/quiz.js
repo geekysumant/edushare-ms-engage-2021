@@ -17,5 +17,6 @@ router.get("/fetch/:classId", protect, quizController.fetchAssignments);
 router.get("/fetch/quiz/:quizId", protect, quizController.fetchQuiz);
 router.post("/submit", protect, quizController.submitQuiz);
 router.get("/submissions/:quizId", protect, quizController.fetchSubmissions);
+router.get("/submission", protect, quizController.fetchUsersQuizSubmission);
 
 module.exports = router;

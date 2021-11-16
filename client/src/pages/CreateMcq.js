@@ -8,6 +8,7 @@ import { createQuiz } from "../actions/assignment";
 import { useLocation } from "react-router";
 import Spinner from "../components/UI/Spinner";
 import Alert from "../components/UI/Alert";
+import QuestionSVG from "../assets/svg/question.svg";
 
 const CreateMcq = () => {
   const [showAddQuestion, setShowAddQuestion] = useState(false);
@@ -29,7 +30,12 @@ const CreateMcq = () => {
   };
   return (
     <>
-      <Banner />
+      <Banner
+        SVGComponent={QuestionSVG}
+        heading="Create Quiz"
+        bannerBackground="cheese"
+        customText="Create and share quiz with your class easily!"
+      />
       <section className="p-4  h-full">
         <div>
           <AddQuestionForm

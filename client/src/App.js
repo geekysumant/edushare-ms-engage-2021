@@ -13,6 +13,7 @@ import HeaderHome from "./components/UI/HeaderHome";
 import QuizScreen from "./pages/QuizScreen";
 import QuizResult from "./pages/QuizResult";
 import QuizSubmissions from "./pages/QuizSubmissions";
+import ViewUserQuizSubmission from "./pages/ViewUserQuizSubmission";
 
 function App() {
   const location = useLocation();
@@ -50,6 +51,11 @@ function App() {
           path="/enter/class/:classId/classwork/quiz/:quizId/submissions"
           exact
           element={<QuizSubmissions />}
+        />
+        <Route
+          path="/enter/class/:classId/classwork/quiz/:quizId/submissions/:userId"
+          exact
+          element={<ViewUserQuizSubmission />}
         />
       </Routes>
       {/* <Footer /> */}

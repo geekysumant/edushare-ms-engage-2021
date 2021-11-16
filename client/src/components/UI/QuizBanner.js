@@ -37,6 +37,15 @@ const QuizBanner = ({ questions, quizId }) => {
                 {userInfo.id == createdBy ? "View quiz" : "Take quiz"}
               </Button>
             </Link>
+            <Link
+              to={`/enter/class/${classId}/classwork/quiz/${quizId}/submissions`}
+            >
+              {createdBy === userInfo.id && (
+                <Button color="indigo" ripple="light">
+                  View Submission
+                </Button>
+              )}
+            </Link>
           </div>
         </div>
       </div>

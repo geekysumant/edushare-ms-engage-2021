@@ -6,6 +6,8 @@ import { useLocation, useNavigate } from "react-router";
 import QuizBanner from "../components/UI/QuizBanner";
 import Spinner from "../components/UI/Spinner";
 import Alert from "../components/UI/Alert";
+import Banner from "../components/UI/Banner";
+import TaskSVG from "../assets/svg/tasks.svg";
 
 const Classwork = () => {
   const { quizzes, loading, error } = useSelector(
@@ -35,19 +37,30 @@ const Classwork = () => {
   }, [quizzes]);
 
   return (
-    <div className="mx-36 my-8">
-      {userInfo && userInfo.id === createdBy && <Dropdown />}
-      {loading ? (
-        <Spinner />
-      ) : error ? (
-        <Alert message={error} color="red" />
-      ) : (
-        quizzes &&
-        quizzes.map((quiz) => (
-          <QuizBanner questions={quiz.questions} quizId={quiz._id} />
-        ))
-      )}
-    </div>
+    <>
+      <Banner
+        SVGComponent={TaskSVG}
+        heading="Classwork"
+        bannerBackground="meteor"
+        customText="All your assignments and quizzes in one place"
+        textColor="gray"
+      />
+      <div className="mx-36 my-8">
+        <div className="my-4 mx-auto">
+          {userInfo && userInfo.id === createdBy && <Dropdown />}
+        </div>
+        {loading ? (
+          <Spinner />
+        ) : error ? (
+          <Alert message={error} color="red" />
+        ) : (
+          quizzes &&
+          quizzes.map((quiz) => (
+            <QuizBanner questions={quiz.questions} quizId={quiz._id} />
+          ))
+        )}
+      </div>
+    </>
   );
 };
 

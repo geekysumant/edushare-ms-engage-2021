@@ -12,6 +12,7 @@ import {
   fetchAssignmentsReducer,
   fetchQuizReducer,
   fetchSubmissionsReducer,
+  fetchUsersQuizSubmissionReducer,
   submitQuizReducer,
 } from "./assignment";
 
@@ -28,6 +29,7 @@ export default combineReducers({
   fetchQuiz: fetchQuizReducer,
   submitQuiz: submitQuizReducer,
   fetchSubmissions: fetchSubmissionsReducer,
+  fetchUsersQuizSubmission: fetchUsersQuizSubmissionReducer,
   //not needed questions state
   // allQuestions: addQuestionReducer,
 });

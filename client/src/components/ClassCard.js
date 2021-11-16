@@ -28,6 +28,7 @@ export default function ClassCard({
         <h1>{classTitle}</h1>
         <p>{classRoom}</p>
         <p>{classTeacher}</p>
+        <p className="text-xs mt-2">Code: {classCode}</p>
       </CardBody>
 
       <Link to={`/enter/class/${classCode}`}>

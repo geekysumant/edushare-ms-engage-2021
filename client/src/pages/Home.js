@@ -5,10 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ClassCard from "../components/ClassCard";
 import { createClass, fetchClasses } from "../actions/class";
+import Spinner from "../components/UI/Spinner";
+import Alert from "../components/UI/Alert";
+import StudySVG from "../assets/svg/study.svg";
+import Banner from "../components/UI/Banner";
 
 const Home = () => {
   const { isAuthenticated } = useSelector((state) => state.userDetails);
-  const { createdClasses, joinedClasses, loading } = useSelector(
+  const { createdClasses, joinedClasses, loading, error } = useSelector(
     (state) => state.classDetails
   );
 
@@ -24,44 +28,49 @@ const Home = () => {
 
   return (
     <div>
-      <section>
-        <h3>Classes you've created </h3>
-        <div className="my-6 flex flex-row flex-wrap">
-          {loading && <p>Loading......</p>}
-          {createdClasses &&
-            createdClasses.map((element) => {
-              return (
-                <div className="w-72 m-6">
-                  <ClassCard
-                    classTitle={element.className}
-                    classRoom={element.classRoom}
-                    classTeacher="Teacher"
-                    classCode={element._id}
-                  />
-                </div>
-              );
-            })}
-        </div>
-      </section>
-      <section>
-        <h3>Classes you've joined </h3>
-        <div className="my-6 flex flex-row justify-between flex-wrap">
-          {loading && <p>Loading......</p>}
-          {joinedClasses &&
-            joinedClasses.map((element) => {
-              return (
-                <div key={element._id} className="w-72 m-6">
-                  <ClassCard
-                    classTitle={element.className}
-                    classRoom={element.classRoom}
-                    classTeacher="Teacher"
-                    classCode={element._id}
-                  />
-                </div>
-              );
-            })}
-        </div>
-      </section>
+      <Banner
+        SVGComponent={StudySVG}
+        heading="Classes"
+        bannerBackground="boxes"
+        customText="All your classes at one place"
+        textColor="gray"
+      />
+      <div className="my-2 flex flex-row flex-wrap">
+        {loading ? (
+          <Spinner />
+        ) : error ? (
+          <Alert color="red" message={error} />
+        ) : (
+          <div className="p-4 flex flex-row">
+            {createdClasses &&
+              createdClasses.map((element) => {
+                return (
+                  <div className="w-72 m-6">
+                    <ClassCard
+                      classTitle={element.className}
+                      classRoom={element.classRoom}
+                      classTeacher="Teacher"
+                      classCode={element._id}
+                    />
+                  </div>
+                );
+              })}
+            {joinedClasses &&
+              joinedClasses.map((element) => {
+                return (
+                  <div key={element._id} className="w-72 m-6">
+                    <ClassCard
+                      classTitle={element.className}
+                      classRoom={element.classRoom}
+                      classTeacher="Teacher"
+                      classCode={element._id}
+                    />
+                  </div>
+                );
+              })}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

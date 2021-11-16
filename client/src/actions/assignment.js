@@ -12,6 +12,9 @@ import {
   FETCH_SUBMISSIONS_FAIL,
   FETCH_SUBMISSIONS_REQUEST,
   FETCH_SUBMISSIONS_SUCCESS,
+  FETCH_USERS_QUIZ_SUBMISSION_FAIL,
+  FETCH_USERS_QUIZ_SUBMISSION_REQUEST,
+  FETCH_USERS_QUIZ_SUBMISSION_SUCCESS,
   SUBMIT_QUIZ_FAIL,
   SUBMIT_QUIZ_REQUEST,
   SUBMIT_QUIZ_SUCCESS,
@@ -196,6 +199,40 @@ export const fetchSubmissions = (quizId) => {
     } catch (err) {
       dispatch({
         type: FETCH_SUBMISSIONS_FAIL,
+        payload: err.response.data,
+      });
+    }
+  };
+};
+
+export const fetchUsersQuizSubmission = (quizId, userId) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: FETCH_USERS_QUIZ_SUBMISSION_REQUEST,
+      });
+
+      const { userInfo } = getState().userDetails;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.get(
+        `/api/v1/quiz/submission/?quizId=${quizId}&userId=${userId}`,
+        config
+      );
+
+      dispatch({
+        type: FETCH_USERS_QUIZ_SUBMISSION_SUCCESS,
+        payload: {
+          submission: data.data.submission,
+        },
+      });
+    } catch (err) {
+      dispatch({
+        type: FETCH_USERS_QUIZ_SUBMISSION_FAIL,
         payload: err.response.data,
       });
     }

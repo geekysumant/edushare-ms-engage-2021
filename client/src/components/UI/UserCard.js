@@ -1,7 +1,11 @@
 import Button from "@material-tailwind/react/Button";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router";
+import { Link } from "react-router-dom";
+import { fetchEnterClassDetails } from "../../actions/class";
 
-const UserCard = ({ picture, name, email }) => {
+const UserCard = ({ picture, name, email, userId, classId, quizId }) => {
   return (
     <div className="w-1/4 max-w-sm mx-4  mt-8 bg-white shadow-xl rounded-lg text-gray-900">
       <div className="rounded-t-lg h-32 overflow-hidden bg-constellation"></div>
@@ -19,13 +23,13 @@ const UserCard = ({ picture, name, email }) => {
 
       <div className="p-4 border-t mt-2">
         <div className="rounded-full py-2 flex items-center justify-evenly">
-          <Button
-            color="green"
-            ripple="light"
-            // disabled={true}
+          <Link
+            to={`/enter/class/${classId}/classwork/quiz/${quizId}/submissions/${userId}`}
           >
-            View submission
-          </Button>
+            <Button color="green" ripple="light">
+              View submission
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

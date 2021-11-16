@@ -9,6 +9,7 @@ import Spinner from "../components/UI/Spinner";
 import Alert from "../components/UI/Alert";
 import Button from "@material-tailwind/react/Button";
 import QuizResult from "./QuizResult";
+import QuestionContainer from "../components/QuestionContainer";
 
 const QuizScreen = () => {
   const dispatch = useDispatch();
@@ -91,6 +92,20 @@ const QuizScreen = () => {
         <Spinner />
       ) : error ? (
         <Alert color="red" message={error} />
+      ) : createdBy && createdBy === userInfo.id ? (
+        <div className="bg-white py-2 flex flex-col items-center border rounded mx-auto w-4/5">
+          {questions &&
+            questions.map((question, index) => (
+              <QuestionContainer
+                key={index}
+                questionBody={question.question}
+                options={question.options}
+                correctOption={question.correctOption}
+                correctMarks={question.correctMarks}
+                incorrectMarks={question.incorrectMarks}
+              />
+            ))}
+        </div>
       ) : (
         !hasSubmitted && componentIfUserNotSubmitted
       )}
