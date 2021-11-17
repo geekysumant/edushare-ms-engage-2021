@@ -15,13 +15,23 @@ import QuizResult from "./pages/QuizResult";
 import QuizSubmissions from "./pages/QuizSubmissions";
 import ViewUserQuizSubmission from "./pages/ViewUserQuizSubmission";
 import CreateAssignment from "./pages/CreateAssignment";
+import AssignmentScreen from "./pages/AssignmentScreen";
 
 function App() {
   const location = useLocation();
   const onHomeScreen = location.pathname.startsWith("/home");
+  const onWelcomeScreen = location.pathname.startsWith("/welcome");
   return (
     <div className="App">
-      {onHomeScreen ? <HeaderHome /> : <HeaderClass />}
+      {onWelcomeScreen ? (
+        <>
+          <Header />
+        </>
+      ) : onHomeScreen ? (
+        <HeaderHome />
+      ) : (
+        <HeaderClass />
+      )}
       <Routes>
         <Route path="/" element={<Navigate to="/welcome" />} exact />
         <Route path="/welcome" element={<Welcome />} />
@@ -49,6 +59,12 @@ function App() {
           element={<QuizScreen />}
         />
         <Route
+          path="/enter/class/:classId/classwork/assignment/:assignmentId"
+          exact
+          element={<AssignmentScreen />}
+        />
+
+        <Route
           path="/enter/class/:classId/classwork/quiz/:quizId/results"
           exact
           element={<QuizResult />}
@@ -64,7 +80,8 @@ function App() {
           element={<ViewUserQuizSubmission />}
         />
       </Routes>
-      {/* <Footer /> */}
+
+      {onWelcomeScreen && <Footer />}
     </div>
   );
 }

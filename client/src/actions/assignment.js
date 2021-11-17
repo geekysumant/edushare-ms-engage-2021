@@ -5,6 +5,9 @@ import {
   FETCH_ASSIGNMENTS_FAIL,
   FETCH_ASSIGNMENTS_REQUEST,
   FETCH_ASSIGNMENTS_SUCCESS,
+  FETCH_ASSIGNMENT_FAIL,
+  FETCH_ASSIGNMENT_REQUEST,
+  FETCH_ASSIGNMENT_SUCCESS,
   FETCH_CLASS_DETAILS_SUCCESS,
   FETCH_QUIZ_FAIL,
   FETCH_QUIZ_REQUEST,
@@ -234,6 +237,42 @@ export const fetchUsersQuizSubmission = (quizId, userId) => {
     } catch (err) {
       dispatch({
         type: FETCH_USERS_QUIZ_SUBMISSION_FAIL,
+        payload: err.response.data,
+      });
+    }
+  };
+};
+
+export const fetchAssignment = (assignmentId) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: FETCH_ASSIGNMENT_REQUEST,
+      });
+
+      const { userInfo } = getState().userDetails;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.get(
+        `/api/v1/quiz/fetch/assignment/${assignmentId}`,
+        config
+      );
+
+      dispatch({
+        type: FETCH_ASSIGNMENT_SUCCESS,
+        payload: {
+          createdBy: data.data.createdBy,
+          assignment: data.data.assignment,
+          hasSubmitted: data.data.hasSubmitted,
+        },
+      });
+    } catch (err) {
+      dispatch({
+        type: FETCH_ASSIGNMENT_FAIL,
         payload: err.response.data,
       });
     }

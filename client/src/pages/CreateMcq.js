@@ -1,26 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@material-tailwind/react/Button";
 import AddQuestionForm from "../components/AddQuestionForm";
 import { useDispatch, useSelector } from "react-redux";
 import QuestionContainer from "../components/QuestionContainer";
 import Banner from "../components/UI/Banner";
 import { createQuiz } from "../actions/assignment";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import Spinner from "../components/UI/Spinner";
 import Alert from "../components/UI/Alert";
 import QuestionSVG from "../assets/svg/question.svg";
 
 const CreateMcq = () => {
   const [showAddQuestion, setShowAddQuestion] = useState(false);
-  const { loading, error } = useSelector((state) => state.createQuiz);
+  const { loading, success, error } = useSelector((state) => state.createQuiz);
   const [totalMarks, setTotalMarks] = useState(0);
   const [questions, setQuestions] = useState([]);
 
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const classId = location.pathname.split("/")[3];
 
+  useEffect(() => {
+    if (success) {
+      return navigate(-1);
+    }
+  }, [success]);
   const addQuestionHandler = () => {
     setShowAddQuestion(true);
   };

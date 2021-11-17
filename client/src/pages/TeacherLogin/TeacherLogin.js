@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import Input from "../../components/UI/Input/Input";
 import Button from "../../components/UI/Button/Button";
 import classes from "./TeacherLogin.module.css";
-import { USER_LOGIN_REQUEST } from "../../actions/actionTypes";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from "../../actions/user";
 import { GoogleLogin } from "react-google-login";
@@ -26,11 +25,8 @@ const TeacherLogin = (props) => {
   const submitFormHandler = (e) => {
     e.preventDefault();
     dispatch(userLogin());
-    console.log(error.message);
   };
   const onSuccessHandler = (res) => {
-    console.log(res);
-    console.log(props);
     dispatch(userLogin(res.tokenId));
   };
   return (

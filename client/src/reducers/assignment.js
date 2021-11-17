@@ -5,6 +5,9 @@ import {
   FETCH_ASSIGNMENTS_FAIL,
   FETCH_ASSIGNMENTS_REQUEST,
   FETCH_ASSIGNMENTS_SUCCESS,
+  FETCH_ASSIGNMENT_FAIL,
+  FETCH_ASSIGNMENT_REQUEST,
+  FETCH_ASSIGNMENT_SUCCESS,
   FETCH_QUIZ_FAIL,
   FETCH_QUIZ_REQUEST,
   FETCH_QUIZ_SUCCESS,
@@ -180,6 +183,39 @@ export const fetchUsersQuizSubmissionReducer = (
         submission: action.payload.submission,
       };
     case FETCH_USERS_QUIZ_SUBMISSION_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
+const initialFetchAssignmentState = {
+  assignment: [],
+  createdBy: "",
+};
+
+export const fetchAssignmentReducer = (
+  state = initialFetchAssignmentState,
+  action
+) => {
+  console.log(action);
+  switch (action.type) {
+    case FETCH_ASSIGNMENT_REQUEST:
+      return {
+        loading: true,
+      };
+    case FETCH_ASSIGNMENT_SUCCESS:
+      return {
+        loading: false,
+        assignment: action.payload.assignment,
+        createdBy: action.payload.createdBy,
+        hasSubmitted: action.payload.hasSubmitted,
+      };
+    case FETCH_ASSIGNMENT_FAIL:
       return {
         loading: false,
         error: action.payload,

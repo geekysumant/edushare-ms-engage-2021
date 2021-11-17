@@ -24,8 +24,8 @@ const EnterClass = () => {
       <Banner
         bannerBackground="tornado"
         SVGComponent={BannerSVG}
-        heading="Welcome!"
-        customText="bla bla bla"
+        heading="Welcome"
+        // customText=""
       />
       <Announcement />
     </div>

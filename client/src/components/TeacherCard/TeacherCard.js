@@ -32,11 +32,6 @@ export default function TeacherCard() {
           while also enabling you to assess them with ease.
         </Typography>
       </CardContent>
-      <CardActions>
-        <Link to="/login/teacher">
-          <Button text="Sign Up" />
-        </Link>
-      </CardActions>
     </Card>
   );
 }

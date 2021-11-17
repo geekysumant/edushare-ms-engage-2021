@@ -32,9 +32,9 @@ export default function StudentCard() {
           also enabling you to interact with your peers.
         </Typography>
       </CardContent>
-      <CardActions>
+      {/* <CardActions>
         <Button text="Sign Up" />
-      </CardActions>
+      </CardActions> */}
     </Card>
   );
 }

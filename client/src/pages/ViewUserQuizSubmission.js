@@ -32,7 +32,7 @@ const ViewUserQuizSubmission = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      return navigate("/login/teacher");
+      return navigate("/home");
     }
     dispatch(fetchQuiz(quizId));
     dispatch(fetchUsersQuizSubmission(quizId, userId));

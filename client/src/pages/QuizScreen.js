@@ -28,7 +28,7 @@ const QuizScreen = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      return navigate("/login/teacher");
+      return navigate("/home");
     }
     dispatch(fetchQuiz(quizId));
   }, []);

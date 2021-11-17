@@ -16,7 +16,7 @@ const CreateAssignment = () => {
 
   const createAssignmentHandler = async (event) => {
     event.preventDefault();
-    console.log(file);
+
     let formData = new FormData();
     formData.append("file", file);
     formData.append("title", title);

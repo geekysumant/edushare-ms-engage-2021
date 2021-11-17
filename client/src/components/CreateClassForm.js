@@ -7,6 +7,8 @@ import ModalFooter from "@material-tailwind/react/ModalFooter";
 import Button from "@material-tailwind/react/Button";
 
 import { createClass } from "../actions/class";
+import Spinner from "./UI/Spinner";
+import Alert from "./UI/Alert";
 
 export default function CreateClassForm({
   showCreateClass,
@@ -72,6 +74,16 @@ export default function CreateClassForm({
               />
             </div>
           </form>
+          {success ? (
+            <Alert
+              color={"green"}
+              message="Class created, share the class code for students to join!"
+            />
+          ) : loading ? (
+            <Spinner text="Creating class" />
+          ) : error ? (
+            <Alert color={"red"} message={error} />
+          ) : null}
         </ModalBody>
         <ModalFooter>
           <Button
@@ -82,7 +94,6 @@ export default function CreateClassForm({
           >
             Cancel
           </Button>
-
           <Button
             color="green"
             onClick={onCreateHandler}

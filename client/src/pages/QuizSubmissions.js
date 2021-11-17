@@ -24,7 +24,7 @@ const QuizSubmissions = () => {
   const classId = location.pathname.split("/")[3];
   useEffect(() => {
     if (!isAuthenticated) {
-      return navigate("/login/teacher");
+      return navigate("/home");
     }
     if (createdBy && createdBy !== userInfo.id) {
       return navigate("/home");

@@ -8,15 +8,10 @@ import Pec from "../assets/images/pec.png";
 import Harvard from "../assets/images/harvard.png";
 import IITB from "../assets/images/iitb.png";
 import MIT from "../assets/images/mit.png";
-// import Teacher from "../assets/images/teacher.jpeg";
-// import Student from "../assets/images/student.jpeg";
-
-// import FeatureImage from "../../public/classroom_1.png";
 
 const Welcome = () => {
   return (
     <>
-      <Header />
       <section className={classes.OuterContainer}>
         <span>Seamlessly manage your classroom</span>
         <div className={classes.InnerContainer}>

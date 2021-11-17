@@ -7,6 +7,7 @@ const Class = require("../../../models/Class");
 const User = require("../../../models/User");
 const QuizSubmission = require("../../../models/QuizSubmission");
 const Assignment = require("../../../models/Assignment.js");
+const path = require("path");
 
 module.exports.createQuiz = async (req, res) => {
   try {
@@ -89,6 +90,47 @@ module.exports.fetchQuiz = async (req, res) => {
     });
   } catch (err) {
     res.status(400).send("We've encountered an error, please try again");
+  }
+};
+module.exports.fetchAssignment = async (req, res) => {
+  try {
+    const assignmentId = req.params.assignmentId;
+
+    // also check is quiz id is valid object id
+    const isValidAssignmentId = mongoose.Types.ObjectId.isValid(assignmentId);
+
+    if (!isValidAssignmentId) {
+      throw new Error("Oops, no such quiz found!");
+    }
+
+    const requestedAssignment = await Assignment.findById(assignmentId);
+    if (!requestedAssignment) {
+      throw new Error("Oops, no such quiz found!");
+    }
+
+    res.json({
+      data: {
+        assignment: requestedAssignment,
+        createdBy: assignment.createdBy,
+        //ccurrenlty hardcoding
+        hasSubmitted: false,
+      },
+    });
+    // const quizSubmissionOfUser = await QuizSubmission.findOne({
+    //   user: req.user._id,
+    //   quizId: quizId,
+    // });
+
+    // let hasSubmitted = false;
+    // if (quizSubmissionOfUser) {
+    //   hasSubmitted = true;
+    // }
+    // let totalQuizScore = 0;
+    // requestedQuiz.questions.forEach(
+    //   (ques) => (totalQuizScore = totalQuizScore + ques.correctMarks)
+    // );
+  } catch (err) {
+    res.status(500).send(err.message);
   }
 };
 
@@ -280,4 +322,17 @@ module.exports.createAssignment = async (req, res) => {
   } catch (error) {
     res.status(500).send(error.message);
   }
+};
+
+module.exports.downloadAssignment = async (req, res) => {
+  try {
+    const assignmentId = req.params.assignmentId;
+    const requestedAssignment = await Assignment.findById(assignmentId);
+
+    if (!requestedAssignment) {
+      throw new Error("No assignment found");
+    }
+    const filePath = path.join(__dirname, "../../..", requestedAssignment.file);
+    res.download(filePath);
+  } catch (err) {}
 };

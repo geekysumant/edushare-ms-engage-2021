@@ -21,7 +21,7 @@ const Home = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      return navigate("/login/teacher");
+      return navigate("/home");
     }
     dispatch(fetchClasses());
   }, []);
@@ -41,7 +41,7 @@ const Home = () => {
         ) : error ? (
           <Alert color="red" message={error} />
         ) : (
-          <div className="p-4 flex flex-row">
+          <div className="p-4 flex flex-row flex-wrap">
             {createdClasses &&
               createdClasses.map((element) => {
                 return (
