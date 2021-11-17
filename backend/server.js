@@ -17,8 +17,8 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.join(__dirname, "../client/build/index.html"));
   });
 }
-
-app.listen(8080, (err) => {
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, (err) => {
   if (err) console.log(err);
   console.log("Server up & running!");
   // console.log(require("dotenv").config());
