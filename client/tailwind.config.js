@@ -1,5 +1,26 @@
 module.exports = {
-  purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+  // purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+  purge: {
+    content: ["./src/**/*.html"],
+    safelist: [
+      "bg-blue-500",
+      "bg-green-100",
+      "bg-green-200",
+      "bg-green-300",
+      "bg-green-400",
+      "bg-green-500",
+      "bg-green-600",
+      "bg-red-100",
+      "bg-red-200",
+      "bg-red-300",
+      "bg-red-400",
+      "bg-red-500",
+      "bg-red-600",
+      "text-center",
+      "hover:opacity-100",
+      "lg:text-right",
+    ],
+  },
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
