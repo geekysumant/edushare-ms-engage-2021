@@ -11,7 +11,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userDetails = useSelector((state) => state.userDetails);
-  const { isAuthenticated, userInfo, loading, error } = userDetails;
+  const { isAuthenticated, userInfo } = userDetails;
 
   const createClassHandler = () => {
     console.log("creating class");
@@ -23,7 +23,7 @@ const Header = () => {
     if (isAuthenticated) {
       return navigate("/home");
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, navigate]);
   const onSuccessHandler = (res) => {
     dispatch(userLogin(res.tokenId));
   };

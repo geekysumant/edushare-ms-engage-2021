@@ -1,5 +1,3 @@
-import { ClassNames } from "@emotion/react";
-import classes from "./Input.module.css";
 import React from "react";
 
 const Input = ({ labelName, type, name }) => {

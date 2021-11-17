@@ -77,7 +77,7 @@ export const createQuiz = (classId, questions) => {
         },
       };
 
-      const { data } = await axios.post(
+      await axios.post(
         "/api/v1/quiz/create",
         {
           classId,
@@ -157,11 +157,7 @@ export const submitQuiz = (quizId, submission) => {
         quizId,
         submission,
       };
-      const { data } = await axios.post(
-        "/api/v1/quiz/submit",
-        postData,
-        config
-      );
+      await axios.post("/api/v1/quiz/submit", postData, config);
 
       dispatch({
         type: SUBMIT_QUIZ_SUCCESS,

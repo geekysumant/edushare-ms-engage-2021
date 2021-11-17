@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Alert from "./UI/Alert";
 
@@ -8,7 +8,7 @@ import ModalBody from "@material-tailwind/react/ModalBody";
 import ModalFooter from "@material-tailwind/react/ModalFooter";
 import Button from "@material-tailwind/react/Button";
 
-import { fetchClasses, joinClass } from "../actions/class";
+import { joinClass } from "../actions/class";
 import Spinner from "./UI/Spinner";
 
 export default function JoinClassForm({ showJoinClass, setShowJoinClass }) {

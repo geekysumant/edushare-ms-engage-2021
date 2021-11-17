@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Button from "@material-tailwind/react/Button";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router";

@@ -16,7 +16,7 @@ const Banner = ({
         <p className={textColor && `text-${textColor}-50`}>{customText}</p>
       </div>
       <div className="w-3/12">
-        <img src={SVGComponent} />
+        <img alt="" src={SVGComponent} />
       </div>
     </div>
   );

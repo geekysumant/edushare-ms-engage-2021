@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Banner from "../components/UI/Banner";
 import axios from "axios";
 import { useLocation } from "react-router";
@@ -24,7 +24,7 @@ const CreateAssignment = () => {
     formData.append("classId", classId);
     formData.append("marks", marks);
 
-    const { data } = await axios.post("/test", formData, {
+    await axios.post("/test", formData, {
       headers: {
         Authorization: `Bearer ${userInfo.token}`,
       },

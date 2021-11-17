@@ -3,7 +3,6 @@ import Dropdown from "../components/UI/Dropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAssignments } from "../actions/assignment";
 import { useLocation, useNavigate } from "react-router";
-import QuizBanner from "../components/UI/QuizBanner";
 import Spinner from "../components/UI/Spinner";
 import Alert from "../components/UI/Alert";
 import Banner from "../components/UI/Banner";
@@ -30,8 +29,7 @@ const Classwork = () => {
       return navigate("/home");
     }
     dispatch(fetchAssignments(classId));
-    console.log(quizzes);
-  }, []);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     console.log(quizzes);

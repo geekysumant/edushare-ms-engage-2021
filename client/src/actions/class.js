@@ -66,10 +66,6 @@ export const fetchClasses = () => {
       const { data } = await axios.get("/api/v1/class/fetch", config);
       const { joinedClasses, createdClasses } = data.classes;
 
-      const payload = {
-        joinedClasses: joinedClasses,
-        createdClasses: createdClasses,
-      };
       dispatch({
         type: FETCH_CLASS_SUCCESS,
         payload: {
@@ -101,7 +97,7 @@ export const joinClass = (classId) => {
         },
       };
 
-      const { data } = await axios.post(
+      await axios.post(
         "/api/v1/class/join",
         {
           classId,

@@ -1,9 +1,8 @@
 import React from "react";
-import { Link, NavLink, useLocation, useParams } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 const HeaderClass = () => {
   const location = useLocation();
-  const urlParams = useParams();
   const urlPath = location.pathname;
 
   const classId = urlPath.split("/")[3];

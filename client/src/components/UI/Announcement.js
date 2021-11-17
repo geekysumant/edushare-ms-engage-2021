@@ -8,7 +8,11 @@ const Announcement = () => {
     <div className="flex flex-row justify-between p-6 w-2/4 mx-auto items-center">
       <div className="mx-2">
         <div className="w-12 h-12">
-          <img className="rounded-full" src={userInfo.picture} />
+          <img
+            alt="user-profile-img"
+            className="rounded-full"
+            src={userInfo.picture}
+          />
         </div>
       </div>
       <div className="w-full mx-2">

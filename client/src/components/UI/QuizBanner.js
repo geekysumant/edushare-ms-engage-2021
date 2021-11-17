@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Button from "@material-tailwind/react/Button";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router";
@@ -29,7 +29,7 @@ const QuizBanner = ({ questions, quizId, userInfo, createdBy }) => {
             </p>
             <Link to={`/enter/class/${classId}/classwork/quiz/${quizId}`}>
               <Button color="indigo" ripple="light">
-                {userInfo.id == createdBy ? "View quiz" : "Take quiz"}
+                {userInfo.id === createdBy ? "View quiz" : "Take quiz"}
               </Button>
             </Link>
             <Link

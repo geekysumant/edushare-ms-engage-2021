@@ -1,14 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Card from "@material-tailwind/react/Card";
 import CardImage from "@material-tailwind/react/CardImage";
 import CardBody from "@material-tailwind/react/CardBody";
-import CardFooter from "@material-tailwind/react/CardFooter";
-import H6 from "@material-tailwind/react/Heading6";
-import Paragraph from "@material-tailwind/react/Paragraph";
 import Button from "@material-tailwind/react/Button";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchClasses } from "../actions/class";
-import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 
 export default function ClassCard({

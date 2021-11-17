@@ -36,10 +36,10 @@ const QuizResultDisplay = ({
                     question.options.map((option, ind) => (
                       <div
                         className={`flex flex-row my-2 ${
-                          option.optionNumber == question.correctOption ||
+                          option.optionNumber === question.correctOption ||
                           (question.correctOption ===
                             submission[quesIndex].option &&
-                            option.optionNumber == question.correctOption)
+                            option.optionNumber === question.correctOption)
                             ? "border-green-600 border rounded bg-green-100"
                             : option.optionNumber ===
                                 submission[quesIndex].option &&

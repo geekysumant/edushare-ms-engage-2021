@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useRef, useState } from "react";
 import Alert from "./UI/Alert";
 
 import Modal from "@material-tailwind/react/Modal";
@@ -7,9 +6,6 @@ import ModalHeader from "@material-tailwind/react/ModalHeader";
 import ModalBody from "@material-tailwind/react/ModalBody";
 import ModalFooter from "@material-tailwind/react/ModalFooter";
 import Button from "@material-tailwind/react/Button";
-import { useLocation } from "react-router-dom";
-
-import Spinner from "./UI/Spinner";
 import Option from "./UI/Option";
 
 export default function AddQuestionForm({
@@ -26,12 +22,7 @@ export default function AddQuestionForm({
   const [correctMarks, setCorrectMarks] = useState(1);
   const [incorrectMarks, setIncorrectMarks] = useState(0);
 
-  const location = useLocation();
   const currentOptionRef = useRef();
-  const dispatch = useDispatch();
-
-  const urlPath = location.pathname;
-  const classId = urlPath.split("/")[3];
 
   const resetFields = () => {
     setQuestion("");
@@ -46,7 +37,7 @@ export default function AddQuestionForm({
   };
 
   const createQuestionHandler = () => {
-    if (!question || options.length == 0 || correctOption == -1) {
+    if (!question || options.length === 0 || correctOption === -1) {
       setError("One or more fields are invalid.");
       return;
     }
