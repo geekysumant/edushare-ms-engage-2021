@@ -67,7 +67,7 @@
   border-radius: 50%;
   width: 6px;
   height: 6px;
-  bottom: calc(100% - 14 px);
+  bottom: calc(100% - 14px);
   top: 10px;
   left: -20px;
 }
