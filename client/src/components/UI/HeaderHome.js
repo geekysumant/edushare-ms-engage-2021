@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import CreateClassForm from "../CreateClassForm";
 import JoinClassForm from "../JoinClassForm";
+import Modal from "../Modal";
 
 const HeaderHome = () => {
   const [showCreateClass, setShowCreateClass] = useState(false);
@@ -33,6 +34,10 @@ const HeaderHome = () => {
         showJoinClass={showJoinClass}
         setShowJoinClass={setShowJoinClass}
       />
+      {/* <Modal
+        showCreateClass={showCreateClass}
+        setShowCreateClass={setShowCreateClass}
+      /> */}
     </>
   );
 };
