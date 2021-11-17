@@ -1,7 +1,7 @@
 module.exports = {
-  // purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+  // purge:
   purge: {
-    content: ["./src/**/*.html"],
+    content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
     safelist: [
       "bg-blue-500",
       "bg-green-100",

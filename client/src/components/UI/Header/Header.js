@@ -25,6 +25,7 @@ const Header = () => {
     }
   }, [isAuthenticated, navigate]);
   const onSuccessHandler = (res) => {
+    console.log(res);
     dispatch(userLogin(res.tokenId));
   };
   const userNotLoggedInBtns = (
