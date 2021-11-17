@@ -40,15 +40,16 @@ export const fetchAssignments = (classId) => {
       //dummy : now only just fetching quizzes
       const { data } = await axios.get(`/api/v1/quiz/fetch/${classId}`, config);
 
-      console.log(data);
-
       dispatch({
         type: FETCH_ASSIGNMENTS_SUCCESS,
-        payload: data.quizzes,
+        payload: {
+          quizzes: data.data.quizzes,
+          assignments: data.data.assignments,
+        },
       });
       dispatch({
         type: FETCH_CLASS_DETAILS_SUCCESS,
-        payload: data,
+        payload: data.data,
       });
     } catch (err) {
       dispatch({

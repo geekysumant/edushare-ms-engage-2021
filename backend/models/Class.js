@@ -30,6 +30,12 @@ const classSchema = mongoose.Schema(
         ref: "Quiz",
       },
     ],
+    assignments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Assignment",
+      },
+    ],
   },
   { timestamps: true }
 );

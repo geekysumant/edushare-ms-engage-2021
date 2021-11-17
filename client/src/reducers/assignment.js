@@ -37,6 +37,7 @@ export const fetchAssignmentsReducer = (
       return {
         loading: false,
         quizzes: [...action.payload.quizzes],
+        assignments: [...action.payload.assignments],
       };
     case FETCH_ASSIGNMENTS_FAIL:
       return {

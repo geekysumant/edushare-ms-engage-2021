@@ -8,9 +8,10 @@ import Spinner from "../components/UI/Spinner";
 import Alert from "../components/UI/Alert";
 import Banner from "../components/UI/Banner";
 import TaskSVG from "../assets/svg/tasks.svg";
+import TabComponent from "../components/TabComponent";
 
 const Classwork = () => {
-  const { quizzes, loading, error } = useSelector(
+  const { quizzes, loading, error, assignments } = useSelector(
     (state) => state.assignmentDetails
   );
   const { createdBy } = useSelector((state) => state.enterClassDetails);
@@ -45,6 +46,9 @@ const Classwork = () => {
         customText="All your assignments and quizzes in one place"
         textColor="gray"
       />
+      {/* {quizzes && (
+       
+      )} */}
       <div className="mx-36 my-8">
         <div className="my-4 mx-auto">
           {userInfo && userInfo.id === createdBy && <Dropdown />}
@@ -54,10 +58,19 @@ const Classwork = () => {
         ) : error ? (
           <Alert message={error} color="red" />
         ) : (
-          quizzes &&
-          quizzes.map((quiz) => (
-            <QuizBanner questions={quiz.questions} quizId={quiz._id} />
-          ))
+          quizzes && (
+            <TabComponent
+              categories={{
+                Quizzes: quizzes,
+                Assignments: assignments,
+              }}
+              createdBy={createdBy}
+              userInfo={userInfo}
+            />
+          )
+          // quizzes.map((quiz) => (
+          //   <QuizBanner questions={quiz.questions} quizId={quiz._id} />
+          // ))
         )}
       </div>
     </>

@@ -3,7 +3,13 @@ import Button from "@material-tailwind/react/Button";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router";
 
-const QuizBanner = ({ questions, quizId, userInfo, createdBy }) => {
+const AssignmentBanner = ({
+  title,
+  marks,
+  assignmentId,
+  userInfo,
+  createdBy,
+}) => {
   const location = useLocation();
   const urlPath = location.pathname;
   const classId = urlPath.split("/")[3];
@@ -17,29 +23,28 @@ const QuizBanner = ({ questions, quizId, userInfo, createdBy }) => {
         />
         <div class="flex flex-col w-full">
           <div class="flex items-center justify-between">
-            <h2 class="text-lg font-semibold text-gray-900 -mt-1">
-              Quiz Name{" "}
-            </h2>
+            <h2 class="text-lg font-semibold text-gray-900 -mt-1">{title} </h2>
             <small class="text-sm text-gray-700">22h ago</small>
           </div>
 
           <div className="flex flex-row w-full justify-between mt-4">
-            <p class="mt-3 text-gray-700 text-sm">
-              Total question : {questions.length}
-            </p>
-            <Link to={`/enter/class/${classId}/classwork/quiz/${quizId}`}>
+            <p class="mt-3 text-gray-700 text-sm">Total marks : {marks}</p>
+            <Link
+              to={`/enter/class/${classId}/classwork/assignment/${assignmentId}`}
+            >
               <Button color="indigo" ripple="light">
-                {userInfo.id == createdBy ? "View quiz" : "Take quiz"}
+                {/* {userInfo.id == createdBy ? "View assignment" : "Take quiz"} */}
+                View assignment
               </Button>
             </Link>
             <Link
-              to={`/enter/class/${classId}/classwork/quiz/${quizId}/submissions`}
+              to={`/enter/class/${classId}/classwork/assignment/${assignmentId}/submissions`}
             >
-              {createdBy === userInfo.id && (
+              {/* {createdBy === userInfo.id && (
                 <Button color="indigo" ripple="light">
-                  View Submissions
+                  View Submission
                 </Button>
-              )}
+              )} */}
             </Link>
           </div>
         </div>
@@ -48,4 +53,4 @@ const QuizBanner = ({ questions, quizId, userInfo, createdBy }) => {
   );
 };
 
-export default QuizBanner;
+export default AssignmentBanner;

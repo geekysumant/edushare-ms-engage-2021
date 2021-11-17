@@ -38,11 +38,16 @@ module.exports.createQuiz = async (req, res) => {
 module.exports.fetchAssignments = async (req, res) => {
   try {
     const classId = req.params.classId;
-    const quizzes = await Class.findById(classId).populate("quizzes");
+    const allAssignments = await Class.findById(classId).populate(
+      "quizzes assignments"
+    );
 
     res.json({
-      createdBy: quizzes.createdBy,
-      quizzes: quizzes,
+      data: {
+        createdBy: allAssignments.createdBy,
+        quizzes: allAssignments.quizzes,
+        assignments: allAssignments.assignments,
+      },
     });
   } catch (err) {
     res.status(400).send("Error!");
@@ -239,12 +244,14 @@ module.exports.createAssignment = async (req, res) => {
       }
       // console.log(req.file);
       const classId = req.body.classId;
-      const { title, instructions } = req.body;
-      console.log(title);
-      const requestedClass = await Class.findById(classId);
+      const { title, instructions, marks } = req.body;
 
-      console.log(req.user._id);
-      console.log(requestedClass.createdBy);
+      console.log(instructions);
+      const requestedClass = await Class.findById(classId);
+      if (!requestedClass) {
+        throw new Error("No class found");
+      }
+
       if (!requestedClass.createdBy.equals(req.user._id)) {
         throw new Error("Not authorised!");
       }
@@ -254,12 +261,16 @@ module.exports.createAssignment = async (req, res) => {
         classId,
         title,
         instructions,
+        marks,
       });
 
       if (req.file) {
         newAssignment.file = Assignment.filePath + "/" + req.file.filename;
         await newAssignment.save();
       }
+      requestedClass.assignments.push(newAssignment);
+      await requestedClass.save();
+
       res.json({
         data: {
           createdAssignment: newAssignment,

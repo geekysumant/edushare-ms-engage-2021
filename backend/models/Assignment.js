@@ -17,8 +17,12 @@ const assignmentSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    content: {
+    instructions: {
       type: String,
+    },
+    marks: {
+      type: Number,
+      required: true,
     },
     file: {
       type: String,
