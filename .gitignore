@@ -3,6 +3,6 @@ node_modules/
 
 uploads/
 
-
+client/build/
 .DS_Store
 .env

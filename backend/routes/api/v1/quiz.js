@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const protect = require("../../../middleware/authMiddleware").protect;
 
 //import controllers
-const quizController = require("../../../controllers/api/v1/quiz_api");
+const quizController = require("../../../controllers/api/v1/quizApi");
 
 //initialise express router
 const router = express.Router();

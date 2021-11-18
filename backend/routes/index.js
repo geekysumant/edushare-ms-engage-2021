@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const test = require("../controllers/api/v1/quiz_api").createAssignment;
+const test = require("../controllers/api/v1/quizApi").createAssignment;
 const protect = require("../middleware/authMiddleware").protect;
 
 // for any further routes, access from here
