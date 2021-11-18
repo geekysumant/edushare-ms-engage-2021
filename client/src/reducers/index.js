@@ -8,6 +8,7 @@ import {
 import { combineReducers } from "redux";
 import { addQuestion, addQuestionReducer } from "./question";
 import {
+  createAssignmentReducer,
   createQuizReducer,
   fetchAssignmentReducer,
   fetchAssignmentsReducer,
@@ -27,6 +28,7 @@ export default combineReducers({
   assignmentDetails: fetchAssignmentsReducer,
   enterClassDetails: fetchEnterClassDetailsReducer,
   createQuiz: createQuizReducer,
+  createAssignment: createAssignmentReducer,
   fetchQuiz: fetchQuizReducer,
   fetchAssignment: fetchAssignmentReducer,
   submitQuiz: submitQuizReducer,

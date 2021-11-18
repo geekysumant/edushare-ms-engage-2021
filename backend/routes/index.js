@@ -7,6 +7,4 @@ const protect = require("../middleware/authMiddleware").protect;
 // router.use('/routerName', require('./routerfile));
 router.use("/api", require("./api"));
 
-router.post("/test", protect, test);
-
 module.exports = router;

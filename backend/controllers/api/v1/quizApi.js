@@ -92,11 +92,15 @@ module.exports.fetchQuiz = async (req, res) => {
     res.status(400).send("We've encountered an error, please try again");
   }
 };
+
 module.exports.fetchAssignment = async (req, res) => {
   try {
     const assignmentId = req.params.assignmentId;
 
     // also check is quiz id is valid object id
+    if (!assignmentId) {
+      throw new Error("Invalid assignment");
+    }
     const isValidAssignmentId = mongoose.Types.ObjectId.isValid(assignmentId);
 
     if (!isValidAssignmentId) {
@@ -111,7 +115,7 @@ module.exports.fetchAssignment = async (req, res) => {
     res.json({
       data: {
         assignment: requestedAssignment,
-        createdBy: assignment.createdBy,
+        createdBy: requestedAssignment.createdBy,
         //ccurrenlty hardcoding
         hasSubmitted: false,
       },

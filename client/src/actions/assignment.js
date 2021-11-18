@@ -1,4 +1,7 @@
 import {
+  CREATE_ASSIGNMENT_FAIL,
+  CREATE_ASSIGNMENT_REQUEST,
+  CREATE_ASSIGNMENT_SUCCESS,
   CREATE_QUIZ_FAIL,
   CREATE_QUIZ_REQUEST,
   CREATE_QUIZ_SUCCESS,
@@ -254,7 +257,7 @@ export const fetchAssignment = (assignmentId) => {
       };
 
       const { data } = await axios.get(
-        `/api/v1/quiz/fetch/assignment/${assignmentId}`,
+        `/api/v1/assignment/fetch/${assignmentId}`,
         config
       );
 
@@ -269,6 +272,34 @@ export const fetchAssignment = (assignmentId) => {
     } catch (err) {
       dispatch({
         type: FETCH_ASSIGNMENT_FAIL,
+        payload: err.response.data,
+      });
+    }
+  };
+};
+
+export const createAssignment = (formData) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: CREATE_ASSIGNMENT_REQUEST,
+      });
+
+      const { userInfo } = getState().userDetails;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      await axios.post("/api/v1/assignment/create", formData, config);
+
+      dispatch({
+        type: CREATE_ASSIGNMENT_SUCCESS,
+      });
+    } catch (err) {
+      dispatch({
+        type: CREATE_ASSIGNMENT_FAIL,
         payload: err.response.data,
       });
     }

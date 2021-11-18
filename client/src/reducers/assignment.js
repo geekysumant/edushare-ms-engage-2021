@@ -1,4 +1,7 @@
 import {
+  CREATE_ASSIGNMENT_FAIL,
+  CREATE_ASSIGNMENT_REQUEST,
+  CREATE_ASSIGNMENT_SUCCESS,
   CREATE_QUIZ_FAIL,
   CREATE_QUIZ_REQUEST,
   CREATE_QUIZ_SUCCESS,
@@ -193,11 +196,39 @@ export const fetchUsersQuizSubmissionReducer = (
   }
 };
 
+const initialCreateAssignmentState = {
+  loading: false,
+  success: false,
+};
+export const createAssignmentReducer = (
+  state = initialCreateAssignmentState,
+  action
+) => {
+  switch (action.type) {
+    case CREATE_ASSIGNMENT_REQUEST:
+      return {
+        loading: true,
+      };
+    case CREATE_ASSIGNMENT_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case CREATE_ASSIGNMENT_FAIL:
+      return {
+        loading: false,
+        success: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
 const initialFetchAssignmentState = {
   assignment: [],
   createdBy: "",
 };
-
 export const fetchAssignmentReducer = (
   state = initialFetchAssignmentState,
   action
@@ -211,6 +242,7 @@ export const fetchAssignmentReducer = (
     case FETCH_ASSIGNMENT_SUCCESS:
       return {
         loading: false,
+        success: true,
         assignment: action.payload.assignment,
         createdBy: action.payload.createdBy,
         hasSubmitted: action.payload.hasSubmitted,
@@ -218,6 +250,7 @@ export const fetchAssignmentReducer = (
     case FETCH_ASSIGNMENT_FAIL:
       return {
         loading: false,
+        success: false,
         error: action.payload,
       };
 

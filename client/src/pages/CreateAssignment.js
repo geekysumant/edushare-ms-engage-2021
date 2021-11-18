@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import Banner from "../components/UI/Banner";
 import axios from "axios";
 import { useLocation } from "react-router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { createAssignment } from "../actions/assignment";
+import Spinner from "../components/UI/Spinner";
+import Alert from "../components/UI/Alert";
 
 const CreateAssignment = () => {
   const [file, setFile] = useState(null);
@@ -11,8 +14,13 @@ const CreateAssignment = () => {
   const [marks, setMarks] = useState(0);
   const location = useLocation();
 
+  const dispatch = useDispatch();
+
   const classId = location.pathname.split("/")[3];
   const { userInfo } = useSelector((state) => state.userDetails);
+  const { loading, success, error } = useSelector(
+    (state) => state.createAssignment
+  );
 
   const createAssignmentHandler = async (event) => {
     event.preventDefault();
@@ -24,11 +32,8 @@ const CreateAssignment = () => {
     formData.append("classId", classId);
     formData.append("marks", marks);
 
-    await axios.post("/test", formData, {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    });
+    console.log(file);
+    dispatch(createAssignment(formData));
   };
   return (
     <>
@@ -114,12 +119,20 @@ const CreateAssignment = () => {
                 </label>
               </div>
             </label>
-            <div className="mt-8">
-              <input
-                className="bg-green-400 p-2 rounded"
-                type="submit"
-                value="Create assignment"
-              />
+            <div className="mt-8 max-w-md">
+              {loading ? (
+                <Spinner />
+              ) : error ? (
+                <Alert color="red" message={error} />
+              ) : success ? (
+                <Alert color="green" message="Assignment created!" />
+              ) : (
+                <input
+                  className="bg-green-400 p-2 rounded"
+                  type="submit"
+                  value="Create assignment"
+                />
+              )}
             </div>
           </div>
         </form>
