@@ -19,7 +19,6 @@ const TeacherLogin = (props) => {
     if (userInfo) {
       return navigate("/welcome");
     }
-    console.log(userDetails);
   }, [userDetails]);
 
   const submitFormHandler = (e) => {

@@ -1,9 +1,19 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import download from "downloadjs";
 
 const AssignmentScreen = () => {
   const [file, setFile] = useState(null);
+  const dispatch = useDispatch();
+
+  const { assignments, loading, error } = useSelector(
+    (state) => state.assignmentDetails
+  );
+  useEffect(() => {
+    console.log(assignments);
+  }, [loading]);
+
   const downloadFileHandler = async () => {
     const res = await axios.get(
       "/api/v1/quiz/download/6194c991e36a4eeee79bc51c",
