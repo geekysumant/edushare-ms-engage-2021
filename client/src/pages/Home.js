@@ -21,7 +21,7 @@ const Home = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      return navigate("/home");
+      return navigate("/welcome");
     }
     dispatch(fetchClasses());
   }, []);

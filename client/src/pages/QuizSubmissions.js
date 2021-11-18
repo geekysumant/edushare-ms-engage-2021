@@ -24,10 +24,10 @@ const QuizSubmissions = () => {
   const classId = location.pathname.split("/")[3];
   useEffect(() => {
     if (!isAuthenticated) {
-      return navigate("/home");
+      return navigate("/welcome");
     }
     if (createdBy && createdBy !== userInfo.id) {
-      return navigate("/home");
+      return navigate("/welcome");
     }
     dispatch(fetchSubmissions(quizId));
     dispatch(fetchEnterClassDetails(classId));

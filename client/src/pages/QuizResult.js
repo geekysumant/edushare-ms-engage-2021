@@ -29,7 +29,7 @@ const QuizResult = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      return navigate("/home");
+      return navigate("/welcome");
     }
     dispatch(fetchQuiz(quizId));
   }, []);

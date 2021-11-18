@@ -21,7 +21,7 @@ const Header = () => {
   };
   useEffect(() => {
     if (isAuthenticated) {
-      return navigate("/home");
+      return navigate("/welcome");
     }
   }, [isAuthenticated, navigate]);
   const onSuccessHandler = (res) => {

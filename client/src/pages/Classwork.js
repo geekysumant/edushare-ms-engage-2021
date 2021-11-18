@@ -26,7 +26,7 @@ const Classwork = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      return navigate("/home");
+      return navigate("/welcome");
     }
     dispatch(fetchAssignments(classId));
   }, [isAuthenticated]);

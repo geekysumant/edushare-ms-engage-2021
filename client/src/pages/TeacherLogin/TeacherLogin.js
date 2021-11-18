@@ -17,7 +17,7 @@ const TeacherLogin = (props) => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/home");
+      return navigate("/welcome");
     }
     console.log(userDetails);
   }, [userDetails]);
