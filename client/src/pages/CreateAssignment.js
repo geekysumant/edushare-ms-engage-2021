@@ -32,7 +32,6 @@ const CreateAssignment = () => {
     formData.append("classId", classId);
     formData.append("marks", marks);
 
-    console.log(file);
     dispatch(createAssignment(formData));
   };
   return (

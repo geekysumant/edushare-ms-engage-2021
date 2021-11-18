@@ -8,6 +8,7 @@ const User = require("../../../models/User");
 const QuizSubmission = require("../../../models/QuizSubmission");
 const Assignment = require("../../../models/Assignment.js");
 const path = require("path");
+const AssignmentSubmission = require("../../../models/AssignmentSubmission");
 
 module.exports.createQuiz = async (req, res) => {
   try {
@@ -340,4 +341,55 @@ module.exports.downloadAssignment = async (req, res) => {
     const filePath = path.join(__dirname, "../../..", requestedAssignment.file);
     res.download(filePath);
   } catch (err) {}
+};
+
+module.exports.uploadAssignment = async (req, res) => {
+  try {
+    AssignmentSubmission.uploadedFile(req, res, async (err) => {
+      if (err) {
+        throw new Error("Some error occurred");
+      }
+
+      const { classId, assignmentId } = req.body;
+      if (!classId) {
+        throw new Error("No class found!");
+      }
+      const isValidClassId = mongoose.Types.ObjectId.isValid(classId);
+      if (!isValidClassId) {
+        throw new Error("No class found!");
+      }
+
+      const requestedClass = await Class.findById(classId);
+      if (!requestedClass) {
+        throw new Error("No class found");
+      }
+
+      const requestedAssignment = await Assignment.findById(assignmentId);
+      if (!requestedAssignment) {
+        throw new Error("No assignment found");
+      }
+
+      if (!req.file) {
+        throw new Error("No submission attached!");
+      }
+
+      const filePath = AssignmentSubmission.filePath + "/" + req.file.filename;
+
+      const newUserSubmission = await AssignmentSubmission.create({
+        user: req.user._id,
+        createdBy: requestedClass.createdBy,
+        classId: classId,
+        assignmentId,
+        submission: filePath,
+      });
+
+      requestedAssignment.push(newUserSubmission);
+      await requestedAssignment.save();
+
+      res.send(200);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error.message);
+  }
 };

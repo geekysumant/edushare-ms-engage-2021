@@ -27,12 +27,12 @@ const assignmentSchema = mongoose.Schema(
     file: {
       type: String,
     },
-    // submissions: [
-    //   {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "QuizSubmission",
-    //   },
-    // ],
+    submissions: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "AssignmentSubmission",
+      },
+    ],
   },
   { timestamps: true }
 );

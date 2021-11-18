@@ -12,18 +12,22 @@ const AssignmentScreen = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const assignmentId = location.pathname.split("/")[6];
-
-  // const { assignments, loading, error } = useSelector(
-  //   (state) => state.assignmentDetails
-  // );
   const { userInfo } = useSelector((state) => state.userDetails);
   const { assignment, hasSubmitted, createdBy, loading, success, error } =
     useSelector((state) => state.fetchAssignment);
 
+  const assignmentId = location.pathname.split("/")[6];
+
   useEffect(() => {
     dispatch(fetchAssignment(assignmentId));
   }, []);
+
+  const uploadAssignmentHandler = () => {
+    let formData = new FormData();
+    formData.append("file", file);
+    formData.append("classId", classId);
+    formData.append("assignmentId", assignmentId);
+  };
 
   const downloadFileHandler = async () => {
     const res = await axios.get(
@@ -75,7 +79,7 @@ const AssignmentScreen = () => {
               <div className="flex flex-col w-1/3 items-center justify-center border border-black shadow-lg rounded-lg mx-4 my-4">
                 <h1 className="mb-4 text-xl">Your work</h1>
                 <form
-                  //   onSubmit={createAssignmentHandler}
+                  onSubmit={uploadAssignmentHandler}
                   id="myform"
                   encType="multipart/form-data"
                 >
