@@ -295,6 +295,7 @@ module.exports.createAssignment = async (req, res) => {
   try {
     Assignment.uploadedFile(req, res, async (err) => {
       if (err) {
+        console.log(err);
         throw new Error("Some error occurred");
       }
       // console.log(req.file);
