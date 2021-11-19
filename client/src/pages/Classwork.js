@@ -47,7 +47,7 @@ const Classwork = () => {
       {/* {quizzes && (
        
       )} */}
-      <div className="mx-36 my-8">
+      <div className="mx-36 my-8 sm:mx-auto">
         <div className="my-4 mx-auto">
           {userInfo && userInfo.id === createdBy && <Dropdown />}
         </div>

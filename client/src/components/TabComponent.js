@@ -38,8 +38,9 @@ const TabComponent = ({ categories, userInfo, createdBy }) => {
                 "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60"
               )}
             >
+              {quizzes.length === 0 && <p>Oops no quiz found</p>}
               {quizzes.map((quiz) => (
-                <>
+                <div className="flex flex-col items-center ">
                   {idx === 0 ? (
                     <QuizBanner
                       questions={quiz.questions}
@@ -54,7 +55,7 @@ const TabComponent = ({ categories, userInfo, createdBy }) => {
                       assignmentId={quiz._id}
                     />
                   )}
-                </>
+                </div>
               ))}
             </Tab.Panel>
           ))}
