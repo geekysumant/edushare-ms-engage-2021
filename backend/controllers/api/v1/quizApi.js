@@ -112,13 +112,21 @@ module.exports.fetchAssignment = async (req, res) => {
     if (!requestedAssignment) {
       throw new Error("Oops, no such quiz found!");
     }
+    const usersAssignmentSubmission = await AssignmentSubmission.findOne({
+      assignmentId,
+      userId: req.user._id,
+    });
+
+    let hasSubmitted = false;
+    if (usersAssignmentSubmission) {
+      hasSubmitted = true;
+    }
 
     res.json({
       data: {
         assignment: requestedAssignment,
         createdBy: requestedAssignment.createdBy,
-        //ccurrenlty hardcoding
-        hasSubmitted: false,
+        hasSubmitted,
       },
     });
     // const quizSubmissionOfUser = await QuizSubmission.findOne({
@@ -330,9 +338,59 @@ module.exports.createAssignment = async (req, res) => {
   }
 };
 
+module.exports.getFileExtensionAssignment = async (req, res) => {
+  const assignmentId = req.params.assignmentId;
+  const isValidAssignmentId = mongoose.Types.ObjectId.isValid(assignmentId);
+
+  if (!isValidAssignmentId) {
+    throw new Error("No assignment found");
+  }
+  const requestedAssignment = await Assignment.findById(assignmentId);
+
+  if (!requestedAssignment) {
+    throw new Error("No assignment found");
+  }
+  const fileExtension = path.extname(requestedAssignment.file);
+
+  res.json({
+    data: {
+      fileExtension,
+    },
+  });
+};
+
+module.exports.getFileExtensionAssignmentSubmission = async (req, res) => {
+  const assignmentId = req.params.assignmentId;
+  const isValidAssignmentId = mongoose.Types.ObjectId.isValid(assignmentId);
+
+  if (!isValidAssignmentId) {
+    throw new Error("No assignment found");
+  }
+  const usersAssignmentSubmission = await AssignmentSubmission.findOne({
+    assignmentId,
+    user: req.user._id,
+  });
+
+  if (!usersAssignmentSubmission) {
+    throw new Error("No assignment found");
+  }
+  const fileExtension = path.extname(usersAssignmentSubmission.submission);
+
+  res.json({
+    data: {
+      fileExtension,
+    },
+  });
+};
+
 module.exports.downloadAssignment = async (req, res) => {
   try {
     const assignmentId = req.params.assignmentId;
+    const isValidAssignmentId = mongoose.Types.ObjectId.isValid(assignmentId);
+
+    if (!isValidAssignmentId) {
+      throw new Error("No assignment found");
+    }
     const requestedAssignment = await Assignment.findById(assignmentId);
 
     if (!requestedAssignment) {
@@ -340,10 +398,39 @@ module.exports.downloadAssignment = async (req, res) => {
     }
     const filePath = path.join(__dirname, "../../..", requestedAssignment.file);
     res.download(filePath);
-  } catch (err) {}
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
+module.exports.downloadAssignmentSubmission = async (req, res) => {
+  try {
+    const assignmentId = req.params.assignmentId;
+    const isValidAssignmentId = mongoose.Types.ObjectId.isValid(assignmentId);
+
+    if (!isValidAssignmentId) {
+      throw new Error("No assignment found");
+    }
+    const requestedAssignment = await Assignment.findById(assignmentId);
+
+    if (!requestedAssignment) {
+      throw new Error("No assignment found");
+    }
+    const usersAssignmentSubmission = await AssignmentSubmission.findOne({
+      assignmentId,
+      user: req.user._id,
+    });
+    const filePath = path.join(
+      __dirname,
+      "../../..",
+      usersAssignmentSubmission.submission
+    );
+    res.download(filePath);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 };
 
-module.exports.uploadAssignment = async (req, res) => {
+module.exports.uploadAssignmentSubmission = async (req, res) => {
   try {
     AssignmentSubmission.uploadedFile(req, res, async (err) => {
       if (err) {
@@ -364,6 +451,10 @@ module.exports.uploadAssignment = async (req, res) => {
         throw new Error("No class found");
       }
 
+      if (requestedClass.createdBy.equals(req.user._id)) {
+        throw new Error("Error, you created the assignment.");
+      }
+
       const requestedAssignment = await Assignment.findById(assignmentId);
       if (!requestedAssignment) {
         throw new Error("No assignment found");
@@ -372,7 +463,15 @@ module.exports.uploadAssignment = async (req, res) => {
       if (!req.file) {
         throw new Error("No submission attached!");
       }
+      console.log("AssignmentId:", assignmentId);
+      const hasSubmitted = await AssignmentSubmission.findOne({
+        user: req.user._id,
+        assignmentId,
+      });
 
+      if (hasSubmitted) {
+        throw new Error("You have already submitted the assignment!");
+      }
       const filePath = AssignmentSubmission.filePath + "/" + req.file.filename;
 
       const newUserSubmission = await AssignmentSubmission.create({
@@ -383,10 +482,12 @@ module.exports.uploadAssignment = async (req, res) => {
         submission: filePath,
       });
 
-      requestedAssignment.push(newUserSubmission);
+      requestedAssignment.submissions.push(newUserSubmission);
       await requestedAssignment.save();
 
-      res.send(200);
+      res.json({
+        message: "Submission successful",
+      });
     });
   } catch (error) {
     console.log(error);

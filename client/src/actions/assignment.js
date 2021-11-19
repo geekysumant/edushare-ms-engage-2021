@@ -1,6 +1,9 @@
 import {
   CREATE_ASSIGNMENT_FAIL,
   CREATE_ASSIGNMENT_REQUEST,
+  CREATE_ASSIGNMENT_SUBMISSION_FAIL,
+  CREATE_ASSIGNMENT_SUBMISSION_REQUEST,
+  CREATE_ASSIGNMENT_SUBMISSION_SUCCESS,
   CREATE_ASSIGNMENT_SUCCESS,
   CREATE_QUIZ_FAIL,
   CREATE_QUIZ_REQUEST,
@@ -300,6 +303,33 @@ export const createAssignment = (formData) => {
     } catch (err) {
       dispatch({
         type: CREATE_ASSIGNMENT_FAIL,
+        payload: err.response.data,
+      });
+    }
+  };
+};
+export const uploadAssignmentSubmission = (formData) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: CREATE_ASSIGNMENT_SUBMISSION_REQUEST,
+      });
+
+      const { userInfo } = getState().userDetails;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      await axios.post("/api/v1/assignment/submit", formData, config);
+
+      dispatch({
+        type: CREATE_ASSIGNMENT_SUBMISSION_SUCCESS,
+      });
+    } catch (err) {
+      dispatch({
+        type: CREATE_ASSIGNMENT_SUBMISSION_FAIL,
         payload: err.response.data,
       });
     }

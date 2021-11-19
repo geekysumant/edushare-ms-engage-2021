@@ -3,9 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import download from "downloadjs";
-import { fetchAssignment } from "../actions/assignment";
+import {
+  fetchAssignment,
+  uploadAssignmentSubmission,
+} from "../actions/assignment";
 import Spinner from "../components/UI/Spinner";
-import Alert from "../components/UI/Spinner";
+import Alert from "../components/UI/Alert";
+import UserAssignmentSubmissionCard from "../components/UserAssignmentSubmissionCard";
 
 const AssignmentScreen = () => {
   const [file, setFile] = useState(null);
@@ -16,109 +20,134 @@ const AssignmentScreen = () => {
   const { assignment, hasSubmitted, createdBy, loading, success, error } =
     useSelector((state) => state.fetchAssignment);
 
+  const uploadedSubmission = useSelector(
+    (state) => state.uploadAssignmentSubmission
+  );
+  const uploadSubmissionLoading = uploadedSubmission.loading;
+  const uploadSubmissionSuccess = uploadedSubmission.success;
+  const uploadSubmissionError = uploadedSubmission.error;
+
   const assignmentId = location.pathname.split("/")[6];
+  const classId = location.pathname.split("/")[3];
 
   useEffect(() => {
     dispatch(fetchAssignment(assignmentId));
   }, []);
 
-  const uploadAssignmentHandler = () => {
+  useEffect(() => {
+    console.log(uploadSubmissionLoading);
+  }, [uploadSubmissionLoading]);
+
+  const uploadAssignmentHandler = (e) => {
+    e.preventDefault();
     let formData = new FormData();
     formData.append("file", file);
     formData.append("classId", classId);
     formData.append("assignmentId", assignmentId);
+
+    dispatch(uploadAssignmentSubmission(formData));
   };
 
-  const downloadFileHandler = async () => {
-    const res = await axios.get(
-      "/api/v1/quiz/download/6194c991e36a4eeee79bc51c",
-      {
+  const downloadFileHandler = async (fileName, isAssignment) => {
+    let fileExtension, res;
+    if (!isAssignment) {
+      const { data } = await axios.get(
+        `/api/v1/assignment/submission/getFileExtension/${assignmentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      res = await axios.get(
+        `/api/v1/assignment/submission/download/${assignmentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+          responseType: "blob",
+        }
+      );
+      fileExtension = data.data.fileExtension;
+    } else {
+      const { data } = await axios.get(
+        `/api/v1/assignment/getFileExtension/${assignmentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      res = await axios.get(`/api/v1/assignment/download/${assignmentId}`, {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
         responseType: "blob",
-      }
-    );
-    download(new Blob([res.data]), "test.pdf");
+      });
+      fileExtension = data.data.fileExtension;
+    }
+
+    download(new Blob([res.data]), `${fileName}${fileExtension}`);
   };
   return (
-    <>
+    <div className="sm:w-full mx-auto">
       {loading ? (
         <Spinner />
       ) : error ? (
         <Alert color="red" message={error} />
       ) : (
         success && (
-          <div className="flex flex-row justify-between w-4/5 items center mx-auto mt-8 bg-white p-8 rounded-lg">
+          <div className="flex flex-row justify-between w-4/5 items-center mx-auto mt-8 bg-white p-8 rounded-lg sm:flex-col md:flex-row lg:flex-row sm:w-full sm:mx-auto sm:p-2">
             <div className="w-3/4">
-              <h1 className="text-3xl">{assignment.title}</h1>
+              <h1 className="text-3xl text-yellow-600">{assignment.title}</h1>
               <p className="text-sm text-gray-600">Teacher name</p>
               <p
                 className="text-sm"
                 style={{
-                  borderBottom: "1px solid red",
+                  borderBottom: "2px solid #d97834",
                 }}
               >
                 {assignment.marks} marks
               </p>
 
+              <div className="mt-4">
+                <h1 className="text-lg font-medium">
+                  Additional Instructions:
+                </h1>
+                <p className="text-sm">{assignment.instructions}</p>
+              </div>
               <div
-                className="my-8 w-56 border border-black rounded flex flex-row justify-between items-center cursor-pointer"
+                onClick={() => downloadFileHandler("Assignment", true)}
+                className="my-8 border shadow-lg rounded flex flex-row items-center cursor-pointer sm:w-full sm:min-w-full lg:w-56 xl:w-56 hover:bg-yellow-200"
                 //   style={{
                 //     borderBottom: "1px solid black",
                 //   }}
               >
-                <div className="bg-red-500 w-28 h-24">
-                  {/* <img /> */}
-                  {/* <p>d</p> */}
+                <div className="sm:w-full">
+                  <img
+                    src="https://img.icons8.com/cute-clipart/64/4a90e2/task.png"
+                    alt=""
+                  />
                 </div>
-                <p onClick={downloadFileHandler} className="my-8 px-2">
-                  Attachment
-                </p>
+                <p className="">Download Attachment</p>
               </div>
-              <div>{assignment.instructions}</div>
             </div>
             {userInfo && userInfo.id !== createdBy && (
-              <div className="flex flex-col w-1/3 items-center justify-center border border-black shadow-lg rounded-lg mx-4 my-4">
-                <h1 className="mb-4 text-xl">Your work</h1>
-                <form
-                  onSubmit={uploadAssignmentHandler}
-                  id="myform"
-                  encType="multipart/form-data"
-                >
-                  <label class="w-full flex flex-row p-2 items-center justify-center   text-blue -lg shadow-lg tracking-wide  border border-blue-400 cursor-pointer  hover:text-blue-500">
-                    <svg
-                      class="w-8 h-8"
-                      fill="currentColor"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
-                    </svg>
-                    <span class="ml-8 text-base leading-normal">Add file</span>
-                    <input
-                      type="file"
-                      className="hidden"
-                      name="file"
-                      onChange={(e) => {
-                        setFile(e.target.files[0]);
-                      }}
-                    />
-                  </label>
-                  <div>
-                    {file && <p className="normal-case">{file.name}</p>}
-                  </div>
-                  <div className="mt-8 mb-2 mx-auto">
-                    <input
-                      className=" w-full p-2 rounded border border-yellow-500 cursor-pointer hover:bg-yellow-600"
-                      type="submit"
-                      value="Submit assignment"
-                    />
-                  </div>
-                </form>
-              </div>
+              <UserAssignmentSubmissionCard
+                uploadAssignmentHandler={uploadAssignmentHandler}
+                setFile={setFile}
+                file={file}
+                uploadSubmissionLoading={uploadSubmissionLoading}
+                uploadSubmissionError={uploadSubmissionError}
+                uploadSubmissionSuccess={uploadSubmissionSuccess}
+                hasSubmitted={hasSubmitted}
+                downloadFileHandler={downloadFileHandler}
+              />
             )}
           </div>
         )
       )}
-    </>
+    </div>
   );
 };
 

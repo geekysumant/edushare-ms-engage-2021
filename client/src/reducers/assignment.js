@@ -1,6 +1,9 @@
 import {
   CREATE_ASSIGNMENT_FAIL,
   CREATE_ASSIGNMENT_REQUEST,
+  CREATE_ASSIGNMENT_SUBMISSION_FAIL,
+  CREATE_ASSIGNMENT_SUBMISSION_REQUEST,
+  CREATE_ASSIGNMENT_SUBMISSION_SUCCESS,
   CREATE_ASSIGNMENT_SUCCESS,
   CREATE_QUIZ_FAIL,
   CREATE_QUIZ_REQUEST,
@@ -251,6 +254,35 @@ export const fetchAssignmentReducer = (
       return {
         loading: false,
         success: false,
+        error: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
+const initialAssignmentSubmissionUploadState = {
+  success: false,
+};
+export const createAssignmentSubmissionReducer = (
+  state = initialAssignmentSubmissionUploadState,
+  action
+) => {
+  switch (action.type) {
+    case CREATE_ASSIGNMENT_SUBMISSION_REQUEST:
+      return {
+        loading: true,
+      };
+    case CREATE_ASSIGNMENT_SUBMISSION_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+
+    case CREATE_ASSIGNMENT_SUBMISSION_FAIL:
+      return {
+        loading: false,
         error: action.payload,
       };
 

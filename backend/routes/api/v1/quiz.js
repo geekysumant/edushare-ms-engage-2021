@@ -23,6 +23,5 @@ router.get(
 router.post("/submit", protect, quizController.submitQuiz);
 router.get("/submissions/:quizId", protect, quizController.fetchSubmissions);
 router.get("/submission", protect, quizController.fetchUsersQuizSubmission);
-router.get("/download/:assignmentId", quizController.downloadAssignment);
 
 module.exports = router;

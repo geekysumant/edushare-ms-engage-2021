@@ -9,6 +9,7 @@ import { combineReducers } from "redux";
 import { addQuestion, addQuestionReducer } from "./question";
 import {
   createAssignmentReducer,
+  createAssignmentSubmissionReducer,
   createQuizReducer,
   fetchAssignmentReducer,
   fetchAssignmentsReducer,
@@ -34,6 +35,7 @@ export default combineReducers({
   submitQuiz: submitQuizReducer,
   fetchSubmissions: fetchSubmissionsReducer,
   fetchUsersQuizSubmission: fetchUsersQuizSubmissionReducer,
+  uploadAssignmentSubmission: createAssignmentSubmissionReducer,
 
   //not needed questions state
   // allQuestions: addQuestionReducer,
