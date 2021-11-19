@@ -12,7 +12,9 @@ export default function Alert({ color, message }) {
       <span className="text-xl inline-block mr-5 align-middle">
         <i className="fas fa-bell" />
       </span>
-      <span className="inline-block align-middle mr-8">{message}</span>
+      <span className="inline-block align-middle mr-8 break-words break-all">
+        {message}
+      </span>
     </div>
   );
 }

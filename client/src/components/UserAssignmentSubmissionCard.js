@@ -10,7 +10,9 @@ const UserAssignmentSubmissionCard = ({
   hasSubmitted,
   uploadSubmissionSuccess,
   uploadSubmissionError,
-  downloadFileHandler,
+  downloadAssignmentSubmissionHandler,
+  downloadedSubmissionError,
+  downloadedSubmissionLoading,
 }) => {
   return (
     <div className="flex flex-col w-1/3 items-center justify-center border shadow-lg rounded-lg mx-4 my-4 sm:w-full">
@@ -59,19 +61,27 @@ const UserAssignmentSubmissionCard = ({
         </form>
       ) : (
         <div
-          onClick={() => downloadFileHandler("Submission", false)}
+          onClick={downloadAssignmentSubmissionHandler}
           className="my-8 border shadow-lg rounded flex flex-row items-center cursor-pointer sm:w-full sm:min-w-full lg:w-56 xl:w-56 hover:bg-yellow-200"
           //   style={{
           //     borderBottom: "1px solid black",
           //   }}
         >
-          <div className="sm:w-full">
-            <img
-              src="https://img.icons8.com/cute-clipart/64/4a90e2/task.png"
-              alt=""
-            />
-          </div>
-          <p className="">Download submission</p>
+          {downloadedSubmissionLoading ? (
+            <Spinner />
+          ) : downloadedSubmissionError ? (
+            <Alert color="red" message={downloadedSubmissionError} />
+          ) : (
+            <>
+              <div className="sm:w-full">
+                <img
+                  src="https://img.icons8.com/cute-clipart/64/4a90e2/task.png"
+                  alt=""
+                />
+              </div>
+              <p className="">Download submission</p>
+            </>
+          )}
         </div>
       )}
     </div>

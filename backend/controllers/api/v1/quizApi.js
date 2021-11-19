@@ -406,7 +406,6 @@ module.exports.downloadAssignment = async (req, res) => {
       throw new Error("No assignment found");
     }
     const fileKeyInS3 = requestedAssignment.file;
-    console.log("file key", fileKeyInS3);
     const readStream = downloadFile(fileKeyInS3);
     readStream.pipe(res);
   } catch (err) {

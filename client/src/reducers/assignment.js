@@ -8,6 +8,12 @@ import {
   CREATE_QUIZ_FAIL,
   CREATE_QUIZ_REQUEST,
   CREATE_QUIZ_SUCCESS,
+  DOWNLOAD_ASSIGNMENT_FAIL,
+  DOWNLOAD_ASSIGNMENT_REQUEST,
+  DOWNLOAD_ASSIGNMENT_SUBMISSION_FAIL,
+  DOWNLOAD_ASSIGNMENT_SUBMISSION_REQUEST,
+  DOWNLOAD_ASSIGNMENT_SUBMISSION_SUCCESS,
+  DOWNLOAD_ASSIGNMENT_SUCCESS,
   FETCH_ASSIGNMENTS_FAIL,
   FETCH_ASSIGNMENTS_REQUEST,
   FETCH_ASSIGNMENTS_SUCCESS,
@@ -286,6 +292,66 @@ export const createAssignmentSubmissionReducer = (
         error: action.payload,
       };
 
+    default:
+      return state;
+  }
+};
+
+const intitalDownloadAssignmentState = {
+  loading: false,
+  success: false,
+};
+
+export const downloadAssignmentReducer = (
+  state = intitalDownloadAssignmentState,
+  action
+) => {
+  switch (action.type) {
+    case DOWNLOAD_ASSIGNMENT_REQUEST:
+      return {
+        loading: true,
+      };
+    case DOWNLOAD_ASSIGNMENT_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case DOWNLOAD_ASSIGNMENT_FAIL:
+      return {
+        loading: false,
+        success: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+const intitalDownloadAssignmentSubmissionState = {
+  loading: false,
+  success: false,
+};
+
+export const downloadAssignmentSubmissionReducer = (
+  state = intitalDownloadAssignmentSubmissionState,
+  action
+) => {
+  switch (action.type) {
+    case DOWNLOAD_ASSIGNMENT_SUBMISSION_REQUEST:
+      return {
+        loading: true,
+      };
+    case DOWNLOAD_ASSIGNMENT_SUBMISSION_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case DOWNLOAD_ASSIGNMENT_SUBMISSION_FAIL:
+      return {
+        loading: false,
+        success: false,
+        error: action.payload,
+      };
     default:
       return state;
   }

@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import download from "downloadjs";
 import {
+  downloadAssignment,
+  downloadAssignmentSubmission,
   fetchAssignment,
   uploadAssignmentSubmission,
 } from "../actions/assignment";
@@ -23,9 +25,20 @@ const AssignmentScreen = () => {
   const uploadedSubmission = useSelector(
     (state) => state.uploadAssignmentSubmission
   );
+  const downloadedAssignment = useSelector((state) => state.downloadAssignment);
+  const downloadedSubmission = useSelector(
+    (state) => state.downloadAssignmentSubmission
+  );
+
   const uploadSubmissionLoading = uploadedSubmission.loading;
   const uploadSubmissionSuccess = uploadedSubmission.success;
   const uploadSubmissionError = uploadedSubmission.error;
+
+  const downloadedAssignmentLoading = downloadedAssignment.loading;
+  const downloadedAssignmentError = downloadedAssignment.error;
+
+  const downloadedSubmissionLoading = downloadedSubmission.loading;
+  const downloadedSubmissionError = downloadedSubmission.error;
 
   const assignmentId = location.pathname.split("/")[6];
   const classId = location.pathname.split("/")[3];
@@ -48,46 +61,11 @@ const AssignmentScreen = () => {
     dispatch(uploadAssignmentSubmission(formData));
   };
 
-  const downloadFileHandler = async (fileName, isAssignment) => {
-    let fileExtension, res;
-    if (!isAssignment) {
-      const { data } = await axios.get(
-        `/api/v1/assignment/submission/getFileExtension/${assignmentId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-        }
-      );
-      res = await axios.get(
-        `/api/v1/assignment/submission/download/${assignmentId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-          responseType: "blob",
-        }
-      );
-      fileExtension = data.data.fileExtension;
-    } else {
-      const { data } = await axios.get(
-        `/api/v1/assignment/getFileExtension/${assignmentId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-        }
-      );
-      res = await axios.get(`/api/v1/assignment/download/${assignmentId}`, {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-        responseType: "blob",
-      });
-      fileExtension = data.data.fileExtension;
-    }
-
-    download(new Blob([res.data]), `${fileName}${fileExtension}`);
+  const downloadAssignmentHandler = () => {
+    dispatch(downloadAssignment(assignmentId));
+  };
+  const downloadAssignmentSubmissionHandler = () => {
+    dispatch(downloadAssignmentSubmission(assignmentId));
   };
   return (
     <div className="sm:w-full mx-auto">
@@ -109,29 +87,35 @@ const AssignmentScreen = () => {
               >
                 {assignment.marks} marks
               </p>
-
               <div className="mt-4">
                 <h1 className="text-lg font-medium">
                   Additional Instructions:
                 </h1>
                 <p className="text-sm">{assignment.instructions}</p>
               </div>
+
               <div
-                onClick={() => {
-                  downloadFileHandler("Assignment", true);
-                }}
+                onClick={downloadAssignmentHandler}
                 className="my-8 border shadow-lg rounded flex flex-row items-center cursor-pointer sm:w-full sm:min-w-full lg:w-56 xl:w-56 hover:bg-yellow-200"
                 //   style={{
                 //     borderBottom: "1px solid black",
                 //   }}
               >
-                <div className="sm:w-full">
-                  <img
-                    src="https://img.icons8.com/cute-clipart/64/4a90e2/task.png"
-                    alt=""
-                  />
-                </div>
-                <p className="">Download Attachment</p>
+                {downloadedAssignmentLoading ? (
+                  <Spinner />
+                ) : downloadedAssignmentError ? (
+                  <Alert color="red" message={downloadedAssignmentError} />
+                ) : (
+                  <>
+                    <div className="sm:w-full">
+                      <img
+                        src="https://img.icons8.com/cute-clipart/64/4a90e2/task.png"
+                        alt=""
+                      />
+                    </div>
+                    <p className="">Download Attachment</p>
+                  </>
+                )}
               </div>
             </div>
             {userInfo && userInfo.id !== createdBy && (
@@ -143,7 +127,11 @@ const AssignmentScreen = () => {
                 uploadSubmissionError={uploadSubmissionError}
                 uploadSubmissionSuccess={uploadSubmissionSuccess}
                 hasSubmitted={hasSubmitted}
-                downloadFileHandler={downloadFileHandler}
+                downloadAssignmentSubmissionHandler={
+                  downloadAssignmentSubmissionHandler
+                }
+                downloadedSubmissionLoading={downloadedSubmissionLoading}
+                downloadedSubmissionError={downloadedSubmissionError}
               />
             )}
           </div>

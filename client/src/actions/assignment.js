@@ -8,6 +8,12 @@ import {
   CREATE_QUIZ_FAIL,
   CREATE_QUIZ_REQUEST,
   CREATE_QUIZ_SUCCESS,
+  DOWNLOAD_ASSIGNMENT_FAIL,
+  DOWNLOAD_ASSIGNMENT_REQUEST,
+  DOWNLOAD_ASSIGNMENT_SUBMISSION_FAIL,
+  DOWNLOAD_ASSIGNMENT_SUBMISSION_REQUEST,
+  DOWNLOAD_ASSIGNMENT_SUBMISSION_SUCCESS,
+  DOWNLOAD_ASSIGNMENT_SUCCESS,
   FETCH_ASSIGNMENTS_FAIL,
   FETCH_ASSIGNMENTS_REQUEST,
   FETCH_ASSIGNMENTS_SUCCESS,
@@ -28,7 +34,7 @@ import {
   SUBMIT_QUIZ_REQUEST,
   SUBMIT_QUIZ_SUCCESS,
 } from "./actionTypes";
-
+import download from "downloadjs";
 import axios from "axios";
 
 export const fetchAssignments = (classId) => {
@@ -330,6 +336,86 @@ export const uploadAssignmentSubmission = (formData) => {
     } catch (err) {
       dispatch({
         type: CREATE_ASSIGNMENT_SUBMISSION_FAIL,
+        payload: err.response.data,
+      });
+    }
+  };
+};
+export const downloadAssignment = (assignmentId) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: DOWNLOAD_ASSIGNMENT_REQUEST,
+      });
+
+      const { userInfo } = getState().userDetails;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.get(
+        `/api/v1/assignment/getFileExtension/${assignmentId}`,
+        config
+      );
+      const res = await axios.get(
+        `/api/v1/assignment/download/${assignmentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+          responseType: "blob",
+        }
+      );
+      const fileExtension = data.data.fileExtension;
+      download(new Blob([res.data]), `Assignment${fileExtension}`);
+      dispatch({
+        type: DOWNLOAD_ASSIGNMENT_SUCCESS,
+      });
+    } catch (err) {
+      dispatch({
+        type: DOWNLOAD_ASSIGNMENT_FAIL,
+        payload: err.response.data,
+      });
+    }
+  };
+};
+export const downloadAssignmentSubmission = (assignmentId) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: DOWNLOAD_ASSIGNMENT_SUBMISSION_REQUEST,
+      });
+
+      const { userInfo } = getState().userDetails;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.get(
+        `/api/v1/assignment/submission/getFileExtension/${assignmentId}`,
+        config
+      );
+      const res = await axios.get(
+        `/api/v1/assignment/submission/download/${assignmentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+          responseType: "blob",
+        }
+      );
+      const fileExtension = data.data.fileExtension;
+      download(new Blob([res.data]), `Submission${fileExtension}`);
+      dispatch({
+        type: DOWNLOAD_ASSIGNMENT_SUBMISSION_SUCCESS,
+      });
+    } catch (err) {
+      dispatch({
+        type: DOWNLOAD_ASSIGNMENT_SUBMISSION_FAIL,
         payload: err.response.data,
       });
     }
