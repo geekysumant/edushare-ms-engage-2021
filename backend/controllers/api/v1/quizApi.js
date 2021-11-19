@@ -304,6 +304,7 @@ module.exports.createAssignment = async (req, res) => {
       if (req.file) {
         const fileUpload = await uploadFile(req.file);
         fileKeyInS3 = fileUpload.Key;
+        console.log(fileUpload);
         fs.unlinkSync(path.normalize(req.file.path));
       }
       const classId = req.body.classId;
@@ -405,6 +406,7 @@ module.exports.downloadAssignment = async (req, res) => {
       throw new Error("No assignment found");
     }
     const fileKeyInS3 = requestedAssignment.file;
+    console.log("file key", fileKeyInS3);
     const readStream = downloadFile(fileKeyInS3);
     readStream.pipe(res);
   } catch (err) {

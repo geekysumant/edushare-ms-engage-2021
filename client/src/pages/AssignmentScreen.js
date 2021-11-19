@@ -117,7 +117,9 @@ const AssignmentScreen = () => {
                 <p className="text-sm">{assignment.instructions}</p>
               </div>
               <div
-                onClick={() => downloadFileHandler("Assignment", true)}
+                onClick={() => {
+                  downloadFileHandler("Assignment", true);
+                }}
                 className="my-8 border shadow-lg rounded flex flex-row items-center cursor-pointer sm:w-full sm:min-w-full lg:w-56 xl:w-56 hover:bg-yellow-200"
                 //   style={{
                 //     borderBottom: "1px solid black",
