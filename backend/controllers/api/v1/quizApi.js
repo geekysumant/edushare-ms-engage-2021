@@ -1,6 +1,7 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
+const fs = require("fs");
 
 const Quiz = require("../../../models/Quiz");
 const Class = require("../../../models/Class");
@@ -9,6 +10,7 @@ const QuizSubmission = require("../../../models/QuizSubmission");
 const Assignment = require("../../../models/Assignment.js");
 const path = require("path");
 const AssignmentSubmission = require("../../../models/AssignmentSubmission");
+const { uploadFile, downloadFile } = require("../../../config/s3");
 
 module.exports.createQuiz = async (req, res) => {
   try {
@@ -298,7 +300,12 @@ module.exports.createAssignment = async (req, res) => {
         console.log(err);
         throw new Error("Some error occurred");
       }
-      // console.log(req.file);
+      let fileKeyInS3 = null;
+      if (req.file) {
+        const fileUpload = await uploadFile(req.file);
+        fileKeyInS3 = fileUpload.Key;
+        fs.unlinkSync(path.normalize(req.file.path));
+      }
       const classId = req.body.classId;
       const { title, instructions, marks } = req.body;
 
@@ -321,7 +328,7 @@ module.exports.createAssignment = async (req, res) => {
       });
 
       if (req.file) {
-        newAssignment.file = Assignment.filePath + "/" + req.file.filename;
+        newAssignment.file = fileKeyInS3;
         await newAssignment.save();
       }
       requestedClass.assignments.push(newAssignment);
@@ -397,8 +404,9 @@ module.exports.downloadAssignment = async (req, res) => {
     if (!requestedAssignment) {
       throw new Error("No assignment found");
     }
-    const filePath = path.join(__dirname, "../../..", requestedAssignment.file);
-    res.download(filePath);
+    const fileKeyInS3 = requestedAssignment.file;
+    const readStream = downloadFile(fileKeyInS3);
+    readStream.pipe(res);
   } catch (err) {
     res.status(500).send(err.message);
   }
@@ -420,12 +428,9 @@ module.exports.downloadAssignmentSubmission = async (req, res) => {
       assignmentId,
       user: req.user._id,
     });
-    const filePath = path.join(
-      __dirname,
-      "../../..",
-      usersAssignmentSubmission.submission
-    );
-    res.download(filePath);
+    const fileKeyInS3 = usersAssignmentSubmission.submission;
+    const readStream = downloadFile(fileKeyInS3);
+    readStream.pipe(res);
   } catch (err) {
     res.status(500).send(err.message);
   }
@@ -464,7 +469,10 @@ module.exports.uploadAssignmentSubmission = async (req, res) => {
       if (!req.file) {
         throw new Error("No submission attached!");
       }
-      console.log("AssignmentId:", assignmentId);
+
+      const fileUpload = await uploadFile(req.file);
+      fileKeyInS3 = fileUpload.Key;
+      fs.unlinkSync(path.normalize(req.file.path));
       const hasSubmitted = await AssignmentSubmission.findOne({
         user: req.user._id,
         assignmentId,
@@ -473,14 +481,13 @@ module.exports.uploadAssignmentSubmission = async (req, res) => {
       if (hasSubmitted) {
         throw new Error("You have already submitted the assignment!");
       }
-      const filePath = AssignmentSubmission.filePath + "/" + req.file.filename;
 
       const newUserSubmission = await AssignmentSubmission.create({
         user: req.user._id,
         createdBy: requestedClass.createdBy,
         classId: classId,
         assignmentId,
-        submission: filePath,
+        submission: fileKeyInS3,
       });
 
       requestedAssignment.submissions.push(newUserSubmission);
