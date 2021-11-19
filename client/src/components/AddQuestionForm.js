@@ -86,12 +86,12 @@ export default function AddQuestionForm({
         </ModalHeader>
 
         <ModalBody>
-          <form className="w-full p-2 mb-4">
+          <form className="w-full p-2 mb-4 sm:w-80">
             <div className="mb-4 ">
               <label className="block text-left w-96">
                 <span className="text-gray-700">Question</span>
                 <textarea
-                  className="form-textarea mt-1 block w-full border border-blue-300 rounded"
+                  className="form-textarea mt-1 block w-full border border-blue-300 rounded sm:w-80"
                   rows="3"
                   placeholder="Question body goes here"
                   value={question}
@@ -117,7 +117,7 @@ export default function AddQuestionForm({
                   );
                 })}
             </div>
-            <div className="flex h-10 justify-between w-full ">
+            <div className="flex h-10 justify-between  w-full sm:flex-col sm:items-center sm:h-20 sm:w-80">
               <input
                 className="w-full shadow appearance-none border rounded w-full py-2 px-3 mx-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 type="text"
@@ -136,7 +136,7 @@ export default function AddQuestionForm({
           </form>
 
           <div className="">
-            <label className="block text-left w-96 flex justify-between flex-row">
+            <label className="block text-left w-96 flex md:justify-between lg:justify-between xl:justify-between flex-row sm:w-64 sm:my-4 ">
               <span className="text-gray-700 mx-4">
                 Marks for correct answer:
               </span>
@@ -148,7 +148,7 @@ export default function AddQuestionForm({
                 onChange={(e) => setCorrectMarks(parseInt(e.target.value))}
               />
             </label>
-            <label className="block text-left w-96 flex justify-between flex-row">
+            <label className="block text-left w-96 flex justify-between flex-row sm:w-64 sm:my-4">
               <span className="text-gray-700 mx-4">
                 Marks for incorrect answer:
               </span>
@@ -165,23 +165,29 @@ export default function AddQuestionForm({
           {error && <Alert color={"red"} message={error} />}
         </ModalBody>
 
-        <ModalFooter>
-          <Button
-            color="red"
-            buttonType="link"
-            onClick={(e) => {
-              setShowAddQuestion(false);
-              resetFields();
-            }}
-            ripple="dark"
-          >
-            Cancel
-          </Button>
+        <div className="sm:mx-auto">
+          <ModalFooter className="sm:flex sm:justify-center w-10">
+            <Button
+              color="red"
+              buttonType="link"
+              onClick={(e) => {
+                setShowAddQuestion(false);
+                resetFields();
+              }}
+              ripple="dark"
+            >
+              Cancel
+            </Button>
 
-          <Button color="green" ripple="light" onClick={createQuestionHandler}>
-            Create question
-          </Button>
-        </ModalFooter>
+            <Button
+              color="green"
+              ripple="light"
+              onClick={createQuestionHandler}
+            >
+              Create question
+            </Button>
+          </ModalFooter>
+        </div>
       </Modal>
     </>
   );

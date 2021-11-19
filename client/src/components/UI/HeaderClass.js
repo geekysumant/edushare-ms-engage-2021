@@ -7,18 +7,30 @@ const HeaderClass = () => {
 
   const classId = urlPath.split("/")[3];
   return (
-    <header className="flex flex-row justify-between p-4">
-      <div>
+    <header className="flex flex-row justify-between  bg-white shadow-xl">
+      <div className="mx-4 h-16 flex items-center">
         <Link to="/home">edushare</Link>
       </div>
       <div className="flex flex-row justify-between">
-        <NavLink className="mx-4" to={`enter/class/${classId}`}>
+        <NavLink
+          className="mx-4 h-16 flex items-center"
+          end
+          to={`enter/class/${classId}`}
+        >
           Feed
         </NavLink>
-        <NavLink className="mx-4" to={`enter/class/${classId}/classwork`}>
+        <NavLink
+          className="mx-4 h-16 flex items-center"
+          end
+          to={`enter/class/${classId}/classwork`}
+        >
           Classwork
         </NavLink>
-        <NavLink className="mx-4" to={`enter/class/${classId}/people`}>
+        <NavLink
+          className="mx-4 h-16 flex items-center"
+          end
+          to={`enter/class/${classId}/people`}
+        >
           People
         </NavLink>
       </div>

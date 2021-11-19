@@ -37,20 +37,28 @@ function App() {
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/login/teacher" element={<TeacherLogin />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/enter/class/:classId" exact element={<EnterClass />} />
+        <Route
+          path="/enter/class/:classId"
+          exact
+          strict
+          element={<EnterClass />}
+        />
         <Route
           path="/enter/class/:classId/classwork"
           exact
+          strict
           element={<Classwork />}
         />
         <Route
           path="/enter/class/:classId/classwork/create-mcq"
           exact
+          strict
           element={<CreateMcq />}
         />
         <Route
           path="/enter/class/:classId/classwork/create-assignment"
           exact
+          strict
           element={<CreateAssignment />}
         />
         <Route

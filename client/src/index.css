@@ -12,9 +12,12 @@ body {
   /* font-family: "Montserrat", sans-serif; */
   /* font-family: "Poppins", sans-serif; */
 }
-.active-link {
+.active-class {
   color: red;
-  border-bottom: 1px solid black;
+}
+
+.active {
+  border-bottom: 6px solid orange;
 }
 
 /* code {

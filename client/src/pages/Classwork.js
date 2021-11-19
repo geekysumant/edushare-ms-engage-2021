@@ -48,7 +48,7 @@ const Classwork = () => {
        
       )} */}
       <div className="mx-36 my-8 sm:mx-auto">
-        <div className="my-4 mx-auto">
+        <div className="my-4 mx-auto sm:flex sm:justify-center sm:items-center">
           {userInfo && userInfo.id === createdBy && <Dropdown />}
         </div>
         {loading ? (

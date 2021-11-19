@@ -50,9 +50,7 @@ module.exports.loginUser = async (req, res) => {
         },
       });
     } else {
-      const newToken = jwt.sign({ id: user.id }, JWT_SECRET, {
-        expiresIn: "2d",
-      });
+      const newToken = jwt.sign({ id: user.id }, JWT_SECRET);
       console.log(newToken);
       res.json({
         message: {

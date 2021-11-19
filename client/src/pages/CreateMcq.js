@@ -55,7 +55,7 @@ const CreateMcq = () => {
         <div className="bg-white py-2 flex flex-col items-center border rounded">
           <h2 className="font-bold text-2xl my-2">List of Question(s):</h2>
 
-          <div className="flex flex-row  justify-center min-w-full">
+          <div className="flex flex-row  justify-center min-w-full sm:flex-col sm:items-center">
             <div className="">
               {questions.length > 0 &&
                 questions.map((question, index) => {
@@ -71,12 +71,12 @@ const CreateMcq = () => {
                   );
                 })}
               {error && <Alert color={"red"} message={error} />}
-              <div className="flex flex-row justify-between w-full px-6">
+              <div className="flex flex-row justify-between w-full px-6 sm:flex-col sm:items-center">
                 <Button
                   color="indigo"
                   ripple="light"
                   onClick={addQuestionHandler}
-                  className="mr-12"
+                  className="mr-12 sm:mx-0 sm:my-4"
                   // disabled={true}
                 >
                   Add question
@@ -88,6 +88,7 @@ const CreateMcq = () => {
                     color="indigo"
                     ripple="light"
                     onClick={createQuizHandler}
+                    className="sm:my-4"
                     // disabled={true}
                   >
                     Create quiz
