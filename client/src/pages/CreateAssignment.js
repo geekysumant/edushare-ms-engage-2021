@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createAssignment } from "../actions/assignment";
 import Spinner from "../components/UI/Spinner";
 import Alert from "../components/UI/Alert";
+import UploadSVG from "../assets/svg/upload.svg";
 
 const CreateAssignment = () => {
   const [file, setFile] = useState(null);
@@ -52,11 +53,11 @@ const CreateAssignment = () => {
   return (
     <>
       <Banner
-        // SVGComponent={TaskSVG}
-        heading="Classwork"
-        bannerBackground="meteor"
+        SVGComponent={UploadSVG}
+        heading="Create Assignment"
+        bannerBackground="cheese"
         customText="All your assignments and quizzes in one place"
-        textColor="gray"
+        textColor="black"
       />
       <div className="mx-auto flex flex-col items-center p-8">
         <form

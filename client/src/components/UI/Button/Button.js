@@ -1,7 +1,7 @@
 import React from "react";
 import classes from "./Button.module.css";
 
-const Button = ({ text }) => {
+const Button = ({ text, setShowJoinClass, setShowCreateClass }) => {
   return <button className={classes.Btn}>{text} </button>;
 };
 
