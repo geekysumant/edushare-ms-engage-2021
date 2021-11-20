@@ -1,5 +1,5 @@
 import Header from "./components/UI/Header/Header";
-import { Route, Routes, useLocation } from "react-router";
+import { Route, Routes, useLocation, useNavigate } from "react-router";
 import Welcome from "./pages/Welcome";
 import { Navigate } from "react-router-dom";
 import Footer from "./components/UI/Footer/Footer";
@@ -16,11 +16,27 @@ import QuizSubmissions from "./pages/QuizSubmissions";
 import ViewUserQuizSubmission from "./pages/ViewUserQuizSubmission";
 import CreateAssignment from "./pages/CreateAssignment";
 import AssignmentScreen from "./pages/AssignmentScreen";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { checkAuthentication } from "./actions/user";
 
 function App() {
   const location = useLocation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { isAuthenticated } = useSelector((state) => state.userDetails);
   const onHomeScreen = location.pathname.startsWith("/home");
   const onWelcomeScreen = location.pathname.startsWith("/welcome");
+
+  useEffect(() => {
+    dispatch(checkAuthentication());
+  }, []);
+  useEffect(() => {
+    if (!isAuthenticated) {
+      return navigate("/welcome");
+    }
+  }, [isAuthenticated]);
   return (
     <div className="App">
       {onWelcomeScreen ? (

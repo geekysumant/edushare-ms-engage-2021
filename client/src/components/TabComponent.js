@@ -1,6 +1,7 @@
 import { Tab } from "@headlessui/react";
 import QuizBanner from "./UI/QuizBanner";
 import AssignmentBanner from "./UI/AssignmentBanner";
+import VoidSVG from "../assets/svg/void.svg";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -38,7 +39,14 @@ const TabComponent = ({ categories, userInfo, createdBy }) => {
                 "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60"
               )}
             >
-              {quizzes.length === 0 && <p>Oops no quiz found</p>}
+              {quizzes.length === 0 && (
+                <div className="w-40  mx-auto">
+                  <img src={VoidSVG} />
+                  <h3 className="text-sm text-gray-600 my-6">
+                    Hooray, no pending tasks
+                  </h3>
+                </div>
+              )}
               {quizzes.map((quiz) => (
                 <div className="flex flex-col items-center ">
                   {idx === 0 ? (

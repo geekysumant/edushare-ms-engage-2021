@@ -15,18 +15,20 @@ const AssignmentBanner = ({
   const classId = urlPath.split("/")[3];
   return (
     <div class="flex bg-white   w-full shadow-lg rounded-lg mx-4 md:mx-auto my-4  md:max-w-2xl ">
-      <div class="flex items-start px-4 py-6 w-full">
-        <img
-          class="w-10 h-10 rounded object-cover mr-4 shadow"
-          src={"/images/quiz.png"}
-          alt="avatar"
-        />
-        <div class="flex flex-col w-full">
-          <div class="flex items-center justify-between">
+      <div class="flex flex-col items-start px-4 py-6 w-full">
+        <div className="flex w-full">
+          <img
+            class="w-10 h-10 rounded object-cover mr-4 shadow"
+            src={"/images/quiz.png"}
+            alt="avatar"
+          />
+          <div class="flex items-center justify-between w-full">
             <h2 class="text-lg font-semibold text-gray-900 -mt-1">{title} </h2>
             <small class="text-sm text-gray-700">22h ago</small>
           </div>
+        </div>
 
+        <div class="flex flex-col w-full">
           <div className="flex flex-row w-full justify-between mt-4 sm:flex-col sm:items-center">
             <p class="mt-3 text-gray-700 text-sm">Total marks : {marks}</p>
             <Link

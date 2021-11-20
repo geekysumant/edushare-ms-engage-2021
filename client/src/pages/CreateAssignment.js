@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Banner from "../components/UI/Banner";
 import axios from "axios";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { createAssignment } from "../actions/assignment";
 import Spinner from "../components/UI/Spinner";
@@ -12,19 +12,34 @@ const CreateAssignment = () => {
   const [title, setTitle] = useState("");
   const [instructions, setInstructions] = useState("");
   const [marks, setMarks] = useState(0);
-  const location = useLocation();
+  const [fieldError, setFieldError] = useState("");
 
+  const location = useLocation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const classId = location.pathname.split("/")[3];
-  const { userInfo } = useSelector((state) => state.userDetails);
+  const { isAuthenticated, userInfo } = useSelector(
+    (state) => state.userDetails
+  );
   const { loading, success, error } = useSelector(
     (state) => state.createAssignment
   );
+  const { createdBy } = useSelector((state) => state.enterClassDetails);
+
+  useEffect(() => {
+    if (!isAuthenticated || (createdBy && createdBy !== userInfo.id)) {
+      return navigate("/welcome");
+    }
+  }, []);
 
   const createAssignmentHandler = async (event) => {
     event.preventDefault();
 
+    if (!title || !marks) {
+      setFieldError("One or more fields are invalid.");
+      return;
+    }
     let formData = new FormData();
     formData.append("file", file);
     formData.append("title", title);
@@ -48,23 +63,23 @@ const CreateAssignment = () => {
           onSubmit={createAssignmentHandler}
           id="myform"
           encType="multipart/form-data"
-          className="w-4/5 flex flex-row justify-between"
+          className="w-4/5 flex flex-row justify-between sm:flex-col sm:w-full"
         >
           <div>
-            <label className="w-96">
+            <label className="w-96 sm:w-80">
               <span className="text-gray-700">Title</span>
               <div className="mb-3 pt-0">
                 <input
                   type="text"
                   placeholder="Enter assignment title"
-                  className="px-3 py-2 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-96"
+                  className="px-3 py-2 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-96 sm:w-80"
                   name="title"
                   onChange={(e) => setTitle(e.target.value)}
                 />
               </div>
             </label>
 
-            <label className="block text-left w-96 my-8">
+            <label className="block text-left w-96 my-8 sm:w-80">
               <span className="text-gray-700">Instructions (optional)</span>
               <textarea
                 className="form-textarea mt-1 block w-full border border-blue-300 rounded"
@@ -91,7 +106,7 @@ const CreateAssignment = () => {
 
             <label className="flex flex-row items-center">
               <span className="text-gray-700 mr-16">
-                Additional File(optional)
+                Additional File (optional)
               </span>
 
               <div>
@@ -118,7 +133,7 @@ const CreateAssignment = () => {
                 </label>
               </div>
             </label>
-            <div className="mt-8 max-w-md">
+            <div className="mt-8 max-w-md  sm:text-center">
               {loading ? (
                 <Spinner />
               ) : error ? (
@@ -127,11 +142,12 @@ const CreateAssignment = () => {
                 <Alert color="green" message="Assignment created!" />
               ) : (
                 <input
-                  className="bg-green-400 p-2 rounded"
+                  className="bg-green-300 cursor-pointer p-2 rounded hover:bg-green-500 mb-4"
                   type="submit"
                   value="Create assignment"
                 />
               )}
+              {fieldError && <Alert color="red" message={fieldError} />}
             </div>
           </div>
         </form>

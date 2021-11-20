@@ -76,7 +76,7 @@ export const fetchClasses = () => {
     } catch (err) {
       dispatch({
         type: FETCH_CLASS_FAIL,
-        payload: err.message,
+        payload: err.response.data,
       });
     }
   };

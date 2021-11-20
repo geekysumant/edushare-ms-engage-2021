@@ -66,3 +66,24 @@ module.exports.loginUser = async (req, res) => {
     console.log(err);
   }
 };
+
+module.exports.checkAuthentication = async (req, res) => {
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    try {
+      const token = req.headers.authorization.split(" ")[1];
+      const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+      res.json({
+        message: "OK",
+      });
+    } catch (error) {
+      res.status(401).send("Not authorised");
+    }
+  } else {
+    res.status(401).send("Not authorised");
+    // throw new Error("Not Authorized");
+  }
+};

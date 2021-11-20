@@ -26,6 +26,29 @@ export const userLogin = (token) => {
         JSON.stringify(getState().userDetails)
       );
     } catch (error) {
+      localStorage.removeItem("userDetails");
+      dispatch({ type: USER_LOGIN_FAIL, payload: error.response.data });
+    }
+  };
+};
+
+export const checkAuthentication = () => {
+  return async (dispatch, getState) => {
+    try {
+      const { userInfo } = getState().userDetails;
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.get(
+        "/api/v1/login/checkAuthentication",
+        config
+      );
+    } catch (error) {
+      localStorage.removeItem("userDetails");
       dispatch({ type: USER_LOGIN_FAIL, payload: error });
     }
   };

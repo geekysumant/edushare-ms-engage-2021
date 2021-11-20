@@ -34,7 +34,7 @@ const QuizSubmissions = () => {
   }, []);
 
   return (
-    <div className="w-100 flex flex-row">
+    <div className="w-100 flex flex-row flex-wrap">
       {loading ? (
         <Spinner />
       ) : error ? (

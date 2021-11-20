@@ -5,6 +5,8 @@ import { fetchQuiz } from "../actions/assignment";
 import QuizResultDisplay from "../components/QuizResultDisplay";
 import Alert from "../components/UI/Alert";
 import Spinner from "../components/UI/Spinner";
+import Banner from "../components/UI/Banner";
+import WinnerSVG from "../assets/svg/winner.svg";
 
 const QuizResult = () => {
   const dispatch = useDispatch();
@@ -35,6 +37,13 @@ const QuizResult = () => {
   }, []);
   return (
     <div>
+      <Banner
+        bannerBackground="greencheese"
+        SVGComponent={WinnerSVG}
+        heading="Result"
+        customText="View your performance"
+        // extraComponent={marksComponent}
+      />
       {loading ? (
         <Spinner />
       ) : error ? (

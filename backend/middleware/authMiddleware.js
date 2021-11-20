@@ -14,15 +14,10 @@ module.exports.protect = async (req, res, next) => {
       req.user = await User.findById(decoded.id).select("-password");
       next();
     } catch (error) {
-      console.error(error);
-      res.status(401);
-      throw new Error("Not Authorized");
+      res.status(401).send("Not authorised");
     }
   } else {
-    console.log("hereeeee***************");
-    res.status(401).json({
-      message: "Not Authorized!",
-    });
+    res.status(401).send("Not authorised");
     // throw new Error("Not Authorized");
   }
 };

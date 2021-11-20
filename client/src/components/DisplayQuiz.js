@@ -10,7 +10,10 @@ const DisplayQuiz = ({ questions, setUserSubmission, userSubmission }) => {
   return (
     <form className="flex justify-center flex-col items-center w-full">
       {questions.map((question, index) => (
-        <div className="bg-white w-1/2 p-2 rounded mt-4 p-4" key={index}>
+        <div
+          className="bg-white w-1/2 p-2 rounded mt-4 p-4 sm:w-full"
+          key={index}
+        >
           <div className="flex flex-row justify-between">
             <h3 className="font-semibold text-lg mr-4">
               <span>

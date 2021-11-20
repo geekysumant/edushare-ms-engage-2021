@@ -6,7 +6,7 @@ import QuizResultDisplay from "../components/QuizResultDisplay";
 import Alert from "../components/UI/Alert";
 import Banner from "../components/UI/Banner";
 import Spinner from "../components/UI/Spinner";
-import QuizSVG from "../assets/svg/quiz.svg";
+import WinnerSVG from "../assets/svg/winner.svg";
 
 const ViewUserQuizSubmission = () => {
   const dispatch = useDispatch();
@@ -40,7 +40,7 @@ const ViewUserQuizSubmission = () => {
   return (
     <div>
       <Banner
-        SVGComponent={QuizSVG}
+        SVGComponent={WinnerSVG}
         heading="Result"
         bannerBackground="greencheese"
         customText="View individual student's results"
