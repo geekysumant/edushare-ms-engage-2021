@@ -7,20 +7,21 @@ const HeaderClass = () => {
 
   const classId = urlPath.split("/")[3];
   return (
-    <header className="flex flex-row justify-between  bg-white shadow-xl">
-      <div className="mx-4 h-16 flex items-center">
+    <header className="flex flex-row items-center justify-between  bg-white shadow-xl">
+      <div className="mx-4 h-16 flex items-center sm:mx-0 sm:w-16 sm:justify-center sm:ml-2">
         <Link
           to="/home"
-          className="flex flex-row items-center text-lg font-bold ml-8"
+          className="flex flex-row items-center text-lg font-bold ml-8 sm:w-full sm:mx-auto"
         >
           <img
-            className="mr-2"
+            className=""
             src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-color-vitaly-gorbachev/60/000000/external-online-class-online-learning-vitaliy-gorbachev-lineal-color-vitaly-gorbachev.png"
           />
           <p
             style={{
               fontFamily: ["Montserrat", "sans-serif"],
             }}
+            className="sm:hidden"
           >
             edushare
           </p>

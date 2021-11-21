@@ -18,8 +18,8 @@ const Container = styled.div`
 const StyledVideo = styled.video`
   border-radius: 8px;
   margin-bottom: 20px;
-  width: 600px;
-  height: 400px;
+  width: 100%;
+  height: 100%;
 `;
 
 const Video = (props) => {
@@ -30,8 +30,8 @@ const Video = (props) => {
       ref.current.srcObject = stream;
     });
   }, []);
-
-  return <StyledVideo playsInline autoPlay ref={ref} />;
+  return <video playsInline autoPlay ref={ref} />;
+  // return <StyledVideo playsInline autoPlay ref={ref} />;
 };
 
 const videoConstraints = {
@@ -205,27 +205,31 @@ const Meet = (props) => {
   };
   return (
     <>
-      <div className="flex flex-row justify-evenly flex-wrap mt-16 w-full sm:flex-col">
+      <div className="flex flex-row justify-evenly items-center flex-wrap mt-16 w-full sm:flex-col">
         <div
-          className="flex flex-col items-center "
-          style={{
-            width: "600px",
-            height: "400px",
-          }}
+          className="flex flex-col items-center w-96 sm:w-48 "
+          // style={{
+          //   width: "600px",
+          //   height: "400px",
+          // }}
         >
-          <StyledVideo muted ref={userVideo} autoPlay playsInline />
-          <p>{userInfo.name}</p>
+          <div className="sm:w-full ">
+            <StyledVideo muted ref={userVideo} autoPlay playsInline />
+          </div>
+          <p>You</p>
         </div>
         {peers.map((peer, index) => {
           return (
             <div
-              className="flex flex-col items-center "
-              style={{
-                height: "400px",
-                width: "600px",
-              }}
+              className="flex flex-col items-center w-96 sm:w-48 "
+              // style={{
+              //   height: "400px",
+              //   width: "600px",
+              // }}
             >
-              <Video key={index} peer={peer} />
+              <div className="sm:w-full ">
+                <Video key={index} peer={peer} />
+              </div>
               <p>{usersInCall[index]}</p>
             </div>
           );

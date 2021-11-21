@@ -17,7 +17,7 @@ const Announcement = () => {
       </div>
       <div className="w-full mx-2">
         <textarea
-          className="form-textarea mt-1 block w-full border border-blue-300 my-4 rounded-2xl p-2"
+          className="form-textarea mt-1 block w-full border border-blue-300 my-4 rounded-lg p-2"
           rows="3"
           placeholder="Make a new announcement"
         ></textarea>

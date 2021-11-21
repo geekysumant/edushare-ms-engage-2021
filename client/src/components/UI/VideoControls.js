@@ -14,7 +14,7 @@ const VideoControls = ({
   callEnd,
 }) => {
   return (
-    <div className="bg-gray-200 my-8 w-1/3 h-20 flex justify-evenly items-center rounded mx-auto shadow-lg sm:w-full">
+    <div className="bg-gray-200 my-8 w-1/3 h-20 flex justify-evenly items-center rounded mx-auto shadow-lg sm:w-4/5">
       <div className="rounded-full w-12 h-12 bg-white text-center text-xl flex items-center">
         {webcamState ? (
           <Icon

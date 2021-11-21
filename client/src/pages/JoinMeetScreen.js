@@ -83,7 +83,7 @@ const JoinMeetScreen = () => {
 
               <span
                 onClick={navigator.clipboard.writeText(
-                  `stormy-hamlet-67915.herokuapp.com/join/meet?roomId=${roomId}`
+                  `https://stormy-hamlet-67915.herokuapp.com/join/meet?roomId=${roomId}`
                 )}
                 className="cursor-pointer"
               >
@@ -97,8 +97,8 @@ const JoinMeetScreen = () => {
         <Spinner />
       ) : (
         <video
-          width="450px"
-          height="240px"
+          width="384px"
+          height="384px"
           className="video-ref"
           src=""
           ref={userVideo}
