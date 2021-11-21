@@ -19,6 +19,8 @@ import AssignmentScreen from "./pages/AssignmentScreen";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { checkAuthentication } from "./actions/user";
+import JoinMeetScreen from "./pages/JoinMeetScreen";
+import Meet from "./pages/Meet";
 
 function App() {
   const location = useLocation();
@@ -29,14 +31,14 @@ function App() {
   const onHomeScreen = location.pathname.startsWith("/home");
   const onWelcomeScreen = location.pathname.startsWith("/welcome");
 
-  useEffect(() => {
-    dispatch(checkAuthentication());
-  }, []);
-  useEffect(() => {
-    if (!isAuthenticated) {
-      return navigate("/welcome");
-    }
-  }, [isAuthenticated]);
+  // useEffect(() => {
+  //   dispatch(checkAuthentication());
+  // }, []);
+  // useEffect(() => {
+  //   if (!isAuthenticated) {
+  //     return navigate("/welcome");
+  //   }
+  // }, [isAuthenticated]);
   return (
     <div className="App">
       {onWelcomeScreen ? (
@@ -53,6 +55,8 @@ function App() {
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/login/teacher" element={<TeacherLogin />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/join/meet" element={<JoinMeetScreen />} />
+        <Route path="/join/meet/:roomID" element={<Meet />} />
         <Route
           path="/enter/class/:classId"
           exact

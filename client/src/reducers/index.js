@@ -1,4 +1,4 @@
-import { userLogin } from "./users";
+import { userLogin, userVideoReducer } from "./users";
 import {
   createClassReducer,
   fetchClassesReducer,
@@ -40,6 +40,7 @@ export default combineReducers({
   uploadAssignmentSubmission: createAssignmentSubmissionReducer,
   downloadAssignment: downloadAssignmentReducer,
   downloadAssignmentSubmission: downloadAssignmentSubmissionReducer,
+  userVideo: userVideoReducer,
   //not needed questions state
   // allQuestions: addQuestionReducer,
 });

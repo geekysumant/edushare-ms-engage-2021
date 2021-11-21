@@ -2,6 +2,9 @@ import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_FAIL,
   USER_LOGIN_SUCCESS,
+  USER_VIDEO_REQUEST,
+  USER_VIDEO_SUCCESS,
+  USER_VIDEO_FAIL,
 } from "../actions/actionTypes";
 
 const loginInitialState = {
@@ -25,6 +28,32 @@ export const userLogin = (state = loginInitialState, action) => {
     case USER_LOGIN_FAIL:
       return {
         isAuthenticated: false,
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+const initialUserVideoState = {
+  loading: false,
+};
+
+export const userVideoReducer = (state = initialUserVideoState, action) => {
+  switch (action.type) {
+    case USER_VIDEO_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case USER_VIDEO_SUCCESS:
+      return {
+        loading: false,
+        stream: action.payload,
+      };
+    case USER_VIDEO_FAIL:
+      return {
         loading: false,
         error: action.payload,
       };
