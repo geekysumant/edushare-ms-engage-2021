@@ -162,6 +162,17 @@ const Meet = (props) => {
       initiator: false,
       trickle: false,
       stream,
+      config: {
+        iceServers: [
+          { urls: "stun:stun.l.google.com:19302" },
+          { urls: "stun:global.stun.twilio.com:3478?transport=udp" },
+          {
+            urls: "turn:numb.viagenie.ca",
+            credential: "!H6fD9KUZGMW@XZ",
+            username: "sumantk778@gmail.com",
+          },
+        ],
+      },
     });
 
     peer.on("signal", (signal) => {
