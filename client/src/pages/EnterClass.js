@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { fetchEnterClassDetails } from "../actions/class";
 import Announcement from "../components/UI/Announcement";
@@ -10,6 +10,10 @@ import CreateMcq from "./CreateMcq";
 import BannerSVG from "../assets/svg/online_class.svg";
 import Button from "@material-tailwind/react/Button";
 import { v1 as uuid } from "uuid";
+import { fetchAnnouncements } from "../actions/announcement";
+import Spinner from "../components/UI/Spinner";
+import Alert from "../components/UI/Alert";
+import UserAnnouncement from "../components/UI/UserAnnouncement";
 // import Button from "../components/UI/Button/Button";
 
 const EnterClass = () => {
@@ -19,9 +23,18 @@ const EnterClass = () => {
   const navigate = useNavigate();
 
   const [roomId, setRoomId] = useState("");
+
+  const { loading, error, announcements } = useSelector(
+    (state) => state.fetchAnnouncements
+  );
+  const { isAuthenticated } = useSelector((state) => state.userDetails);
   useEffect(() => {
-    const classId = location.pathname.split("/")[3];
+    if (!isAuthenticated) {
+      return navigate("/welcome");
+    }
+    const classId = urlParams.classId;
     dispatch(fetchEnterClassDetails(classId));
+    dispatch(fetchAnnouncements(classId));
   }, []);
 
   const joinMeetScreen = () => {
@@ -29,7 +42,6 @@ const EnterClass = () => {
   };
 
   const createMeetScreen = () => {
-    const rooomId = uuid();
     navigate("/join/meet");
   };
   return (
@@ -40,8 +52,8 @@ const EnterClass = () => {
         heading="Welcome"
         // customText=""
       />
-      <div className="flex flex-row justify-around items-center p-6 sm:flex-col">
-        <div className="flex flex-col items-center shadow-lg p-6 bg-white rounded-lg">
+      <div className="flex flex-row justify-around p-6 sm:flex-col sm:p-2">
+        <div className="flex flex-col items-center shadow-lg p-6 bg-white h-56 rounded-lg sm:mb-4">
           <div className="flex flex-col items-center">
             <input
               className="w-full shadow appearance-none border rounded w-full my-2 py-2 px-3 mx-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -71,8 +83,27 @@ const EnterClass = () => {
             Create new meet
           </Button>
         </div>
+        <div className="shadow-lg rounded bg-white w-2/3 sm:w-full">
+          <Announcement />
 
-        <Announcement />
+          <div className="flex flex-col p-4 sm:p-0">
+            {loading ? (
+              <Spinner />
+            ) : error ? (
+              <Alert color="red" message={error} />
+            ) : (
+              announcements &&
+              announcements.map((announcement) => (
+                <UserAnnouncement
+                  name={announcement.user.name}
+                  picture={announcement.user.picture}
+                  content={announcement.content}
+                  time={announcement.createdAt}
+                />
+              ))
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

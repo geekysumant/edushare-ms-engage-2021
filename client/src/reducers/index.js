@@ -20,6 +20,10 @@ import {
   fetchUsersQuizSubmissionReducer,
   submitQuizReducer,
 } from "./assignment";
+import {
+  createNewAnnouncementReducer,
+  fetchAnnouncementsReducer,
+} from "./announcement";
 
 export default combineReducers({
   userDetails: userLogin,
@@ -28,6 +32,8 @@ export default combineReducers({
   // fetchClasses: fetchClassesReducer,
   createClass: createClassReducer,
   joinClass: joinClassReducer,
+  fetchAnnouncements: fetchAnnouncementsReducer,
+  createNewAnnouncement: createNewAnnouncementReducer,
   assignmentDetails: fetchAssignmentsReducer,
   enterClassDetails: fetchEnterClassDetailsReducer,
   createQuiz: createQuizReducer,
