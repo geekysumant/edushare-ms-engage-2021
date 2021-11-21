@@ -17,12 +17,16 @@ export default function CreateClassForm({
   const [className, setClassName] = useState("");
   const [subject, setSubject] = useState("");
   const [room, setRoom] = useState("");
+  const [createClassError, setCreateClassError] = useState("");
 
   const { loading, success, error } = useSelector((state) => state.createClass);
   const dispatch = useDispatch();
 
   const onCreateHandler = () => {
-    if (!className && !subject && !room) return;
+    if (!className || !subject || !room) {
+      setCreateClassError("One or more fields are invalid");
+      return;
+    }
     dispatch(createClass(className, subject, room));
   };
 
@@ -81,6 +85,8 @@ export default function CreateClassForm({
             />
           ) : loading ? (
             <Spinner text="Creating class" />
+          ) : createClassError ? (
+            <Alert color={"red"} message={createClassError} />
           ) : error ? (
             <Alert color={"red"} message={error} />
           ) : null}

@@ -9,6 +9,7 @@ const AssignmentBanner = ({
   assignmentId,
   userInfo,
   createdBy,
+  time,
 }) => {
   const location = useLocation();
   const urlPath = location.pathname;
@@ -24,7 +25,9 @@ const AssignmentBanner = ({
           />
           <div class="flex items-center justify-between w-full">
             <h2 class="text-lg font-semibold text-gray-900 -mt-1">{title} </h2>
-            <small class="text-sm text-gray-700">22h ago</small>
+            <small class="text-sm text-gray-700">
+              {new Date(time).toDateString()}
+            </small>
           </div>
         </div>
 

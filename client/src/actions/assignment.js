@@ -62,20 +62,20 @@ export const fetchAssignments = (classId) => {
           assignments: data.data.assignments,
         },
       });
-      dispatch({
-        type: FETCH_CLASS_DETAILS_SUCCESS,
-        payload: data.data,
-      });
+      // dispatch({
+      //   type: FETCH_CLASS_DETAILS_SUCCESS,
+      //   payload: data.data,
+      // });
     } catch (err) {
       dispatch({
         type: FETCH_ASSIGNMENTS_FAIL,
-        payload: err.message,
+        payload: err.response.data,
       });
     }
   };
 };
 
-export const createQuiz = (classId, questions) => {
+export const createQuiz = (classId, questions, title) => {
   return async (dispatch, getState) => {
     try {
       dispatch({
@@ -93,6 +93,7 @@ export const createQuiz = (classId, questions) => {
         "/api/v1/quiz/create",
         {
           classId,
+          title,
           questions,
         },
         config
@@ -138,6 +139,7 @@ export const fetchQuiz = (quizId) => {
           submission: data.data.submission.submission
             ? data.data.submission.submission
             : [],
+          title: data.data.title,
           totalQuizScore: data.data.totalQuizScore,
           totalUserScore: data.data.totalUserScore,
         },

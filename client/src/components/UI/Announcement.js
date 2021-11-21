@@ -49,7 +49,7 @@ const Announcement = () => {
           ) : error ? (
             <Alert color="red" message={error} />
           ) : (
-            <Alert color="green" message="Announcement created!" />
+            success && <Alert color="green" message="Announcement created!" />
           )}
         </div>
       </div>

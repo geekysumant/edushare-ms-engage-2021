@@ -127,6 +127,9 @@ export const fetchEnterClassDetailsReducer = (
       return {
         loading: false,
         createdBy: action.payload.createdBy,
+        room: action.payload.room,
+        subject: action.payload.subject,
+        className: action.payload.className,
       };
     case FETCH_CLASS_DETAILS_FAIL:
       return {

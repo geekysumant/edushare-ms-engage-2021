@@ -1,5 +1,5 @@
 import React from "react";
-import moment from "moment";
+import DeleteIcon from "@mui/icons-material/Delete";
 const UserAnnouncement = ({ picture, name, time, content }) => {
   return (
     <div className="flex bg-white shadow-lg rounded-lg mx-4 my-2">
@@ -14,11 +14,14 @@ const UserAnnouncement = ({ picture, name, time, content }) => {
             <h2 className="text-lg font-semibold text-gray-900 -mt-1">
               {name}{" "}
             </h2>
-            <small className="text-sm text-gray-700">
-              {/* {moment().(new Date(time)).fromNow()} */}
-              {new Date(time).toDateString()}
-              {/* {moment().format().fromNow()} */}
-            </small>
+            <div className="flex justify-between items-center sm:w-full">
+              <small className="text-sm text-gray-700">
+                {new Date(time).toDateString()}
+              </small>
+              <span>
+                <DeleteIcon />
+              </span>
+            </div>
           </div>
           <p className="mt-3 text-gray-700 text-sm">{content}</p>
         </div>

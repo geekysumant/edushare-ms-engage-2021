@@ -14,7 +14,8 @@ import { fetchAnnouncements } from "../actions/announcement";
 import Spinner from "../components/UI/Spinner";
 import Alert from "../components/UI/Alert";
 import UserAnnouncement from "../components/UI/UserAnnouncement";
-// import Button from "../components/UI/Button/Button";
+import { Link } from "react-router-dom";
+import { fetchAssignments } from "../actions/assignment";
 
 const EnterClass = () => {
   const urlParams = useParams();
@@ -28,13 +29,26 @@ const EnterClass = () => {
     (state) => state.fetchAnnouncements
   );
   const { isAuthenticated } = useSelector((state) => state.userDetails);
+  const { className, room, cratedBy, subject } = useSelector(
+    (state) => state.enterClassDetails
+  );
+  const {
+    quizzes,
+    assignments,
+    loading: fetchAssignmentsLoading,
+    error: fetchAssignmentsError,
+  } = useSelector((state) => state.assignmentDetails);
+
+  const classId = urlParams.classId;
+
   useEffect(() => {
     if (!isAuthenticated) {
       return navigate("/welcome");
     }
-    const classId = urlParams.classId;
+
     dispatch(fetchEnterClassDetails(classId));
     dispatch(fetchAnnouncements(classId));
+    dispatch(fetchAssignments(classId));
   }, []);
 
   const joinMeetScreen = () => {
@@ -49,40 +63,79 @@ const EnterClass = () => {
       <Banner
         bannerBackground="tornado"
         SVGComponent={BannerSVG}
-        heading="Welcome"
-        // customText=""
+        heading={className ? className : "Loading...."}
+        customText={subject && room && `${subject}, ${room}`}
       />
       <div className="flex flex-row justify-around p-6 sm:flex-col sm:p-2">
-        <div className="flex flex-col items-center shadow-lg p-6 bg-white h-56 rounded-lg sm:mb-4">
-          <div className="flex flex-col items-center">
-            <input
-              className="w-full shadow appearance-none border rounded w-full my-2 py-2 px-3 mx-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="text"
-              placeholder="Enter meet id"
-              value={roomId}
-              onChange={(e) => setRoomId(e.target.value)}
-            />
-            <Button
-              color="yellow"
-              ripple="light"
-              onClick={joinMeetScreen}
-              buttonType="outline"
-              className="w-full"
-            >
-              Join meet
-            </Button>
+        <div className="flex flex-col">
+          <div className="flex flex-col items-center shadow-lg p-6 bg-white h-56 rounded-lg sm:mb-4 mb-2">
+            <div className="flex flex-col items-center">
+              <input
+                className="w-full shadow appearance-none border rounded my-2 py-2 px-3 mx-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="text"
+                placeholder="Enter meet id"
+                value={roomId}
+                onChange={(e) => setRoomId(e.target.value)}
+              />
+              <Button
+                color="yellow"
+                ripple="light"
+                onClick={joinMeetScreen}
+                buttonType="outline"
+                className="w-full"
+              >
+                Join meet
+              </Button>
+            </div>
+            <p>OR</p>
+            <div className="w-full">
+              <Button
+                color="yellow"
+                ripple="light"
+                onClick={createMeetScreen}
+                buttonType="outline"
+                className="w-full"
+              >
+                Create new meet
+              </Button>
+            </div>
           </div>
-          <p>OR</p>
-          <Button
-            color="yellow"
-            ripple="light"
-            onClick={createMeetScreen}
-            buttonType="outline"
-            className="w-full"
-          >
-            Create new meet
-          </Button>
+          <div className="flex flex-col items-start  shadow-lg p-6 bg-white h-56 rounded-lg sm:mb-4 ">
+            <h1
+              className="w-full mb-2"
+              style={{
+                borderBottom: "2px solid black",
+              }}
+            >
+              Pending tasks
+            </h1>
+
+            <div className="flex flex-col">
+              {fetchAssignmentsLoading ? (
+                <div className="flex items-center justify-center w-full">
+                  <Spinner />
+                </div>
+              ) : fetchAssignmentsError ? (
+                <div className="w-60">
+                  <Alert color="red" message={fetchAssignmentsError} />
+                </div>
+              ) : (
+                <>
+                  {quizzes &&
+                    quizzes.map((quiz) => (
+                      <Link
+                        className="underline text-blue-400"
+                        to={`/enter/class/${classId}/classwork/quiz/${quiz._id}`}
+                      >
+                        {quiz.title}
+                      </Link>
+                    ))}
+                </>
+              )}
+            </div>
+          </div>
         </div>
+
         <div className="shadow-lg rounded bg-white w-2/3 sm:w-full">
           <Announcement />
 

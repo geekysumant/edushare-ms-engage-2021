@@ -9,12 +9,14 @@ import { useLocation, useNavigate } from "react-router";
 import Spinner from "../components/UI/Spinner";
 import Alert from "../components/UI/Alert";
 import QuestionSVG from "../assets/svg/question.svg";
+import AddQuestionSVG from "../assets/svg/add_question.svg";
 
 const CreateMcq = () => {
   const [showAddQuestion, setShowAddQuestion] = useState(false);
   const { loading, success, error } = useSelector((state) => state.createQuiz);
   const [totalMarks, setTotalMarks] = useState(0);
   const [questions, setQuestions] = useState([]);
+  const [title, setTitle] = useState("");
 
   const dispatch = useDispatch();
   const location = useLocation();
@@ -22,17 +24,15 @@ const CreateMcq = () => {
 
   const classId = location.pathname.split("/")[3];
 
-  useEffect(() => {
-    if (success) {
-      return navigate(-1);
-    }
-  }, [success]);
   const addQuestionHandler = () => {
     setShowAddQuestion(true);
   };
 
   const createQuizHandler = () => {
-    dispatch(createQuiz(classId, questions));
+    if (questions.length === 0) {
+      return;
+    }
+    dispatch(createQuiz(classId, questions, title));
   };
   return (
     <>
@@ -54,7 +54,23 @@ const CreateMcq = () => {
 
         <div className="bg-white py-2 flex flex-col items-center border rounded">
           <h2 className="font-bold text-2xl my-2">List of Question(s):</h2>
-
+          <div className="flex flex-row items-center justify-between">
+            <div className="flex flex-row my-4 sm:w-full w-1/2 items-center justify-center">
+              <p>Quiz Title:</p>
+              <input
+                className="shadow appearance-none border rounded py-2 px-3 mx-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+            <div>
+              <h2 className="font-medium">
+                Total Questions: {questions.length}
+              </h2>
+              <h2 className="font-medium">Total Marks: {totalMarks} </h2>
+            </div>
+          </div>
           <div className="flex flex-row  justify-center min-w-full sm:flex-col sm:items-center">
             <div className="">
               {questions.length > 0 &&
@@ -71,6 +87,11 @@ const CreateMcq = () => {
                   );
                 })}
               {error && <Alert color={"red"} message={error} />}
+              {questions && questions.length === 0 && (
+                <div className="w-1/2 mx-auto">
+                  <img src={AddQuestionSVG} />
+                </div>
+              )}
               <div className="flex flex-row justify-between w-full px-6 sm:flex-col sm:items-center">
                 <Button
                   color="indigo"
@@ -95,12 +116,13 @@ const CreateMcq = () => {
                   </Button>
                 )}
               </div>
-            </div>
-            <div>
-              <h2 className="font-medium">
-                Total Questions: {questions.length}
-              </h2>
-              <h2 className="font-medium">Total Marks: {totalMarks} </h2>
+              <div className="my-4">
+                {error ? (
+                  <Alert color="red" message={error} />
+                ) : (
+                  success && <Alert color="green" message="Quiz created!" />
+                )}
+              </div>
             </div>
           </div>
         </div>

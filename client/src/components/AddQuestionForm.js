@@ -21,14 +21,13 @@ export default function AddQuestionForm({
   const [error, setError] = useState("");
   const [correctMarks, setCorrectMarks] = useState(1);
   const [incorrectMarks, setIncorrectMarks] = useState(0);
-
-  const currentOptionRef = useRef();
+  const [optionDesc, setOptionDesc] = useState("");
 
   const resetFields = () => {
     setQuestion("");
     setOptions([]);
     setOptionNumber(1);
-    currentOptionRef.current.value = "";
+    setOptionDesc("");
     setCorrectOption(-1);
     setCorrectMarks(1);
     setIncorrectMarks(0);
@@ -55,8 +54,9 @@ export default function AddQuestionForm({
   };
   const addOptionsHandler = (e) => {
     e.preventDefault();
+    setOptionDesc("");
     const currentOption = {
-      option: currentOptionRef.current.value,
+      option: optionDesc,
       optionNumber: optionNumber,
     };
     setOptions((options) => [...options, currentOption]);
@@ -122,7 +122,8 @@ export default function AddQuestionForm({
                 className="w-full shadow appearance-none border rounded w-full py-2 px-3 mx-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 type="text"
                 placeholder="Option description"
-                ref={currentOptionRef}
+                value={optionDesc}
+                onChange={(e) => setOptionDesc(e.target.value)}
               />
 
               <Button

@@ -3,7 +3,14 @@ import Button from "@material-tailwind/react/Button";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router";
 
-const QuizBanner = ({ questions, quizId, userInfo, createdBy }) => {
+const QuizBanner = ({
+  questions,
+  quizId,
+  userInfo,
+  createdBy,
+  title,
+  time,
+}) => {
   const location = useLocation();
   const urlPath = location.pathname;
   const classId = urlPath.split("/")[3];
@@ -17,10 +24,10 @@ const QuizBanner = ({ questions, quizId, userInfo, createdBy }) => {
             alt="avatar"
           />
           <div class="flex items-center justify-between w-full">
-            <h2 class="text-lg font-semibold text-gray-900 -mt-1">
-              Quiz Name{" "}
-            </h2>
-            <small class="text-sm text-gray-700">22h ago</small>
+            <h2 class="text-lg font-semibold text-gray-900 -mt-1">{title}</h2>
+            <small class="text-sm text-gray-700">
+              {new Date(time).toDateString()}
+            </small>
           </div>
         </div>
         <div class="flex flex-col w-full">

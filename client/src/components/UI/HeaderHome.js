@@ -45,7 +45,7 @@ const HeaderHome = () => {
             buttonType="outline"
             className="p-0 h-8 mx-2 sm:my-2"
           >
-            Create class
+            Join class
           </Button>
 
           <GoogleLogout

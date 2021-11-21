@@ -55,12 +55,15 @@ const TabComponent = ({ categories, userInfo, createdBy }) => {
                       quizId={quiz._id}
                       userInfo={userInfo}
                       createdBy={createdBy}
+                      title={quiz.title}
+                      time={quiz.createdAt}
                     />
                   ) : (
                     <AssignmentBanner
                       title={quiz.title}
                       marks={quiz.marks}
                       assignmentId={quiz._id}
+                      time={quiz.createdAt}
                     />
                   )}
                 </div>

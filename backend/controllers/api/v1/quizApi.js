@@ -11,10 +11,11 @@ const Assignment = require("../../../models/Assignment.js");
 const path = require("path");
 const AssignmentSubmission = require("../../../models/AssignmentSubmission");
 const { uploadFile, downloadFile } = require("../../../config/s3");
+const { INVALID_CLASS_ID } = require("../../../utils/Constants");
 
 module.exports.createQuiz = async (req, res) => {
   try {
-    const { classId, questions } = req.body;
+    const { classId, questions, title } = req.body;
     console.log(questions);
     const user = req.user.id;
 
@@ -23,6 +24,7 @@ module.exports.createQuiz = async (req, res) => {
       throw new Error("You are not authorised to perform this action.");
     }
     const createdQuiz = await Quiz.create({
+      title,
       createdBy: req.user._id,
       classId,
       questions,
@@ -42,9 +44,33 @@ module.exports.createQuiz = async (req, res) => {
 module.exports.fetchAssignments = async (req, res) => {
   try {
     const classId = req.params.classId;
+
+    const isValidClassId = mongoose.Types.ObjectId.isValid(classId);
+    if (!isValidClassId) {
+      const error = new Error(INVALID_CLASS_ID);
+      error.code = 404;
+      throw error;
+    }
     const allAssignments = await Class.findById(classId).populate(
       "quizzes assignments"
     );
+
+    allAssignments.quizzes.sort((a, b) => {
+      if (
+        new Date(a.createdAt).toISOString() >
+        new Date(b.createdAt).toISOString()
+      )
+        return -1;
+      else return 1;
+    });
+    allAssignments.assignments.sort((a, b) => {
+      if (
+        new Date(a.createdAt).toISOString() >
+        new Date(b.createdAt).toISOString()
+      )
+        return -1;
+      else return 1;
+    });
 
     res.json({
       data: {
@@ -54,7 +80,9 @@ module.exports.fetchAssignments = async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(400).send("Error!");
+    if (err.code) {
+      res.status(err.code).send(err.message);
+    } else res.status(400).send("Error!");
   }
 };
 
@@ -86,6 +114,7 @@ module.exports.fetchQuiz = async (req, res) => {
         totalQuizScore,
         totalUserScore: hasSubmitted ? quizSubmissionOfUser.totalScore : 0,
         hasSubmitted,
+        title: requestedQuiz.title,
         createdBy: requestedQuiz.createdBy,
         questions: requestedQuiz.questions,
         submission: quizSubmissionOfUser ? quizSubmissionOfUser : [],

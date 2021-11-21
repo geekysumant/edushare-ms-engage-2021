@@ -115,10 +115,16 @@ module.exports.fetchClass = async (req, res) => {
   try {
     const classId = req.params.classId;
 
-    const classCreatedBy = await Class.findById(classId, "createdBy");
+    const classDetails = await Class.findById(
+      classId,
+      "createdBy className subject room"
+    );
 
     res.json({
-      createdBy: classCreatedBy.createdBy,
+      createdBy: classDetails.createdBy,
+      className: classDetails.className,
+      subject: classDetails.subject,
+      room: classDetails.room,
     });
   } catch (err) {
     res.status(400).send({

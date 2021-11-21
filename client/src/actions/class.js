@@ -141,6 +141,9 @@ export const fetchEnterClassDetails = (classId) => {
         type: FETCH_CLASS_DETAILS_SUCCESS,
         payload: {
           createdBy: data.createdBy,
+          room: data.room,
+          subject: data.subject,
+          className: data.className,
         },
       });
     } catch (err) {

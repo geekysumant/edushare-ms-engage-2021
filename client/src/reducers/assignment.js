@@ -35,8 +35,9 @@ import {
 } from "../actions/actionTypes";
 
 const initialAssignmentState = {
-  loading: true,
+  loading: false,
   quizzes: [],
+  assignments: [],
 };
 
 export const fetchAssignmentsReducer = (
@@ -106,6 +107,7 @@ export const fetchQuizReducer = (state = initialFetchQuizState, action) => {
         loading: false,
         questions: [...action.payload.questions],
         createdBy: action.payload.createdBy,
+        title: action.payload.title,
         hasSubmitted: action.payload.hasSubmitted,
         submission: [...action.payload.submission],
         totalQuizScore: action.payload.totalQuizScore,

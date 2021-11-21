@@ -17,6 +17,7 @@ const QuizScreen = () => {
   const navigate = useNavigate();
 
   const {
+    title,
     questions,
     createdBy,
     loading,
@@ -97,7 +98,7 @@ const QuizScreen = () => {
       <Banner
         bannerBackground="tornado"
         SVGComponent={BannerSVG}
-        heading="Quiz Name!"
+        heading={title}
         customText="Take the quiz, and get results within seconds"
       />
       {/* only for students: */}
