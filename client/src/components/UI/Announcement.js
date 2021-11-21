@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 const Announcement = () => {
   const { userInfo } = useSelector((state) => state.userDetails);
   return (
-    <div className="flex flex-row justify-between p-6 w-2/4 mx-auto items-center">
+    <div className="flex flex-row justify-between p-6 w-3/5 items-center sm:w-full">
       <div className="mx-2">
         <div className="w-12 h-12">
           <img

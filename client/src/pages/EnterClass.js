@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { fetchEnterClassDetails } from "../actions/class";
@@ -10,6 +10,7 @@ import CreateMcq from "./CreateMcq";
 import BannerSVG from "../assets/svg/online_class.svg";
 import Button from "@material-tailwind/react/Button";
 import { v1 as uuid } from "uuid";
+// import Button from "../components/UI/Button/Button";
 
 const EnterClass = () => {
   const urlParams = useParams();
@@ -17,12 +18,17 @@ const EnterClass = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const [roomId, setRoomId] = useState("");
   useEffect(() => {
     const classId = location.pathname.split("/")[3];
     dispatch(fetchEnterClassDetails(classId));
   }, []);
 
   const joinMeetScreen = () => {
+    navigate(`/join/meet?roomId=${roomId}`);
+  };
+
+  const createMeetScreen = () => {
     const rooomId = uuid();
     navigate("/join/meet");
   };
@@ -34,15 +40,38 @@ const EnterClass = () => {
         heading="Welcome"
         // customText=""
       />
-      <div className="flex flex-row justify-between items-center">
-        <Button
-          color="green"
-          ripple="light"
-          onClick={joinMeetScreen}
-          className="ml-16"
-        >
-          Join class
-        </Button>
+      <div className="flex flex-row justify-around items-center p-6 sm:flex-col">
+        <div className="flex flex-col items-center shadow-lg p-6 bg-white rounded-lg">
+          <div className="flex flex-col items-center">
+            <input
+              className="w-full shadow appearance-none border rounded w-full my-2 py-2 px-3 mx-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              type="text"
+              placeholder="Enter meet id"
+              value={roomId}
+              onChange={(e) => setRoomId(e.target.value)}
+            />
+            <Button
+              color="yellow"
+              ripple="light"
+              onClick={joinMeetScreen}
+              buttonType="outline"
+              className="w-full"
+            >
+              Join meet
+            </Button>
+          </div>
+          <p>OR</p>
+          <Button
+            color="yellow"
+            ripple="light"
+            onClick={createMeetScreen}
+            buttonType="outline"
+            className="w-full"
+          >
+            Create new meet
+          </Button>
+        </div>
+
         <Announcement />
       </div>
     </div>

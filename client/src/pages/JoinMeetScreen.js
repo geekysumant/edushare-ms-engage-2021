@@ -2,8 +2,9 @@ import Button from "@material-tailwind/react/Button";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { v1 as uuid } from "uuid";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import Spinner from "../components/UI/Spinner";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const JoinMeetScreen = () => {
   const userVideo = useRef();
@@ -12,6 +13,11 @@ const JoinMeetScreen = () => {
   const [stream, setStream] = useState(null);
   const { isAuthenticated } = useSelector((state) => state.userDetails);
   const [mediaLoading, setMediaLoading] = useState(true);
+
+  const search = window.location.search;
+  const params = new URLSearchParams(search);
+  const roomId = params.get("roomId") ? params.get("roomId") : uuid();
+  const cameFromCreateMeet = !params.get("roomId");
 
   const setupMediaStream = () => {
     navigator.mediaDevices
@@ -31,7 +37,6 @@ const JoinMeetScreen = () => {
       return navigate("/welcome");
     }
     setupMediaStream();
-
     return async () => {
       if (stream) {
         stream.getVideoTracks()[0].enabled = false;
@@ -42,7 +47,6 @@ const JoinMeetScreen = () => {
   }, []);
 
   const joinMeet = async () => {
-    const roomId = uuid();
     stream.getVideoTracks()[0].enabled = false;
     stream.getAudioTracks()[0].enabled = false;
     await stream.getTracks().forEach((track) => track.stop());
@@ -55,13 +59,46 @@ const JoinMeetScreen = () => {
     return navigate("/home");
   };
   return (
-    <div className="flex flex-col items-center mt-16">
+    <div className="flex flex-col items-center mt-8">
+      {cameFromCreateMeet && (
+        <div className="border border-green-400 bg-green-100 p-4 mb-4 flex flex-col items-center">
+          <div>
+            <span>Share meet id for others to join: </span>
+            <span className="font-semibold">
+              <span className="mr-2">{roomId}</span>
+
+              <span
+                onClick={navigator.clipboard.writeText(roomId)}
+                className="cursor-pointer"
+              >
+                <ContentCopyIcon />{" "}
+              </span>
+            </span>
+          </div>
+          <p>OR</p>
+          <div>
+            <span>Copy link: </span>
+            <span className="font-semibold">
+              {/* <span className="mr-2">{`/join/meet?roomId=${roomId}`}</span> */}
+
+              <span
+                onClick={navigator.clipboard.writeText(
+                  `stormy-hamlet-67915.herokuapp.com/join/meet?roomId=${roomId}`
+                )}
+                className="cursor-pointer"
+              >
+                <ContentCopyIcon />{" "}
+              </span>
+            </span>
+          </div>
+        </div>
+      )}
       {mediaLoading ? (
         <Spinner />
       ) : (
         <video
-          width="40%"
-          height="30%"
+          width="450px"
+          height="240px"
           className="video-ref"
           src=""
           ref={userVideo}

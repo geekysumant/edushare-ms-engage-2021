@@ -1,7 +1,7 @@
 .Btn {
   width: 120px;
   color: black;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   border-radius: 4px;
   margin-left: 10px;
   height: 40px;

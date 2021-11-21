@@ -34,7 +34,6 @@ io.on("connection", (socket) => {
     const usersInThisRoom = users[roomID].filter(
       ({ userID, userName }) => userID !== socket.id
     );
-    console.log(usersInThisRoom);
 
     socket.emit("all users", usersInThisRoom);
   });
@@ -80,5 +79,4 @@ const PORT = process.env.PORT || 8080;
 server.listen(PORT, (err) => {
   if (err) console.log(err);
   console.log("Server up & running!");
-  // console.log(require("dotenv").config());
 });
