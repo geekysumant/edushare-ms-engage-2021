@@ -17,6 +17,7 @@ const Header = () => {
     if (isAuthenticated) {
       return navigate("/home");
     }
+    console.log(process.env);
   }, [isAuthenticated, navigate]);
   const onSuccessHandler = (res) => {
     console.log(res);
