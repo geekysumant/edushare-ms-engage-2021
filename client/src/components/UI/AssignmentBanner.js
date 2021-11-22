@@ -35,6 +35,7 @@ const AssignmentBanner = ({
           <div className="flex flex-row w-full justify-between mt-4 sm:flex-col sm:items-center">
             <p class="mt-3 text-gray-700 text-sm">Total marks : {marks}</p>
             <Link
+              className="sm:my-4"
               to={`/enter/class/${classId}/classwork/assignment/${assignmentId}`}
             >
               <Button color="indigo" ripple="light">

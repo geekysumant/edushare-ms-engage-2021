@@ -82,13 +82,15 @@ const AssignmentScreen = () => {
         {loading ? (
           <Spinner />
         ) : error ? (
-          <Alert color="red" message={error} />
+          <div className="w-4/5 mx-auto">
+            <Alert color="red" message={error} />
+          </div>
         ) : (
           success && (
             <div className="flex flex-row justify-between w-4/5 items-center mx-auto mt-8 bg-white p-8 rounded-lg sm:flex-col md:flex-row lg:flex-row sm:w-full sm:mx-auto sm:p-2">
               <div className="w-3/4">
                 {/* <h1 className="text-3xl text-yellow-600">{assignment.title}</h1> */}
-                <p className="text-sm text-gray-600">Teacher name</p>
+                <p className="text-sm text-gray-600">Assignment</p>
                 <p
                   className="text-sm"
                   style={{

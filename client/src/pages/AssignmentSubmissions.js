@@ -9,6 +9,7 @@ import { fetchEnterClassDetails } from "../actions/class";
 import Alert from "../components/UI/Alert";
 import Spinner from "../components/UI/Spinner";
 import UserCard from "../components/UI/UserCard";
+import NoSubmissionSVG from "../assets/svg/no_submission.svg";
 
 const QuizSubmissions = () => {
   const dispatch = useDispatch();
@@ -44,17 +45,31 @@ const QuizSubmissions = () => {
       ) : error ? (
         <Alert color="red" message={error} />
       ) : (
-        submissions &&
-        submissions.map((submission) => (
-          <UserCard
-            picture={submission.user.picture}
-            email={submission.user.email}
-            name={submission.user.name}
-            userId={submission.user._id}
-            classId={classId}
-            assignmentId={assignmentId}
-          />
-        ))
+        <>
+          {submissions &&
+            submissions.map((submission) => (
+              <UserCard
+                picture={submission.user.picture}
+                email={submission.user.email}
+                name={submission.user.name}
+                userId={submission.user._id}
+                classId={classId}
+                assignmentId={assignmentId}
+              />
+            ))}
+          {submissions && submissions.length === 0 && (
+            <div className="mx-auto h-56 w-56 my-16">
+              <img src={NoSubmissionSVG} />
+              <p
+                style={{
+                  fontFamily: ["Poppins", "sans-serif"],
+                }}
+              >
+                No submissions found
+              </p>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

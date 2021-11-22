@@ -16,6 +16,7 @@ import Alert from "../components/UI/Alert";
 import UserAnnouncement from "../components/UI/UserAnnouncement";
 import { Link } from "react-router-dom";
 import { fetchAssignments } from "../actions/assignment";
+import AnnouncementSVG from "../assets/svg/announcement.svg";
 
 const EnterClass = () => {
   const urlParams = useParams();
@@ -143,7 +144,9 @@ const EnterClass = () => {
             {loading ? (
               <Spinner />
             ) : error ? (
-              <Alert color="red" message={error} />
+              <div className="w-4/5 mx-auto">
+                <Alert color="red" message={error} />
+              </div>
             ) : (
               announcements &&
               announcements.map((announcement) => (
@@ -156,6 +159,19 @@ const EnterClass = () => {
               ))
             )}
           </div>
+          {announcements && announcements.length === 0 && (
+            <div
+              className="mx-auto w-60 h-60"
+              style={{
+                fontFamily: ["Poppins", "sans-serif"],
+              }}
+            >
+              <>
+                <img src={AnnouncementSVG} />
+                <p className="text-xs">Announce something to your class</p>
+              </>
+            </div>
+          )}
         </div>
       </div>
     </div>

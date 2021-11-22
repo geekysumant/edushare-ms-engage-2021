@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { checkAuthentication } from "./actions/user";
 import JoinMeetScreen from "./pages/JoinMeetScreen";
 import Meet from "./pages/Meet";
+import ViewUsersScreen from "./pages/ViewUsersScreen";
 
 function App() {
   const location = useLocation();
@@ -118,6 +119,11 @@ function App() {
           path="/enter/class/:classId/classwork/assignment/:assignmentId/submissions/:userId"
           exact
           element={<ViewUserAssignmentSubmission />}
+        />
+        <Route
+          path="/enter/class/:classId/people"
+          exact
+          element={<ViewUsersScreen />}
         />
       </Routes>
 

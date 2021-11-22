@@ -8,6 +8,9 @@ import {
   FETCH_CLASS_FAIL,
   FETCH_CLASS_REQUEST,
   FETCH_CLASS_SUCCESS,
+  FETCH_USERS_FAIL,
+  FETCH_USERS_REQUEST,
+  FETCH_USERS_SUCCESS,
   JOIN_CLASS_FAIL,
   JOIN_CLASS_REQUEST,
   JOIN_CLASS_SUCCESS,
@@ -132,6 +135,38 @@ export const fetchEnterClassDetailsReducer = (
         className: action.payload.className,
       };
     case FETCH_CLASS_DETAILS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+const initialFetchUsersState = {
+  loading: false,
+  usersInClass: [],
+  createdBy: {},
+};
+
+export const fetchUsersInClassReducer = (
+  state = initialFetchUsersState,
+  action
+) => {
+  switch (action.type) {
+    case FETCH_USERS_REQUEST:
+      return {
+        loading: true,
+      };
+    case FETCH_USERS_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        usersInClass: [...action.payload.usersInClass],
+        createdBy: action.payload.createdBy,
+      };
+    case FETCH_USERS_FAIL:
       return {
         loading: false,
         error: action.payload,

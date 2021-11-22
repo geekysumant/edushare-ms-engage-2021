@@ -83,6 +83,5 @@ module.exports.fetchAnnouncements = async (req, res) => {
     if (error.code) {
       res.status(error.code).send(error.message);
     } else res.status(500).send(INTERNAL_SERVER_ERROR);
-    console.log(error);
   }
 };

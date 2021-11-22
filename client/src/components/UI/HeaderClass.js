@@ -7,7 +7,12 @@ const HeaderClass = () => {
 
   const classId = urlPath.split("/")[3];
   return (
-    <header className="flex flex-row items-center justify-between  bg-white shadow-xl">
+    <header
+      className="flex flex-row items-center justify-between  bg-white shadow-xl font-semibold"
+      style={{
+        fontFamily: ["Montserrat", "sans-serif"],
+      }}
+    >
       <div className="mx-4 h-16 flex items-center sm:mx-0 sm:w-16 sm:justify-center sm:ml-2">
         <Link
           to="/home"
@@ -27,23 +32,23 @@ const HeaderClass = () => {
           </p>
         </Link>
       </div>
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-row justify-between mr-16 sm:mr-0">
         <NavLink
-          className="mx-4 h-16 flex items-center"
+          className="mx-8 h-16 flex items-center sm:mx-4"
           end
           to={`enter/class/${classId}`}
         >
           Feed
         </NavLink>
         <NavLink
-          className="mx-4 h-16 flex items-center"
+          className="mx-8 h-16 flex items-center sm:mx-4"
           end
           to={`enter/class/${classId}/classwork`}
         >
           Classwork
         </NavLink>
         <NavLink
-          className="mx-4 h-16 flex items-center"
+          className="mx-8 h-16 flex items-center sm:mx-4"
           end
           to={`enter/class/${classId}/people`}
         >

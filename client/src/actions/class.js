@@ -8,6 +8,9 @@ import {
   FETCH_CLASS_FAIL,
   FETCH_CLASS_REQUEST,
   FETCH_CLASS_SUCCESS,
+  FETCH_USERS_FAIL,
+  FETCH_USERS_REQUEST,
+  FETCH_USERS_SUCCESS,
   JOIN_CLASS_FAIL,
   JOIN_CLASS_REQUEST,
   JOIN_CLASS_SUCCESS,
@@ -150,6 +153,41 @@ export const fetchEnterClassDetails = (classId) => {
       dispatch({
         type: FETCH_CLASS_DETAILS_FAIL,
         payload: err,
+      });
+    }
+  };
+};
+
+export const fetchUsersInClass = (classId) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: FETCH_USERS_REQUEST,
+      });
+      const { userInfo } = getState().userDetails;
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.get(
+        `/api/v1/class/fetch/users/${classId}`,
+        config
+      );
+
+      dispatch({
+        type: FETCH_USERS_SUCCESS,
+        payload: {
+          createdBy: data.data.usersInClass.createdBy,
+          usersInClass: data.data.usersInClass.users,
+        },
+      });
+    } catch (err) {
+      dispatch({
+        type: FETCH_USERS_FAIL,
+        payload: err.response.data,
       });
     }
   };

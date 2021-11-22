@@ -118,35 +118,39 @@ const ViewUserQuizSubmission = () => {
                     </span>
                   </div>
                 ) : (
-                  <label className="flex justify-between  items-center my-2">
-                    <span>Assign marks:</span>
-                    <input
-                      className="h-8 shadow appearance-none border rounded w-full py-2 px-3 mx-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      type="text"
-                      placeholder="Marks"
-                      value={grade}
-                      onChange={(e) => setGrade(e.target.value)}
-                    />
-                  </label>
-                )}
-                {gradeAssignmentLoading ? (
-                  <Spinner />
-                ) : gradeAssignmentError ? (
-                  <Alert color="red" message={gradeAssignmentError} />
-                ) : gradeAssignmentSuccess ? (
-                  <Alert color="green" message="Grade awarded!" />
-                ) : (
-                  <Button
-                    color="blue"
-                    ripple="light"
-                    buttonType="outline"
-                    className="my-2"
-                    onClick={gradeAssignmentHandler}
-                  >
-                    Grade submission
-                  </Button>
+                  <>
+                    <label className="flex justify-between  items-center my-2">
+                      <span>Assign marks:</span>
+                      <input
+                        className="h-8 shadow appearance-none border rounded w-full py-2 px-3 mx-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        type="text"
+                        placeholder="Marks"
+                        value={grade}
+                        onChange={(e) => setGrade(e.target.value)}
+                      />
+                    </label>
+
+                    {gradeAssignmentLoading ? (
+                      <Spinner />
+                    ) : gradeAssignmentError ? (
+                      <Alert color="red" message={gradeAssignmentError} />
+                    ) : gradeAssignmentSuccess ? (
+                      <Alert color="green" message="Grade awarded!" />
+                    ) : (
+                      <Button
+                        color="blue"
+                        ripple="light"
+                        buttonType="outline"
+                        className="my-2"
+                        onClick={gradeAssignmentHandler}
+                      >
+                        Grade submission
+                      </Button>
+                    )}
+                  </>
                 )}
               </div>
+
               <div className="w-4/5 sm:w-full sm:mt-4">
                 <h1>Submission</h1>
                 <p

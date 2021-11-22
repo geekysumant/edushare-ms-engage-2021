@@ -201,6 +201,7 @@ module.exports.fetchAssignment = async (req, res) => {
     }
 
     const requestedAssignment = await Assignment.findById(assignmentId);
+
     if (!requestedAssignment) {
       throw new Error("Oops, no such quiz found!");
     }

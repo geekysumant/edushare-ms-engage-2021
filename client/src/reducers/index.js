@@ -1,12 +1,12 @@
-import { userLogin, userVideoReducer } from "./users";
+import { userLogin, userLogoutReducer, userVideoReducer } from "./users";
 import {
   createClassReducer,
   fetchClassesReducer,
   fetchEnterClassDetailsReducer,
+  fetchUsersInClassReducer,
   joinClassReducer,
 } from "./class";
 import { combineReducers } from "redux";
-import { addQuestion, addQuestionReducer } from "./question";
 import {
   createAssignmentReducer,
   createAssignmentSubmissionReducer,
@@ -30,6 +30,7 @@ import {
 
 export default combineReducers({
   userDetails: userLogin,
+  userLogout: userLogoutReducer,
   //dont keep crated class details here, instead call the fetchClass api to also request the created classes
   classDetails: fetchClassesReducer,
   // fetchClasses: fetchClassesReducer,
@@ -54,6 +55,7 @@ export default combineReducers({
   downloadAssignmentSubmission: downloadAssignmentSubmissionReducer,
   userVideo: userVideoReducer,
   gradeAssignment: gradeAssignmentReducer,
+  fetchUsersInClass: fetchUsersInClassReducer,
   //not needed questions state
   // allQuestions: addQuestionReducer,
 });

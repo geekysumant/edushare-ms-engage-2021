@@ -15,11 +15,7 @@ const UserCard = ({
     <div className="w-1/4 max-w-sm mx-4  mt-8 bg-white shadow-xl rounded-lg text-gray-900 sm:w-full sm:mx-auto ">
       <div className="rounded-t-lg h-32 overflow-hidden bg-constellation"></div>
       <div className="mx-auto w-24 h-24 relative -mt-16 border-4 border-white rounded-full overflow-hidden">
-        <img
-          className="object-cover object-center h-32"
-          src={picture}
-          alt="Woman looking front"
-        />
+        <img className="object-cover object-center h-32" src={picture} alt="" />
       </div>
       <div className="text-center mt-2 p-2">
         <h2 className="font-semibold break-words">{name}</h2>

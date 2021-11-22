@@ -5,10 +5,21 @@ import JoinClassForm from "../JoinClassForm";
 import Modal from "../Modal";
 // import Button from "./Button/Button";
 import { GoogleLogout } from "react-google-login";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../../actions/user";
+import Spinner from "./Spinner";
 
 const HeaderHome = () => {
   const [showCreateClass, setShowCreateClass] = useState(false);
   const [showJoinClass, setShowJoinClass] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const { loading } = useSelector((state) => state.userLogout);
+
+  const logoutHandler = () => {
+    dispatch(logoutUser());
+  };
   return (
     <>
       <header className="p-4 h-16 bg-white shadow-lg flex w-full justify-between items-center sm:h-32">
@@ -48,11 +59,26 @@ const HeaderHome = () => {
             Join class
           </Button>
 
-          <GoogleLogout
+          {/* <GoogleLogout
             clientId="415689367589-nisg4jqf33c0c48rdq67np63d0m5gujk.apps.googleusercontent.com"
             buttonText="Logout"
             // onLogoutSuccess={logout}
-          ></GoogleLogout>
+          ></GoogleLogout> */}
+
+          {loading ? (
+            <Spinner />
+          ) : (
+            <Button
+              color="blue"
+              ripple="light"
+              size="sm"
+              onClick={logoutHandler}
+              // buttonType="outline"
+              className="p-0 h-8 mx-2 sm:my-2"
+            >
+              Logout
+            </Button>
+          )}
         </div>
       </header>
 

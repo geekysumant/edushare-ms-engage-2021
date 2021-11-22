@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 
 const Class = require("../../../models/Class");
 const User = require("../../../models/User");
+const { INVALID_CLASS_ID } = require("../../../utils/Constants");
 
 //  CONTROLLER: createClass
 //  DESC.: This method creates new class with the given parameters by the user
@@ -56,13 +57,25 @@ module.exports.fetchClasses = async (req, res) => {
       req.user.id,
       "createdClasses joinedClasses"
     )
-      .sort({ createdAt: "desc" })
-      .populate("createdClasses", "createdBy subject className room")
-      .populate("joinedClasses", "createdBy subject className room");
-    // .populate([
-    //   { path: "createdClasses", populate: { path: "quizzes" } },
-    //   { path: "joinedClasses", populate: { path: "quizzes" } },
-    // ]);
+      .populate("createdClasses", "createdBy subject className room createdAt")
+      .populate("joinedClasses", "createdBy subject className room createdAt");
+
+    userClasses.createdClasses.sort((a, b) => {
+      if (
+        new Date(a.createdAt).toISOString() >
+        new Date(b.createdAt).toISOString()
+      )
+        return -1;
+      else return 1;
+    });
+    userClasses.joinedClasses.sort((a, b) => {
+      if (
+        new Date(a.createdAt).toISOString() >
+        new Date(b.createdAt).toISOString()
+      )
+        return -1;
+      else return 1;
+    });
 
     res.json({
       classes: userClasses,
@@ -100,6 +113,9 @@ module.exports.joinClass = async (req, res) => {
     currentUser.joinedClasses.push(requestedClass);
     currentUser.save();
 
+    requestedClass.users.push(currentUser);
+    requestedClass.save();
+
     res.json({
       joinedClass: requestedClass,
     });
@@ -125,5 +141,38 @@ module.exports.fetchClass = async (req, res) => {
     });
   } catch (err) {
     res.status(500).send(err.message);
+  }
+};
+
+module.exports.fetchUsersInClass = async (req, res) => {
+  try {
+    const classId = req.params.classId;
+    const isValidClassId = mongoose.Types.ObjectId.isValid(classId);
+
+    if (!isValidClassId) {
+      const error = new Error(INVALID_CLASS_ID);
+      error.code = 404;
+      throw error;
+    }
+
+    const usersInClass = await Class.findById(classId, "createdBy users")
+      .populate("users", "email name picture _id")
+      .populate("createdBy", "email name picture _id");
+
+    if (!usersInClass) {
+      const err = new Error(INVALID_CLASS_ID);
+      err.code = 404;
+      throw err;
+    }
+
+    res.json({
+      data: {
+        usersInClass,
+      },
+    });
+  } catch (error) {
+    if (error.code) {
+      res.status(error.code).send(error.message);
+    } else res.status(500).send(error.message);
   }
 };
