@@ -9,6 +9,7 @@ import Spinner from "../components/UI/Spinner";
 import Alert from "../components/UI/Alert";
 import StudySVG from "../assets/svg/study.svg";
 import Banner from "../components/UI/Banner";
+import VoidSVG from "../assets/svg/void.svg";
 
 const Home = () => {
   const { isAuthenticated } = useSelector((state) => state.userDetails);
@@ -35,40 +36,58 @@ const Home = () => {
         customText="All your classes at one place"
         textColor="gray"
       />
-      <div className="my-2 flex flex-row flex-wrap">
+      <div className="my-2 flex flex-row sm:items-center sm:justify-center">
         {loading ? (
           <Spinner />
         ) : error ? (
-          <Alert color="red" message={error} />
-        ) : (
-          <div className="p-4 flex flex-row flex-wrap">
-            {createdClasses &&
-              createdClasses.map((element) => {
-                return (
-                  <div className="w-72 m-6">
-                    <ClassCard
-                      classTitle={element.className}
-                      classRoom={element.classRoom}
-                      classTeacher="Teacher"
-                      classCode={element._id}
-                    />
-                  </div>
-                );
-              })}
-            {joinedClasses &&
-              joinedClasses.map((element) => {
-                return (
-                  <div key={element._id} className="w-72 m-6">
-                    <ClassCard
-                      classTitle={element.className}
-                      classRoom={element.classRoom}
-                      classTeacher="Teacher"
-                      classCode={element._id}
-                    />
-                  </div>
-                );
-              })}
+          <div className="w-3/4 mx-auto">
+            <Alert color="red" message={error} />
           </div>
+        ) : (
+          <>
+            {joinedClasses &&
+              joinedClasses.length === 0 &&
+              createdClasses &&
+              createdClasses.length === 0 && (
+                <div className="w-full">
+                  <div className="w-60  mx-auto">
+                    <img src={VoidSVG} />
+                    <h3 className="text-sm text-gray-600 my-6">
+                      You havent't joined or created any class
+                    </h3>
+                  </div>
+                </div>
+              )}
+            <div className="p-4 flex flex-row flex-wrap sm:items-center sm:justify-center">
+              {createdClasses &&
+                createdClasses.map((element) => {
+                  return (
+                    <div className="w-72 m-6">
+                      <ClassCard
+                        classTitle={element.className}
+                        classRoom={element.classRoom}
+                        classTeacher="Teacher"
+                        classCode={element._id}
+                      />
+                    </div>
+                  );
+                })}
+
+              {joinedClasses &&
+                joinedClasses.map((element) => {
+                  return (
+                    <div key={element._id} className="w-72 m-6">
+                      <ClassCard
+                        classTitle={element.className}
+                        classRoom={element.classRoom}
+                        classTeacher="Teacher"
+                        classCode={element._id}
+                      />
+                    </div>
+                  );
+                })}
+            </div>
+          </>
         )}
       </div>
     </div>

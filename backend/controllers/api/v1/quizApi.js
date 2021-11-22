@@ -11,7 +11,13 @@ const Assignment = require("../../../models/Assignment.js");
 const path = require("path");
 const AssignmentSubmission = require("../../../models/AssignmentSubmission");
 const { uploadFile, downloadFile } = require("../../../config/s3");
-const { INVALID_CLASS_ID } = require("../../../utils/Constants");
+const {
+  INVALID_CLASS_ID,
+  INVALID_ASSIGNMENT_ID,
+  NO_SUBMISSION_FOUND,
+  ASSIGNMENT_GRADED,
+  NOT_AUTHORISED,
+} = require("../../../utils/Constants");
 
 module.exports.createQuiz = async (req, res) => {
   try {
@@ -123,6 +129,61 @@ module.exports.fetchQuiz = async (req, res) => {
   } catch (err) {
     res.status(400).send("We've encountered an error, please try again");
   }
+};
+module.exports.fetchPendingAssignments = async (req, res) => {
+  try {
+    const classId = req.params.classId;
+    const isValidClassId = mongoose.Types.ObjectId.isValid(classId);
+
+    if (!isValidClassId) {
+      const error = new Error(INVALID_CLASS_ID);
+      err.code = 404;
+      throw error;
+    }
+
+    const allQuizzes = await Quiz.find(
+      {
+        classId,
+      },
+      "_id"
+    );
+    const allSubmissions = await QuizSubmission.find(
+      {
+        classId,
+      },
+      "user"
+    );
+
+    if (!allQuizzes) {
+      const error = new Error(INVALID_CLASS_ID);
+      err.code = 404;
+      throw error;
+    }
+
+    let pendingQuizzes = [];
+    allQuizzes.forEach((quiz) => {
+      console.log(quiz);
+      if (!allSubmissions.find((sub) => sub.quizId.equals(quiz._id))) {
+        pendingQuizzes.push(quiz.id);
+      }
+      // if (
+      //   !allSubmissions.find(
+      //     (quizSubmission) =>
+      //       quizSubmission.quizId.equals(quiz._id) &&
+      //       quizSubmission.user.equals(req.user._id)
+      //   )
+      // ) {
+      //   pendingQuizzes.push(quiz);
+      // }
+    });
+    console.log(pendingQuizzes);
+
+    res.json({
+      data: {
+        pendingQuizzes,
+      },
+    });
+  } catch (err) {}
 };
 
 module.exports.fetchAssignment = async (req, res) => {
@@ -251,7 +312,7 @@ module.exports.submitQuiz = async (req, res) => {
   }
 };
 
-module.exports.fetchSubmissions = async (req, res) => {
+module.exports.fetchQuizSubmissions = async (req, res) => {
   try {
     const quizId = req.params.quizId;
     const isValidQuizId = mongoose.Types.ObjectId.isValid(quizId);
@@ -287,7 +348,42 @@ module.exports.fetchSubmissions = async (req, res) => {
     res.status(401).send(error.message);
   }
 };
+module.exports.fetchAssignmentSubmissions = async (req, res) => {
+  try {
+    const assignmentId = req.params.assignmentId;
+    const isValidgnmentAssiId = mongoose.Types.ObjectId.isValid(assignmentId);
 
+    if (!isValidgnmentAssiId) {
+      throw new Error("No assignment found!");
+    }
+
+    //if the user that is hitting this api is not the creator of quiz, return them error
+
+    const assignment = await Assignment.findById(assignmentId).populate([
+      {
+        path: "submissions",
+        select: "user createdBy assignmentId submission createdAt",
+        populate: { path: "user", select: "id name email picture" },
+      },
+      // { path: "joinedClasses", populate: { path: "quizzes" } },
+    ]);
+    if (!assignment) {
+      throw new Error("No assignment found!");
+    }
+
+    if (!assignment.createdBy.equals(req.user._id)) {
+      throw new Error("Not authorised!");
+    }
+
+    res.json({
+      data: {
+        submissions: assignment.submissions,
+      },
+    });
+  } catch (error) {
+    res.status(401).send(error.message);
+  }
+};
 module.exports.fetchUsersQuizSubmission = async (req, res) => {
   try {
     const quizId = req.query.quizId;
@@ -315,6 +411,39 @@ module.exports.fetchUsersQuizSubmission = async (req, res) => {
     res.json({
       data: {
         submission: quizSubmission,
+      },
+    });
+  } catch (error) {
+    res.status(401).send(error.message);
+  }
+};
+module.exports.fetchUsersAssignmentSubmission = async (req, res) => {
+  try {
+    const assignmentId = req.query.assignmentId;
+    const userId = req.query.userId;
+
+    const isValidAssignmentId = mongoose.Types.ObjectId.isValid(assignmentId);
+
+    if (!isValidAssignmentId) {
+      throw new Error("No quiz found!");
+    }
+
+    const assignmentSubmission = await AssignmentSubmission.findOne({
+      assignmentId,
+      user: userId,
+    }).populate("user", "name email");
+
+    if (!assignmentSubmission) {
+      throw new Error("No submission found!");
+    }
+    //if the user that is hitting this api is not the creator of quiz, return them error
+    if (!assignmentSubmission.createdBy.equals(req.user._id)) {
+      throw new Error("Not authorised!");
+    }
+
+    res.json({
+      data: {
+        submission: assignmentSubmission,
       },
     });
   } catch (error) {
@@ -398,7 +527,13 @@ module.exports.getFileExtensionAssignment = async (req, res) => {
 };
 
 module.exports.getFileExtensionAssignmentSubmission = async (req, res) => {
+  let userId;
+
+  if (req.query && req.query.userId) {
+    userId = req.query.userId;
+  } else userId = req.user._id;
   const assignmentId = req.params.assignmentId;
+
   const isValidAssignmentId = mongoose.Types.ObjectId.isValid(assignmentId);
 
   if (!isValidAssignmentId) {
@@ -406,8 +541,15 @@ module.exports.getFileExtensionAssignmentSubmission = async (req, res) => {
   }
   const usersAssignmentSubmission = await AssignmentSubmission.findOne({
     assignmentId,
-    user: req.user._id,
+    user: userId,
   });
+
+  if (
+    !usersAssignmentSubmission.user.equals(req.user._id) &&
+    !usersAssignmentSubmission.createdBy.equals(req.user._id)
+  ) {
+    throw new Error("Not authorised!");
+  }
 
   if (!usersAssignmentSubmission) {
     throw new Error("No assignment found");
@@ -443,6 +585,12 @@ module.exports.downloadAssignment = async (req, res) => {
 };
 module.exports.downloadAssignmentSubmission = async (req, res) => {
   try {
+    let userId;
+
+    if (req.query && req.query.userId) {
+      userId = req.query.userId;
+    } else userId = req.user._id;
+
     const assignmentId = req.params.assignmentId;
     const isValidAssignmentId = mongoose.Types.ObjectId.isValid(assignmentId);
 
@@ -456,8 +604,16 @@ module.exports.downloadAssignmentSubmission = async (req, res) => {
     }
     const usersAssignmentSubmission = await AssignmentSubmission.findOne({
       assignmentId,
-      user: req.user._id,
+      user: userId,
     });
+
+    if (
+      !usersAssignmentSubmission.user.equals(req.user._id) &&
+      !usersAssignmentSubmission.createdBy.equals(req.user._id)
+    ) {
+      throw new Error("Not authorised!");
+    }
+
     const fileKeyInS3 = usersAssignmentSubmission.submission;
     const readStream = downloadFile(fileKeyInS3);
     readStream.pipe(res);
@@ -491,6 +647,7 @@ module.exports.uploadAssignmentSubmission = async (req, res) => {
         throw new Error("Error, you created the assignment.");
       }
 
+      console.log(assignmentId);
       const requestedAssignment = await Assignment.findById(assignmentId);
       if (!requestedAssignment) {
         throw new Error("No assignment found");
@@ -530,5 +687,43 @@ module.exports.uploadAssignmentSubmission = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).send(error.message);
+  }
+};
+
+module.exports.gradeAssignment = async (req, res) => {
+  try {
+    const { userId, assignmentId, grade } = req.body;
+
+    const usersSubmission = await AssignmentSubmission.findOne({
+      assignmentId,
+      user: userId,
+    });
+
+    if (!usersSubmission) {
+      const error = new Error(NO_SUBMISSION_FOUND);
+      error.code = 404;
+      throw error;
+    }
+    if (usersSubmission.grade) {
+      const error = new Error(ASSIGNMENT_GRADED);
+      error.code = 400;
+      throw error;
+    }
+
+    if (!usersSubmission.createdBy.equals(req.user._id)) {
+      const error = new Error(NOT_AUTHORISED);
+      error.code = 401;
+      throw error;
+    }
+
+    usersSubmission.grade = grade;
+    await usersSubmission.save();
+
+    res.json({
+      message: "SUCCESS",
+    });
+  } catch (error) {
+    if (error.code) res.status(error.code).send(error.message);
+    else res.status(500).send(error.message);
   }
 };

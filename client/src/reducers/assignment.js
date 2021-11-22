@@ -19,16 +19,25 @@ import {
   FETCH_ASSIGNMENTS_SUCCESS,
   FETCH_ASSIGNMENT_FAIL,
   FETCH_ASSIGNMENT_REQUEST,
+  FETCH_ASSIGNMENT_SUBMISSIONS_FAIL,
+  FETCH_ASSIGNMENT_SUBMISSIONS_REQUEST,
+  FETCH_ASSIGNMENT_SUBMISSIONS_SUCCESS,
   FETCH_ASSIGNMENT_SUCCESS,
   FETCH_QUIZ_FAIL,
   FETCH_QUIZ_REQUEST,
+  FETCH_QUIZ_SUBMISSIONS_FAIL,
+  FETCH_QUIZ_SUBMISSIONS_REQUEST,
+  FETCH_QUIZ_SUBMISSIONS_SUCCESS,
   FETCH_QUIZ_SUCCESS,
-  FETCH_SUBMISSIONS_FAIL,
-  FETCH_SUBMISSIONS_REQUEST,
-  FETCH_SUBMISSIONS_SUCCESS,
+  FETCH_USERS_ASSIGNMENT_SUBMISSION_FAIL,
+  FETCH_USERS_ASSIGNMENT_SUBMISSION_REQUEST,
+  FETCH_USERS_ASSIGNMENT_SUBMISSION_SUCCESS,
   FETCH_USERS_QUIZ_SUBMISSION_FAIL,
   FETCH_USERS_QUIZ_SUBMISSION_REQUEST,
   FETCH_USERS_QUIZ_SUBMISSION_SUCCESS,
+  GRADE_ASSIGNMENT_FAIL,
+  GRADE_ASSIGNMENT_REQUEST,
+  GRADE_ASSIGNMENT_SUCCESS,
   SUBMIT_QUIZ_FAIL,
   SUBMIT_QUIZ_REQUEST,
   SUBMIT_QUIZ_SUCCESS,
@@ -150,25 +159,53 @@ export const submitQuizReducer = (state = initialSubmitQuizState, action) => {
   }
 };
 
-const initialFetchSubmissionsState = {
+const initialFetchQuizSubmissionsState = {
   submissions: [],
 };
 
-export const fetchSubmissionsReducer = (
-  state = initialFetchSubmissionsState,
+export const fetchQuizSubmissionsReducer = (
+  state = initialFetchQuizSubmissionsState,
   action
 ) => {
   switch (action.type) {
-    case FETCH_SUBMISSIONS_REQUEST:
+    case FETCH_QUIZ_SUBMISSIONS_REQUEST:
       return {
         loading: true,
       };
-    case FETCH_SUBMISSIONS_SUCCESS:
+    case FETCH_QUIZ_SUBMISSIONS_SUCCESS:
       return {
         loading: false,
         submissions: action.payload.submissions,
       };
-    case FETCH_SUBMISSIONS_FAIL:
+    case FETCH_QUIZ_SUBMISSIONS_FAIL:
+      return {
+        loading: false,
+        error: action.payload.error,
+      };
+    default:
+      return state;
+  }
+};
+
+const initialFetchAssignmentSubmissionsState = {
+  submissions: [],
+};
+
+export const fetchAssignmentSubmissionsReducer = (
+  state = initialFetchAssignmentSubmissionsState,
+  action
+) => {
+  switch (action.type) {
+    case FETCH_ASSIGNMENT_SUBMISSIONS_REQUEST:
+      return {
+        loading: true,
+      };
+    case FETCH_ASSIGNMENT_SUBMISSIONS_SUCCESS:
+      return {
+        loading: false,
+        submissions: action.payload.submissions,
+      };
+    case FETCH_ASSIGNMENT_SUBMISSIONS_FAIL:
       return {
         loading: false,
         error: action.payload.error,
@@ -197,6 +234,35 @@ export const fetchUsersQuizSubmissionReducer = (
         submission: action.payload.submission,
       };
     case FETCH_USERS_QUIZ_SUBMISSION_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
+const initialFetchUserAssignmentSubmissionState = {
+  submission: {},
+};
+
+export const fetchUsersAssignmentSubmissionReducer = (
+  state = initialFetchUserAssignmentSubmissionState,
+  action
+) => {
+  switch (action.type) {
+    case FETCH_USERS_ASSIGNMENT_SUBMISSION_REQUEST:
+      return {
+        loading: true,
+      };
+    case FETCH_USERS_ASSIGNMENT_SUBMISSION_SUCCESS:
+      return {
+        loading: false,
+        submission: action.payload.submission,
+      };
+    case FETCH_USERS_ASSIGNMENT_SUBMISSION_FAIL:
       return {
         loading: false,
         error: action.payload,
@@ -352,6 +418,33 @@ export const downloadAssignmentSubmissionReducer = (
       return {
         loading: false,
         success: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+const initialGradeAssignmentState = {
+  loading: false,
+};
+export const gradeAssignmentReducer = (
+  state = initialGradeAssignmentState,
+  action
+) => {
+  switch (action.type) {
+    case GRADE_ASSIGNMENT_REQUEST:
+      return {
+        loading: true,
+      };
+    case GRADE_ASSIGNMENT_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case GRADE_ASSIGNMENT_FAIL:
+      return {
+        loading: false,
         error: action.payload,
       };
     default:

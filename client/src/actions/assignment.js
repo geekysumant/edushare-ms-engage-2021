@@ -19,17 +19,26 @@ import {
   FETCH_ASSIGNMENTS_SUCCESS,
   FETCH_ASSIGNMENT_FAIL,
   FETCH_ASSIGNMENT_REQUEST,
+  FETCH_ASSIGNMENT_SUBMISSIONS_FAIL,
+  FETCH_ASSIGNMENT_SUBMISSIONS_REQUEST,
+  FETCH_ASSIGNMENT_SUBMISSIONS_SUCCESS,
   FETCH_ASSIGNMENT_SUCCESS,
   FETCH_CLASS_DETAILS_SUCCESS,
   FETCH_QUIZ_FAIL,
   FETCH_QUIZ_REQUEST,
+  FETCH_QUIZ_SUBMISSIONS_FAIL,
+  FETCH_QUIZ_SUBMISSIONS_REQUEST,
+  FETCH_QUIZ_SUBMISSIONS_SUCCESS,
   FETCH_QUIZ_SUCCESS,
-  FETCH_SUBMISSIONS_FAIL,
-  FETCH_SUBMISSIONS_REQUEST,
-  FETCH_SUBMISSIONS_SUCCESS,
+  FETCH_USERS_ASSIGNMENT_SUBMISSION_FAIL,
+  FETCH_USERS_ASSIGNMENT_SUBMISSION_REQUEST,
+  FETCH_USERS_ASSIGNMENT_SUBMISSION_SUCCESS,
   FETCH_USERS_QUIZ_SUBMISSION_FAIL,
   FETCH_USERS_QUIZ_SUBMISSION_REQUEST,
   FETCH_USERS_QUIZ_SUBMISSION_SUCCESS,
+  GRADE_ASSIGNMENT_FAIL,
+  GRADE_ASSIGNMENT_REQUEST,
+  GRADE_ASSIGNMENT_SUCCESS,
   SUBMIT_QUIZ_FAIL,
   SUBMIT_QUIZ_REQUEST,
   SUBMIT_QUIZ_SUCCESS,
@@ -185,11 +194,11 @@ export const submitQuiz = (quizId, submission) => {
   };
 };
 
-export const fetchSubmissions = (quizId) => {
+export const fetchQuizSubmissions = (quizId) => {
   return async (dispatch, getState) => {
     try {
       dispatch({
-        type: FETCH_SUBMISSIONS_REQUEST,
+        type: FETCH_QUIZ_SUBMISSIONS_REQUEST,
       });
 
       const { userInfo } = getState().userDetails;
@@ -205,14 +214,47 @@ export const fetchSubmissions = (quizId) => {
       );
 
       dispatch({
-        type: FETCH_SUBMISSIONS_SUCCESS,
+        type: FETCH_QUIZ_SUBMISSIONS_SUCCESS,
         payload: {
           submissions: data.data.submissions,
         },
       });
     } catch (err) {
       dispatch({
-        type: FETCH_SUBMISSIONS_FAIL,
+        type: FETCH_QUIZ_SUBMISSIONS_FAIL,
+        payload: err.response.data,
+      });
+    }
+  };
+};
+export const fetchAssignmentSubmissions = (assignmentId) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: FETCH_ASSIGNMENT_SUBMISSIONS_REQUEST,
+      });
+
+      const { userInfo } = getState().userDetails;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.get(
+        `/api/v1/assignment/submissions/${assignmentId}`,
+        config
+      );
+
+      dispatch({
+        type: FETCH_ASSIGNMENT_SUBMISSIONS_SUCCESS,
+        payload: {
+          submissions: data.data.submissions,
+        },
+      });
+    } catch (err) {
+      dispatch({
+        type: FETCH_ASSIGNMENT_SUBMISSIONS_FAIL,
         payload: err.response.data,
       });
     }
@@ -247,6 +289,40 @@ export const fetchUsersQuizSubmission = (quizId, userId) => {
     } catch (err) {
       dispatch({
         type: FETCH_USERS_QUIZ_SUBMISSION_FAIL,
+        payload: err.response.data,
+      });
+    }
+  };
+};
+
+export const fetchUsersAssignmentSubmission = (assignmentId, userId) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: FETCH_USERS_ASSIGNMENT_SUBMISSION_REQUEST,
+      });
+
+      const { userInfo } = getState().userDetails;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.get(
+        `/api/v1/assignment/submission/?assignmentId=${assignmentId}&userId=${userId}`,
+        config
+      );
+
+      dispatch({
+        type: FETCH_USERS_ASSIGNMENT_SUBMISSION_SUCCESS,
+        payload: {
+          submission: data.data.submission,
+        },
+      });
+    } catch (err) {
+      dispatch({
+        type: FETCH_USERS_ASSIGNMENT_SUBMISSION_FAIL,
         payload: err.response.data,
       });
     }
@@ -383,7 +459,7 @@ export const downloadAssignment = (assignmentId) => {
     }
   };
 };
-export const downloadAssignmentSubmission = (assignmentId) => {
+export const downloadAssignmentSubmission = (assignmentId, userId) => {
   return async (dispatch, getState) => {
     try {
       dispatch({
@@ -398,11 +474,11 @@ export const downloadAssignmentSubmission = (assignmentId) => {
       };
 
       const { data } = await axios.get(
-        `/api/v1/assignment/submission/getFileExtension/${assignmentId}`,
+        `/api/v1/assignment/submission/getFileExtension/${assignmentId}?userId=${userId}`,
         config
       );
       const res = await axios.get(
-        `/api/v1/assignment/submission/download/${assignmentId}`,
+        `/api/v1/assignment/submission/download/${assignmentId}?userId=${userId}`,
         {
           headers: {
             Authorization: `Bearer ${userInfo.token}`,
@@ -418,6 +494,42 @@ export const downloadAssignmentSubmission = (assignmentId) => {
     } catch (err) {
       dispatch({
         type: DOWNLOAD_ASSIGNMENT_SUBMISSION_FAIL,
+        payload: err.response.data,
+      });
+    }
+  };
+};
+
+export const gradeAssignment = (assignmentId, userId, grade) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: GRADE_ASSIGNMENT_REQUEST,
+      });
+
+      const { userInfo } = getState().userDetails;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      await axios.post(
+        "/api/v1/assignment/grade",
+        {
+          assignmentId,
+          userId,
+          grade,
+        },
+        config
+      );
+
+      dispatch({
+        type: GRADE_ASSIGNMENT_SUCCESS,
+      });
+    } catch (err) {
+      dispatch({
+        type: GRADE_ASSIGNMENT_FAIL,
         payload: err.response.data,
       });
     }

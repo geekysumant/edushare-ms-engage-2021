@@ -20,8 +20,17 @@ router.get(
   protect,
   quizController.fetchQuiz
 );
+router.get(
+  "/fetch/pending/:classId",
+  protect,
+  quizController.fetchPendingAssignments
+);
 router.post("/submit", protect, quizController.submitQuiz);
-router.get("/submissions/:quizId", protect, quizController.fetchSubmissions);
+router.get(
+  "/submissions/:quizId",
+  protect,
+  quizController.fetchQuizSubmissions
+);
 router.get("/submission", protect, quizController.fetchUsersQuizSubmission);
 
 module.exports = router;

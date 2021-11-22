@@ -13,7 +13,9 @@ import HeaderHome from "./components/UI/HeaderHome";
 import QuizScreen from "./pages/QuizScreen";
 import QuizResult from "./pages/QuizResult";
 import QuizSubmissions from "./pages/QuizSubmissions";
+import AssignmentSubmissions from "./pages/AssignmentSubmissions";
 import ViewUserQuizSubmission from "./pages/ViewUserQuizSubmission";
+import ViewUserAssignmentSubmission from "./pages/ViewUserAssignmentSubmission";
 import CreateAssignment from "./pages/CreateAssignment";
 import AssignmentScreen from "./pages/AssignmentScreen";
 import { useEffect } from "react";
@@ -103,9 +105,19 @@ function App() {
           element={<QuizSubmissions />}
         />
         <Route
+          path="/enter/class/:classId/classwork/assignment/:assignmentId/submissions"
+          exact
+          element={<AssignmentSubmissions />}
+        />
+        <Route
           path="/enter/class/:classId/classwork/quiz/:quizId/submissions/:userId"
           exact
           element={<ViewUserQuizSubmission />}
+        />
+        <Route
+          path="/enter/class/:classId/classwork/assignment/:assignmentId/submissions/:userId"
+          exact
+          element={<ViewUserAssignmentSubmission />}
         />
       </Routes>
 

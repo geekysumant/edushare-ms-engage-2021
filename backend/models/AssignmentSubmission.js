@@ -24,6 +24,9 @@ const assignmentSubmissionSchema = mongoose.Schema(
       type: "String",
       required: true,
     },
+    grade: {
+      type: Number,
+    },
   },
   { timestamps: true }
 );

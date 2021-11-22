@@ -2,7 +2,15 @@ import Button from "@material-tailwind/react/Button";
 import React from "react";
 import { Link } from "react-router-dom";
 
-const UserCard = ({ picture, name, email, userId, classId, quizId }) => {
+const UserCard = ({
+  picture,
+  name,
+  email,
+  userId,
+  classId,
+  quizId,
+  assignmentId,
+}) => {
   return (
     <div className="w-1/4 max-w-sm mx-4  mt-8 bg-white shadow-xl rounded-lg text-gray-900 sm:w-full sm:mx-auto ">
       <div className="rounded-t-lg h-32 overflow-hidden bg-constellation"></div>
@@ -20,13 +28,24 @@ const UserCard = ({ picture, name, email, userId, classId, quizId }) => {
 
       <div className="p-4 border-t mt-2">
         <div className="rounded-full py-2 flex items-center justify-evenly">
-          <Link
-            to={`/enter/class/${classId}/classwork/quiz/${quizId}/submissions/${userId}`}
-          >
-            <Button color="green" ripple="light">
-              View submission
-            </Button>
-          </Link>
+          {quizId && (
+            <Link
+              to={`/enter/class/${classId}/classwork/quiz/${quizId}/submissions/${userId}`}
+            >
+              <Button color="green" ripple="light">
+                View submission
+              </Button>
+            </Link>
+          )}
+          {assignmentId && (
+            <Link
+              to={`/enter/class/${classId}/classwork/assignment/${assignmentId}/submissions/${userId}`}
+            >
+              <Button color="green" ripple="light">
+                View submission
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </div>

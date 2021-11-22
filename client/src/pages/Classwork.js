@@ -8,6 +8,7 @@ import Alert from "../components/UI/Alert";
 import Banner from "../components/UI/Banner";
 import TaskSVG from "../assets/svg/tasks.svg";
 import TabComponent from "../components/TabComponent";
+import { fetchEnterClassDetails } from "../actions/class";
 
 const Classwork = () => {
   const { quizzes, loading, error, assignments } = useSelector(
@@ -28,6 +29,7 @@ const Classwork = () => {
     if (!isAuthenticated) {
       return navigate("/welcome");
     }
+    dispatch(fetchEnterClassDetails(classId));
     dispatch(fetchAssignments(classId));
   }, [isAuthenticated]);
 

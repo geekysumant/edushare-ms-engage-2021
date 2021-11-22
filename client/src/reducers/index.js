@@ -15,9 +15,12 @@ import {
   downloadAssignmentSubmissionReducer,
   fetchAssignmentReducer,
   fetchAssignmentsReducer,
+  fetchAssignmentSubmissionsReducer,
   fetchQuizReducer,
-  fetchSubmissionsReducer,
+  fetchQuizSubmissionsReducer,
+  fetchUsersAssignmentSubmissionReducer,
   fetchUsersQuizSubmissionReducer,
+  gradeAssignmentReducer,
   submitQuizReducer,
 } from "./assignment";
 import {
@@ -41,12 +44,16 @@ export default combineReducers({
   fetchQuiz: fetchQuizReducer,
   fetchAssignment: fetchAssignmentReducer,
   submitQuiz: submitQuizReducer,
-  fetchSubmissions: fetchSubmissionsReducer,
+  //change to fetch quiz submissions
+  fetchQuizSubmissions: fetchQuizSubmissionsReducer,
+  fetchAssignmentSubmissions: fetchAssignmentSubmissionsReducer,
   fetchUsersQuizSubmission: fetchUsersQuizSubmissionReducer,
+  fetchUsersAssignmentSubmission: fetchUsersAssignmentSubmissionReducer,
   uploadAssignmentSubmission: createAssignmentSubmissionReducer,
   downloadAssignment: downloadAssignmentReducer,
   downloadAssignmentSubmission: downloadAssignmentSubmissionReducer,
   userVideo: userVideoReducer,
+  gradeAssignment: gradeAssignmentReducer,
   //not needed questions state
   // allQuestions: addQuestionReducer,
 });

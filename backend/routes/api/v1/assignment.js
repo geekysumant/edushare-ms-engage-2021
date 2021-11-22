@@ -21,6 +21,11 @@ router.get(
   quizController.downloadAssignment
 );
 router.get(
+  "/submissions/:assignmentId",
+  protect,
+  quizController.fetchAssignmentSubmissions
+);
+router.get(
   "/submission/download/:assignmentId",
   protect,
   quizController.downloadAssignmentSubmission
@@ -36,5 +41,11 @@ router.get(
   protect,
   quizController.getFileExtensionAssignmentSubmission
 );
+router.get(
+  "/submission",
+  protect,
+  quizController.fetchUsersAssignmentSubmission
+);
+router.post("/grade", protect, quizController.gradeAssignment);
 
 module.exports = router;

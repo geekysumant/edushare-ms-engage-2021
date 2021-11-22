@@ -68,10 +68,7 @@ module.exports.fetchClasses = async (req, res) => {
       classes: userClasses,
     });
   } catch (err) {
-    res.statusCode = 500;
-    res.json({
-      message: err.message,
-    });
+    res.status(500).send(err.message);
   }
 };
 
@@ -127,8 +124,6 @@ module.exports.fetchClass = async (req, res) => {
       room: classDetails.room,
     });
   } catch (err) {
-    res.status(400).send({
-      message: err.message,
-    });
+    res.status(500).send(err.message);
   }
 };

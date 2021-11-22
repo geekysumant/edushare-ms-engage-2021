@@ -137,7 +137,7 @@ const EnterClass = () => {
         </div>
 
         <div className="shadow-lg rounded bg-white w-2/3 sm:w-full">
-          <Announcement />
+          {isAuthenticated && <Announcement />}
 
           <div className="flex flex-col p-4 sm:p-0">
             {loading ? (
