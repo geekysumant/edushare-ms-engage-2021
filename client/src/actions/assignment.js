@@ -474,11 +474,15 @@ export const downloadAssignmentSubmission = (assignmentId, userId) => {
       };
 
       const { data } = await axios.get(
-        `/api/v1/assignment/submission/getFileExtension/${assignmentId}?userId=${userId}`,
+        `/api/v1/assignment/submission/getFileExtension/${assignmentId}?${
+          userId && `userId=${userId}`
+        }`,
         config
       );
       const res = await axios.get(
-        `/api/v1/assignment/submission/download/${assignmentId}?userId=${userId}`,
+        `/api/v1/assignment/submission/download/${assignmentId}?${
+          userId && `userId=${userId}`
+        }`,
         {
           headers: {
             Authorization: `Bearer ${userInfo.token}`,

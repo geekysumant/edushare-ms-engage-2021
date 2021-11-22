@@ -4,6 +4,7 @@ import axios from "axios";
 import { useLocation, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { createAssignment } from "../actions/assignment";
+import { fetchEnterClassDetails } from "../actions/class";
 import Spinner from "../components/UI/Spinner";
 import Alert from "../components/UI/Alert";
 import UploadSVG from "../assets/svg/upload.svg";
@@ -29,10 +30,13 @@ const CreateAssignment = () => {
   const { createdBy } = useSelector((state) => state.enterClassDetails);
 
   useEffect(() => {
+    dispatch(fetchEnterClassDetails(classId));
+  }, []);
+  useEffect(() => {
     if (!isAuthenticated || (createdBy && createdBy !== userInfo.id)) {
       return navigate("/welcome");
     }
-  }, []);
+  }, [isAuthenticated, createdBy]);
 
   const createAssignmentHandler = async (event) => {
     event.preventDefault();

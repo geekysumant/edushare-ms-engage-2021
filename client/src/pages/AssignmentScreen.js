@@ -14,6 +14,7 @@ import Alert from "../components/UI/Alert";
 import UserAssignmentSubmissionCard from "../components/UserAssignmentSubmissionCard";
 import OnlineClassSVG from "../assets/svg/online_class.svg";
 import Banner from "../components/UI/Banner";
+import Button from "@material-tailwind/react/Button";
 
 const AssignmentScreen = () => {
   const [file, setFile] = useState(null);
@@ -77,7 +78,7 @@ const AssignmentScreen = () => {
         bannerBackground="tornado"
         customText={assignment && `${assignment.marks} marks`}
       />
-      <div className="sm:w-full mx-auto">
+      <div className="sm:w-full mx-auto mb-16">
         {loading ? (
           <Spinner />
         ) : error ? (
@@ -101,12 +102,12 @@ const AssignmentScreen = () => {
                   <p className="text-sm">{assignment.instructions}</p>
                 </div>
 
-                <div
+                <Button
+                  color="yellow"
+                  ripple="light"
+                  buttonType="outline"
+                  className="my-2 h-14 w-48  my-8"
                   onClick={downloadAssignmentHandler}
-                  className="my-8 border shadow-lg rounded flex flex-row items-center cursor-pointer sm:w-full sm:min-w-full lg:w-56 xl:w-56 hover:bg-yellow-200"
-                  //   style={{
-                  //     borderBottom: "1px solid black",
-                  //   }}
                 >
                   {downloadedAssignmentLoading ? (
                     <Spinner />
@@ -123,8 +124,9 @@ const AssignmentScreen = () => {
                       <p className="">Download Attachment</p>
                     </>
                   )}
-                </div>
+                </Button>
               </div>
+
               {userInfo && userInfo.id !== createdBy && (
                 <UserAssignmentSubmissionCard
                   uploadAssignmentHandler={uploadAssignmentHandler}

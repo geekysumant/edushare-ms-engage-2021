@@ -8,6 +8,7 @@ function classNames(...classes) {
 }
 
 const TabComponent = ({ categories, userInfo, createdBy }) => {
+  console.log(createdBy);
   return (
     <div className="w-full px-2 py-16 sm:px-0">
       <Tab.Group>
@@ -63,6 +64,7 @@ const TabComponent = ({ categories, userInfo, createdBy }) => {
                       marks={quiz.marks}
                       assignmentId={quiz._id}
                       time={quiz.createdAt}
+                      createdBy={createdBy}
                       userInfo={userInfo}
                     />
                   )}

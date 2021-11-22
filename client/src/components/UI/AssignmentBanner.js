@@ -45,9 +45,9 @@ const AssignmentBanner = ({
             <Link
               to={`/enter/class/${classId}/classwork/assignment/${assignmentId}/submissions`}
             >
-              {createdBy === userInfo._id && (
+              {createdBy === userInfo.id && (
                 <Button color="indigo" ripple="light">
-                  View Submission
+                  View Submissions
                 </Button>
               )}
             </Link>

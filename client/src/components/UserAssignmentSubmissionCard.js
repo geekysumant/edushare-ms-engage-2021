@@ -1,4 +1,8 @@
-import React from "react";
+import Button from "@material-tailwind/react/Button";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
+import { fetchUsersAssignmentSubmission } from "../actions/assignment";
 import Alert from "./UI/Alert";
 import Spinner from "./UI/Spinner";
 
@@ -14,9 +18,30 @@ const UserAssignmentSubmissionCard = ({
   downloadedSubmissionError,
   downloadedSubmissionLoading,
 }) => {
+  const dispatch = useDispatch();
+  const params = useParams();
+  const assignmentId = params.assignmentId;
+  const { userInfo } = useSelector((state) => state.userDetails);
+  const { submission, loading } = useSelector(
+    (state) => state.fetchUsersAssignmentSubmission
+  );
+
+  useEffect(() => {
+    dispatch(fetchUsersAssignmentSubmission(assignmentId, userInfo.id));
+  }, []);
   return (
-    <div className="flex flex-col w-1/3 items-center justify-center border shadow-lg rounded-lg mx-4 my-4 sm:w-full">
-      <h1 className="mb-4 text-xl">Your work</h1>
+    <div
+      className="flex flex-col w-1/3 items-center justify-center border border-yellow-600 shadow-lg rounded-lg mx-4 my-4 sm:w-full"
+      style={{
+        fontFamily: ["Poppins", "sans-serif"],
+      }}
+    >
+      <span className="flex flex-row justify-between w-full px-2 py-0 items-center">
+        <h1 className="">Your work</h1>
+        <span className="font-semibold">
+          {submission && submission.grade ? "Graded" : "Ungraded"}
+        </span>
+      </span>
       {!hasSubmitted ? (
         <form
           onSubmit={uploadAssignmentHandler}
@@ -60,12 +85,12 @@ const UserAssignmentSubmissionCard = ({
           </div>
         </form>
       ) : (
-        <div
+        <Button
+          color="yellow"
+          ripple="light"
+          buttonType="outline"
+          className="my-2 h-14 w-48 mx-auto my-8"
           onClick={downloadAssignmentSubmissionHandler}
-          className="my-8 border shadow-lg rounded flex flex-row items-center cursor-pointer sm:w-full sm:min-w-full lg:w-56 xl:w-56 hover:bg-yellow-200"
-          //   style={{
-          //     borderBottom: "1px solid black",
-          //   }}
         >
           {downloadedSubmissionLoading ? (
             <Spinner />
@@ -82,7 +107,19 @@ const UserAssignmentSubmissionCard = ({
               <p className="">Download submission</p>
             </>
           )}
-        </div>
+        </Button>
+      )}
+
+      {loading ? (
+        <Spinner />
+      ) : (
+        submission &&
+        submission.grade && (
+          <div className="flex flex-row justify-between">
+            <span className="text-green-500">Grade awarded: </span>
+            <span className="font-bold"> {submission.grade}</span>
+          </div>
+        )
       )}
     </div>
   );

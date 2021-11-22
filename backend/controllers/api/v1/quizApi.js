@@ -437,7 +437,10 @@ module.exports.fetchUsersAssignmentSubmission = async (req, res) => {
       throw new Error("No submission found!");
     }
     //if the user that is hitting this api is not the creator of quiz, return them error
-    if (!assignmentSubmission.createdBy.equals(req.user._id)) {
+    if (
+      !assignmentSubmission.createdBy.equals(req.user._id) &&
+      !assignmentSubmission.user.equals(req.user._id)
+    ) {
       throw new Error("Not authorised!");
     }
 
@@ -452,8 +455,8 @@ module.exports.fetchUsersAssignmentSubmission = async (req, res) => {
 };
 
 module.exports.createAssignment = async (req, res) => {
-  try {
-    Assignment.uploadedFile(req, res, async (err) => {
+  Assignment.uploadedFile(req, res, async (err) => {
+    try {
       if (err) {
         console.log(err);
         throw new Error("Some error occurred");
@@ -468,7 +471,6 @@ module.exports.createAssignment = async (req, res) => {
       const classId = req.body.classId;
       const { title, instructions, marks } = req.body;
 
-      console.log(instructions);
       const requestedClass = await Class.findById(classId);
       if (!requestedClass) {
         throw new Error("No class found");
@@ -498,11 +500,10 @@ module.exports.createAssignment = async (req, res) => {
           createdAssignment: newAssignment,
         },
       });
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send(error.message);
-  }
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+  });
 };
 
 module.exports.getFileExtensionAssignment = async (req, res) => {
@@ -699,6 +700,12 @@ module.exports.gradeAssignment = async (req, res) => {
       user: userId,
     });
 
+    if (!usersSubmission.createdBy.equals(req.user._id)) {
+      const error = new Error(NOT_AUTHORISED);
+      error.code = 401;
+      throw error;
+    }
+
     if (!usersSubmission) {
       const error = new Error(NO_SUBMISSION_FOUND);
       error.code = 404;
@@ -707,12 +714,6 @@ module.exports.gradeAssignment = async (req, res) => {
     if (usersSubmission.grade) {
       const error = new Error(ASSIGNMENT_GRADED);
       error.code = 400;
-      throw error;
-    }
-
-    if (!usersSubmission.createdBy.equals(req.user._id)) {
-      const error = new Error(NOT_AUTHORISED);
-      error.code = 401;
       throw error;
     }
 
