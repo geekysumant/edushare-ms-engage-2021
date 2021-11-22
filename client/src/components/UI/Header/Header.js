@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import Button from "../Button/Button";
 import classes from "./Header.module.css";
 import { GoogleLogin } from "react-google-login";
 
@@ -17,7 +16,6 @@ const Header = () => {
     if (isAuthenticated) {
       return navigate("/home");
     }
-    console.log(process.env);
   }, [isAuthenticated, navigate]);
   const onSuccessHandler = (res) => {
     console.log(res);
