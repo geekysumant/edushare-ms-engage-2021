@@ -76,6 +76,9 @@ const ViewUserQuizSubmission = () => {
     dispatch(downloadAssignmentSubmission(assignmentId, userId));
   };
   const gradeAssignmentHandler = () => {
+    if (grade > assignment.marks) {
+      return;
+    }
     dispatch(gradeAssignment(assignmentId, userId, grade));
   };
   return (

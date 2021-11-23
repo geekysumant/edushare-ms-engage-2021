@@ -30,20 +30,16 @@ function App() {
 
   return (
     <div className="App">
-      {onWelcomeScreen ? (
-        <>
+      {/* {onWelcomeScreen ? (
+        
           {/* <HeaderNew /> */}
-          <Header />
-        </>
-      ) : onHomeScreen ? (
-        <HeaderHome />
-      ) : (
-        <HeaderClass />
-      )}
+      {/* <Header /> */}
+      {/* */}
+      <>{onHomeScreen ? <HeaderHome /> : <HeaderClass />}</>
 
       <Routes>
         <Route path="/" element={<Navigate to="/welcome" />} exact />
-        <Route path="/welcome" element={<Welcome />} />
+        <Route path="/welcome" element={<Header />} />
         <Route path="/home" element={<Home />} />
         <Route path="/join/meet" element={<JoinMeetScreen />} />
         <Route path="/join/meet/:roomID" element={<Meet />} />

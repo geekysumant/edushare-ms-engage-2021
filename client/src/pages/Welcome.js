@@ -11,7 +11,7 @@ import MIT from "../assets/images/mit.png";
 
 const Welcome = () => {
   return (
-    <>
+    <div className="z-10 ">
       <section className={classes.OuterContainer}>
         <span>Seamlessly manage your classroom</span>
         <div className={classes.InnerContainer}>
@@ -127,7 +127,7 @@ const Welcome = () => {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

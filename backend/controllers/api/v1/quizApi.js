@@ -17,6 +17,7 @@ const {
   NO_SUBMISSION_FOUND,
   ASSIGNMENT_GRADED,
   NOT_AUTHORISED,
+  INVALID_GRADE,
 } = require("../../../utils/Constants");
 
 module.exports.createQuiz = async (req, res) => {
@@ -713,6 +714,12 @@ module.exports.gradeAssignment = async (req, res) => {
     }
     if (usersSubmission.grade) {
       const error = new Error(ASSIGNMENT_GRADED);
+      error.code = 400;
+      throw error;
+    }
+    const requestedAssignment = await Assignment.findById(assignmentId);
+    if (grade > requestedAssignment.marks) {
+      const error = new Error(INVALID_GRADE);
       error.code = 400;
       throw error;
     }

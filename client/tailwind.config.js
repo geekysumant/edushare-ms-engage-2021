@@ -41,6 +41,7 @@ module.exports = {
         greencheese: "url('/src/assets/svg/greencheese.svg')",
         boxes: "url('/src/assets/svg/boxes.svg')",
         pattern: "url('/src/assets/svg/pattern.svg')",
+        haikei: "url('/src/assets/svg/blurry-gradient-haikei.svg')",
       },
     },
     screens: {
