@@ -20,6 +20,7 @@ import AssignmentScreen from "./pages/AssignmentScreen";
 import JoinMeetScreen from "./pages/JoinMeetScreen";
 import Meet from "./pages/Meet";
 import ViewUsersScreen from "./pages/ViewUsersScreen";
+import HeaderNew from "./components/UI/HeaderNew";
 
 function App() {
   const location = useLocation();
@@ -31,6 +32,7 @@ function App() {
     <div className="App">
       {onWelcomeScreen ? (
         <>
+          {/* <HeaderNew /> */}
           <Header />
         </>
       ) : onHomeScreen ? (

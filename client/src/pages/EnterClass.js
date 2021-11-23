@@ -69,7 +69,7 @@ const EnterClass = () => {
       />
       <div className="flex flex-row justify-around p-6 sm:flex-col sm:p-2">
         <div className="flex flex-col">
-          <div className="flex flex-col items-center shadow-lg p-6 bg-white h-56 rounded-lg sm:mb-4 mb-2 sm:w-96 sm:mx-auto">
+          <div className="flex flex-col items-center shadow-lg p-6 bg-white h-56 rounded-lg sm:mb-4 mb-2 sm:w-80 sm:mx-auto">
             <div className="flex flex-col items-center">
               <input
                 className="w-full shadow appearance-none border rounded my-2 py-2 px-3 mx-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -101,7 +101,7 @@ const EnterClass = () => {
               </Button>
             </div>
           </div>
-          <div className="flex flex-col items-start  shadow-lg p-6 bg-white h-56 rounded-lg sm:mb-4 sm:w-96 sm:mx-auto ">
+          <div className="flex flex-col items-start  shadow-lg p-6 bg-white h-56 rounded-lg sm:mb-4 sm:w-80 sm:mx-auto ">
             <h1
               className="w-full mb-2"
               style={{
@@ -142,7 +142,7 @@ const EnterClass = () => {
           </div>
         </div>
 
-        <div className="shadow-lg  rounded-lg bg-white w-2/3 sm:w-11/12 sm:mx-auto">
+        <div className="shadow-lg  rounded-lg bg-white w-2/3 sm:w-full sm:mx-auto">
           {isAuthenticated && <Announcement />}
 
           <div className="flex flex-col p-4 sm:p-0">

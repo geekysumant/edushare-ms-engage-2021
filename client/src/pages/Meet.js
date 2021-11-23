@@ -6,15 +6,6 @@ import { useLocation, useParams, useNavigate } from "react-router";
 import VideoControls from "../components/UI/VideoControls";
 import { useSelector } from "react-redux";
 
-const Container = styled.div`
-  padding: 20px;
-  display: flex;
-  height: 100vh;
-  width: 90%;
-  margin: auto;
-  flex-wrap: wrap;
-`;
-
 const StyledVideo = styled.video`
   border-radius: 8px;
   margin-bottom: 20px;
@@ -30,16 +21,10 @@ const Video = (props) => {
       ref.current.srcObject = stream;
     });
   }, []);
-  // return <video playsInline autoPlay ref={ref} />;
   return <StyledVideo playsInline autoPlay ref={ref} />;
 };
 
-const videoConstraints = {
-  height: window.innerHeight / 2,
-  width: window.innerWidth / 2,
-};
-
-const Meet = (props) => {
+const Meet = () => {
   const [peers, setPeers] = useState([]);
   const [webcamState, setWebcamState] = useState(true);
   const [micState, setMicState] = useState(true);
@@ -58,11 +43,6 @@ const Meet = (props) => {
   const params = useParams();
 
   const roomID = params.roomID;
-
-  // const videoConstraints = {
-  //   height: window.innerHeight / 2,
-  //   width: window.innerWidth / 2,
-  // };
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -217,13 +197,7 @@ const Meet = (props) => {
   return (
     <>
       <div className="flex flex-row justify-evenly items-center flex-wrap mt-16 w-full sm:flex-col">
-        <div
-          className="flex flex-col items-center w-96 sm:w-56 "
-          // style={{
-          //   width: "600px",
-          //   height: "400px",
-          // }}
-        >
+        <div className="flex flex-col items-center w-96 sm:w-56 ">
           <div className="sm:w-full ">
             <StyledVideo muted ref={userVideo} autoPlay playsInline />
           </div>
@@ -231,13 +205,7 @@ const Meet = (props) => {
         </div>
         {peers.map((peer, index) => {
           return (
-            <div
-              className="flex flex-col items-center w-96 sm:w-56 "
-              // style={{
-              //   height: "400px",
-              //   width: "600px",
-              // }}
-            >
+            <div className="flex flex-col items-center w-96 sm:w-56 ">
               <div className="sm:w-full ">
                 <Video key={index} peer={peer} />
               </div>

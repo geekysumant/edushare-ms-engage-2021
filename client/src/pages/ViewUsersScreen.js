@@ -17,7 +17,6 @@ const ViewUsersScreen = () => {
   );
 
   const classId = params.classId;
-  console.log(usersInClass);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -42,16 +41,16 @@ const ViewUsersScreen = () => {
       ) : (
         <>
           {createdBy && (
-            <div className="w-4/5 mx-auto rounded rounded-lg bg-white shadow-lg p-4">
+            <div className="w-4/5 mx-auto rounded rounded-lg bg-white shadow-lg p-4 sm:w-full">
               <div className="flex ">
-                <div className="mx-auto w-24 h-24 border-4 border-white rounded-full overflow-hidden">
+                <div className="w-12 h-12">
                   <img
-                    className="object-cover object-center h-32"
+                    alt="user-profile-img"
+                    className="rounded-full"
                     src={createdBy.picture}
-                    alt=""
                   />
                 </div>
-                <div className="flex justify-between w-full items-center">
+                <div className="flex justify-between w-full items-center ml-2">
                   <div className="flex flex-col">
                     <h1 className="font-bold">{createdBy.name}</h1>
                     <span className="text-sm">{createdBy.email}</span>
@@ -63,16 +62,16 @@ const ViewUsersScreen = () => {
           )}
           {usersInClass &&
             usersInClass.map((user) => (
-              <div className="w-4/5 mx-auto rounded-lg bg-white shadow-lg p-4 my-2">
+              <div className="w-4/5 mx-auto rounded-lg bg-white shadow-lg p-4 my-2 sm:w-full ">
                 <div className="flex ">
-                  <div className="mx-auto w-24 h-24 border-4 border-white rounded-full overflow-hidden">
+                  <div className="w-12 h-12">
                     <img
-                      className="object-cover object-center h-32"
+                      alt="user-profile-img"
+                      className="rounded-full"
                       src={user.picture}
-                      alt=""
                     />
                   </div>
-                  <div className="flex justify-between w-full items-center">
+                  <div className="flex justify-between w-full items-center ml-2">
                     <div className="flex flex-col">
                       <h1 className="font-bold">{user.name}</h1>
                       <span className="text-sm">{user.email}</span>

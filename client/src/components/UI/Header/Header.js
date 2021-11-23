@@ -32,11 +32,16 @@ const Header = () => {
     </React.Fragment>
   );
   return (
-    <header className={classes.Header}>
+    <header className="flex w-11/12 justify-between items-center p-4">
       <div>
         <h3>classroom</h3>
       </div>
-      <div> {userNotLoggedInBtns}</div>
+      <div display="flex">
+        <div> {userNotLoggedInBtns}</div>
+        {/* <div> Home</div>
+        <div> Features</div>
+        <div> Contact Us</div> */}
+      </div>
     </header>
   );
 };
