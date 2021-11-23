@@ -31,12 +31,12 @@ const UserAssignmentSubmissionCard = ({
   }, []);
   return (
     <div
-      className="flex flex-col w-1/3 items-center justify-center border border-yellow-600 shadow-lg rounded-lg mx-4 my-4 sm:w-full"
+      className="flex flex-col w-1/3 items-center justify-center border border-yellow-600 shadow-lg rounded-lg mx-4 my-4 sm:w-4/5 p-4"
       style={{
         fontFamily: ["Poppins", "sans-serif"],
       }}
     >
-      <span className="flex flex-row justify-between w-full px-2 py-0 items-center">
+      <span className="flex flex-row justify-between w-full px-2 py-0 items-center mb-4">
         <h1 className="">Your work</h1>
         <span className="font-semibold">
           {submission && submission.grade ? "Graded" : "Ungraded"}
@@ -48,7 +48,7 @@ const UserAssignmentSubmissionCard = ({
           id="myform"
           encType="multipart/form-data"
         >
-          <label class="w-full flex flex-row p-2 items-center justify-center   text-blue -lg shadow-lg tracking-wide  border border-blue-400 cursor-pointer  hover:text-blue-500">
+          <label class="w-full flex rounded-lg flex-row p-2 items-center justify-center   text-blue -lg shadow-lg tracking-wide  border border-blue-400 cursor-pointer  hover:text-blue-500">
             <svg
               class="w-8 h-8"
               fill="currentColor"
@@ -76,11 +76,20 @@ const UserAssignmentSubmissionCard = ({
             ) : uploadSubmissionSuccess ? (
               <Alert color="green" message="Submission successful!" />
             ) : (
-              <input
-                className=" w-full p-2 rounded border border-yellow-500 cursor-pointer hover:bg-yellow-600"
+              <Button
+                color="yellow"
+                ripple="light"
+                buttonType="outline"
+                className="w-full"
                 type="submit"
-                value="Submit assignment"
-              />
+              >
+                Submit assignment
+              </Button>
+              // <input
+              //   className=" w-full p-2 rounded border border-yellow-500 cursor-pointer hover:bg-yellow-600"
+              //   type="submit"
+              //   value="Submit assignment"
+              // />
             )}
           </div>
         </form>

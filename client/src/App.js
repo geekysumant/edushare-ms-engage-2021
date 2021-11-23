@@ -1,9 +1,8 @@
 import Header from "./components/UI/Header/Header";
-import { Route, Routes, useLocation, useNavigate } from "react-router";
+import { Route, Routes, useLocation } from "react-router";
 import Welcome from "./pages/Welcome";
 import { Navigate } from "react-router-dom";
 import Footer from "./components/UI/Footer/Footer";
-import TeacherLogin from "./pages/TeacherLogin/TeacherLogin";
 import EnterClass from "./pages/EnterClass";
 import Home from "./pages/Home";
 import Classwork from "./pages/Classwork";
@@ -18,30 +17,16 @@ import ViewUserQuizSubmission from "./pages/ViewUserQuizSubmission";
 import ViewUserAssignmentSubmission from "./pages/ViewUserAssignmentSubmission";
 import CreateAssignment from "./pages/CreateAssignment";
 import AssignmentScreen from "./pages/AssignmentScreen";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { checkAuthentication } from "./actions/user";
 import JoinMeetScreen from "./pages/JoinMeetScreen";
 import Meet from "./pages/Meet";
 import ViewUsersScreen from "./pages/ViewUsersScreen";
 
 function App() {
   const location = useLocation();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  const { isAuthenticated } = useSelector((state) => state.userDetails);
   const onHomeScreen = location.pathname.startsWith("/home");
   const onWelcomeScreen = location.pathname.startsWith("/welcome");
 
-  // useEffect(() => {
-  //   dispatch(checkAuthentication());
-  // }, []);
-  // useEffect(() => {
-  //   if (!isAuthenticated) {
-  //     return navigate("/welcome");
-  //   }
-  // }, [isAuthenticated]);
   return (
     <div className="App">
       {onWelcomeScreen ? (
@@ -53,10 +38,10 @@ function App() {
       ) : (
         <HeaderClass />
       )}
+
       <Routes>
         <Route path="/" element={<Navigate to="/welcome" />} exact />
         <Route path="/welcome" element={<Welcome />} />
-        <Route path="/login/teacher" element={<TeacherLogin />} />
         <Route path="/home" element={<Home />} />
         <Route path="/join/meet" element={<JoinMeetScreen />} />
         <Route path="/join/meet/:roomID" element={<Meet />} />
@@ -125,6 +110,7 @@ function App() {
           exact
           element={<ViewUsersScreen />}
         />
+        <Route path="*" element={<Home />} />
       </Routes>
 
       {onWelcomeScreen && <Footer />}

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import {
   fetchAssignmentSubmissions,
   fetchSubmissions,
@@ -15,6 +15,7 @@ const QuizSubmissions = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+  const params = useParams();
 
   const { loading, error, submissions } = useSelector(
     (state) => state.fetchAssignmentSubmissions
@@ -24,16 +25,19 @@ const QuizSubmissions = () => {
   );
   const { createdBy } = useSelector((state) => state.enterClassDetails);
 
-  const assignmentId = location.pathname.split("/")[6];
-  const quizId = location.pathname.split("/")[6];
-  const classId = location.pathname.split("/")[3];
+  const assignmentId = params.assignmentId;
+  const classId = params.classId;
+
   useEffect(() => {
     if (!isAuthenticated) {
       return navigate("/welcome");
     }
     if (createdBy && createdBy !== userInfo.id) {
-      return navigate("/welcome");
+      return navigate("/home");
     }
+  }, [isAuthenticated, createdBy]);
+
+  useEffect(() => {
     dispatch(fetchAssignmentSubmissions(assignmentId));
     dispatch(fetchEnterClassDetails(classId));
   }, []);

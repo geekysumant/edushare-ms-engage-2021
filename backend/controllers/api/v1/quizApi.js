@@ -625,8 +625,8 @@ module.exports.downloadAssignmentSubmission = async (req, res) => {
 };
 
 module.exports.uploadAssignmentSubmission = async (req, res) => {
-  try {
-    AssignmentSubmission.uploadedFile(req, res, async (err) => {
+  AssignmentSubmission.uploadedFile(req, res, async (err) => {
+    try {
       if (err) {
         throw new Error("Some error occurred");
       }
@@ -685,11 +685,10 @@ module.exports.uploadAssignmentSubmission = async (req, res) => {
       res.json({
         message: "Submission successful",
       });
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send(error.message);
-  }
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+  });
 };
 
 module.exports.gradeAssignment = async (req, res) => {

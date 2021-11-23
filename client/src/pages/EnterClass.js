@@ -69,7 +69,7 @@ const EnterClass = () => {
       />
       <div className="flex flex-row justify-around p-6 sm:flex-col sm:p-2">
         <div className="flex flex-col">
-          <div className="flex flex-col items-center shadow-lg p-6 bg-white h-56 rounded-lg sm:mb-4 mb-2">
+          <div className="flex flex-col items-center shadow-lg p-6 bg-white h-56 rounded-lg sm:mb-4 mb-2 sm:w-96 sm:mx-auto">
             <div className="flex flex-col items-center">
               <input
                 className="w-full shadow appearance-none border rounded my-2 py-2 px-3 mx-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -83,29 +83,29 @@ const EnterClass = () => {
                 ripple="light"
                 onClick={joinMeetScreen}
                 buttonType="outline"
-                className="w-full"
+                className="w-48"
               >
                 Join meet
               </Button>
             </div>
             <p>OR</p>
-            <div className="w-full">
+            <div className="w-full flex justify-center">
               <Button
                 color="yellow"
                 ripple="light"
                 onClick={createMeetScreen}
                 buttonType="outline"
-                className="w-full"
+                className="w-48"
               >
                 Create new meet
               </Button>
             </div>
           </div>
-          <div className="flex flex-col items-start  shadow-lg p-6 bg-white h-56 rounded-lg sm:mb-4 ">
+          <div className="flex flex-col items-start  shadow-lg p-6 bg-white h-56 rounded-lg sm:mb-4 sm:w-96 sm:mx-auto ">
             <h1
               className="w-full mb-2"
               style={{
-                borderBottom: "2px solid black",
+                borderBottom: "1px solid black",
               }}
             >
               Pending tasks
@@ -113,11 +113,16 @@ const EnterClass = () => {
 
             <div className="flex flex-col">
               {fetchAssignmentsLoading ? (
-                <div className="flex items-center justify-center w-full">
-                  <Spinner />
+                <div
+                  className="flex items-center items-center justify-center mx-auto w-full"
+                  style={{
+                    fontFamily: ["Poppins", "sans-serif"],
+                  }}
+                >
+                  <p>Loading...</p>
                 </div>
               ) : fetchAssignmentsError ? (
-                <div className="w-60">
+                <div className="w-60 mx-auto">
                   <Alert color="red" message={fetchAssignmentsError} />
                 </div>
               ) : (
@@ -137,12 +142,14 @@ const EnterClass = () => {
           </div>
         </div>
 
-        <div className="shadow-lg rounded bg-white w-2/3 sm:w-full">
+        <div className="shadow-lg  rounded-lg bg-white w-2/3 sm:w-11/12 sm:mx-auto">
           {isAuthenticated && <Announcement />}
 
           <div className="flex flex-col p-4 sm:p-0">
             {loading ? (
-              <Spinner />
+              <div className="my-4">
+                <Spinner />
+              </div>
             ) : error ? (
               <div className="w-4/5 mx-auto">
                 <Alert color="red" message={error} />

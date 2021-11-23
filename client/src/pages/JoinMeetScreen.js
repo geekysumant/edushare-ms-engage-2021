@@ -68,7 +68,7 @@ const JoinMeetScreen = () => {
               <span className="mr-2">{roomId}</span>
 
               <span
-                onClick={navigator.clipboard.writeText(roomId)}
+                onClick={() => navigator.clipboard.writeText(roomId)}
                 className="cursor-pointer"
               >
                 <ContentCopyIcon />{" "}
@@ -82,9 +82,11 @@ const JoinMeetScreen = () => {
               {/* <span className="mr-2">{`/join/meet?roomId=${roomId}`}</span> */}
 
               <span
-                onClick={navigator.clipboard.writeText(
-                  `https://stormy-hamlet-67915.herokuapp.com/join/meet?roomId=${roomId}`
-                )}
+                onClick={() =>
+                  navigator.clipboard.writeText(
+                    `https://stormy-hamlet-67915.herokuapp.com/join/meet?roomId=${roomId}`
+                  )
+                }
                 className="cursor-pointer"
               >
                 <ContentCopyIcon />{" "}

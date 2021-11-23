@@ -23,7 +23,6 @@ import {
   FETCH_ASSIGNMENT_SUBMISSIONS_REQUEST,
   FETCH_ASSIGNMENT_SUBMISSIONS_SUCCESS,
   FETCH_ASSIGNMENT_SUCCESS,
-  FETCH_CLASS_DETAILS_SUCCESS,
   FETCH_QUIZ_FAIL,
   FETCH_QUIZ_REQUEST,
   FETCH_QUIZ_SUBMISSIONS_FAIL,
@@ -46,6 +45,7 @@ import {
 import download from "downloadjs";
 import axios from "axios";
 
+const SOME_ERROR_OCCURRED = "Some error occurred";
 export const fetchAssignments = (classId) => {
   return async (dispatch, getState) => {
     try {
@@ -71,10 +71,6 @@ export const fetchAssignments = (classId) => {
           assignments: data.data.assignments,
         },
       });
-      // dispatch({
-      //   type: FETCH_CLASS_DETAILS_SUCCESS,
-      //   payload: data.data,
-      // });
     } catch (err) {
       dispatch({
         type: FETCH_ASSIGNMENTS_FAIL,
@@ -255,7 +251,7 @@ export const fetchAssignmentSubmissions = (assignmentId) => {
     } catch (err) {
       dispatch({
         type: FETCH_ASSIGNMENT_SUBMISSIONS_FAIL,
-        payload: err.response.data,
+        payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
       });
     }
   };
@@ -323,7 +319,7 @@ export const fetchUsersAssignmentSubmission = (assignmentId, userId) => {
     } catch (err) {
       dispatch({
         type: FETCH_USERS_ASSIGNMENT_SUBMISSION_FAIL,
-        payload: err.response.data,
+        payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
       });
     }
   };
@@ -359,7 +355,7 @@ export const fetchAssignment = (assignmentId) => {
     } catch (err) {
       dispatch({
         type: FETCH_ASSIGNMENT_FAIL,
-        payload: err.response.data,
+        payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
       });
     }
   };
@@ -387,7 +383,7 @@ export const createAssignment = (formData) => {
     } catch (err) {
       dispatch({
         type: CREATE_ASSIGNMENT_FAIL,
-        payload: err.response.data,
+        payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
       });
     }
   };
@@ -498,7 +494,7 @@ export const downloadAssignmentSubmission = (assignmentId, userId) => {
     } catch (err) {
       dispatch({
         type: DOWNLOAD_ASSIGNMENT_SUBMISSION_FAIL,
-        payload: err.response.data,
+        payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
       });
     }
   };

@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import download from "downloadjs";
+import { useNavigate } from "react-router";
 import {
   downloadAssignment,
   downloadAssignmentSubmission,
@@ -20,8 +20,11 @@ const AssignmentScreen = () => {
   const [file, setFile] = useState(null);
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
 
-  const { userInfo } = useSelector((state) => state.userDetails);
+  const { userInfo, isAuthenticated } = useSelector(
+    (state) => state.userDetails
+  );
   const { assignment, hasSubmitted, createdBy, loading, success, error } =
     useSelector((state) => state.fetchAssignment);
 
@@ -47,6 +50,11 @@ const AssignmentScreen = () => {
   const classId = location.pathname.split("/")[3];
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      return navigate("/welcome");
+    }
+  }, [isAuthenticated]);
+  useEffect(() => {
     dispatch(fetchAssignment(assignmentId));
   }, []);
 
@@ -56,6 +64,7 @@ const AssignmentScreen = () => {
 
   const uploadAssignmentHandler = (e) => {
     e.preventDefault();
+
     let formData = new FormData();
     formData.append("file", file);
     formData.append("classId", classId);
@@ -87,10 +96,10 @@ const AssignmentScreen = () => {
           </div>
         ) : (
           success && (
-            <div className="flex flex-row justify-between w-4/5 items-center mx-auto mt-8 bg-white p-8 rounded-lg sm:flex-col md:flex-row lg:flex-row sm:w-full sm:mx-auto sm:p-2">
+            <div className="flex flex-row justify-between w-4/5 items-center mx-auto mt-8 bg-white p-8 rounded-lg sm:flex-col md:flex-row lg:flex-row sm:w-11/12  sm:mx-auto sm:p-2">
               <div className="w-3/4">
                 {/* <h1 className="text-3xl text-yellow-600">{assignment.title}</h1> */}
-                <p className="text-sm text-gray-600">Assignment</p>
+                <p className="text-lg text-gray-600">Assignment</p>
                 <p
                   className="text-sm"
                   style={{
@@ -99,7 +108,7 @@ const AssignmentScreen = () => {
                 ></p>
                 <div className="mt-4">
                   <h1 className="text-lg font-medium">
-                    Additional Instructions:
+                    Additional instructions by the teacher:
                   </h1>
                   <p className="text-sm">{assignment.instructions}</p>
                 </div>

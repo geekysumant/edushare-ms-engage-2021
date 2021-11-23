@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { fetchQuizSubmissions } from "../actions/assignment";
 import { fetchEnterClassDetails } from "../actions/class";
 import Alert from "../components/UI/Alert";
@@ -12,6 +12,7 @@ const QuizSubmissions = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+  const params = useParams();
 
   const { loading, error, submissions } = useSelector(
     (state) => state.fetchQuizSubmissions
@@ -21,15 +22,19 @@ const QuizSubmissions = () => {
   );
   const { createdBy } = useSelector((state) => state.enterClassDetails);
 
-  const quizId = location.pathname.split("/")[6];
-  const classId = location.pathname.split("/")[3];
+  const quizId = params.quizId;
+  const classId = params.classId;
+
   useEffect(() => {
     if (!isAuthenticated) {
       return navigate("/welcome");
     }
     if (createdBy && createdBy !== userInfo.id) {
-      return navigate("/welcome");
+      return navigate("/home");
     }
+  }, [isAuthenticated, createdBy]);
+
+  useEffect(() => {
     dispatch(fetchQuizSubmissions(quizId));
     dispatch(fetchEnterClassDetails(classId));
   }, []);

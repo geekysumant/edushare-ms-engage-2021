@@ -10,10 +10,16 @@ import Spinner from "../components/UI/Spinner";
 import Alert from "../components/UI/Alert";
 import QuestionSVG from "../assets/svg/question.svg";
 import AddQuestionSVG from "../assets/svg/add_question.svg";
+import { fetchEnterClassDetails } from "../actions/class";
 
 const CreateMcq = () => {
   const [showAddQuestion, setShowAddQuestion] = useState(false);
   const { loading, success, error } = useSelector((state) => state.createQuiz);
+  const { isAuthenticated, userInfo } = useSelector(
+    (state) => state.userDetails
+  );
+  const { createdBy } = useSelector((state) => state.enterClassDetails);
+
   const [totalMarks, setTotalMarks] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [title, setTitle] = useState("");
@@ -23,6 +29,19 @@ const CreateMcq = () => {
   const navigate = useNavigate();
 
   const classId = location.pathname.split("/")[3];
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      return navigate("/welcome");
+    }
+    if (createdBy && createdBy !== userInfo.id) {
+      return navigate("/home");
+    }
+  }, [createdBy, isAuthenticated]);
+
+  useEffect(() => {
+    dispatch(fetchEnterClassDetails(classId));
+  }, []);
 
   const addQuestionHandler = () => {
     setShowAddQuestion(true);

@@ -30,8 +30,8 @@ const Video = (props) => {
       ref.current.srcObject = stream;
     });
   }, []);
-  return <video playsInline autoPlay ref={ref} />;
-  // return <StyledVideo playsInline autoPlay ref={ref} />;
+  // return <video playsInline autoPlay ref={ref} />;
+  return <StyledVideo playsInline autoPlay ref={ref} />;
 };
 
 const videoConstraints = {
@@ -59,10 +59,10 @@ const Meet = (props) => {
 
   const roomID = params.roomID;
 
-  const videoConstraints = {
-    height: window.innerHeight / 2,
-    width: window.innerWidth / 2,
-  };
+  // const videoConstraints = {
+  //   height: window.innerHeight / 2,
+  //   width: window.innerWidth / 2,
+  // };
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -71,7 +71,7 @@ const Meet = (props) => {
 
     socketRef.current = io.connect("/");
     navigator.mediaDevices
-      .getUserMedia({ video: videoConstraints, audio: true })
+      .getUserMedia({ video: true, audio: true })
       .then((stream) => {
         userVideo.current.srcObject = stream;
         setStream(stream);
@@ -218,7 +218,7 @@ const Meet = (props) => {
     <>
       <div className="flex flex-row justify-evenly items-center flex-wrap mt-16 w-full sm:flex-col">
         <div
-          className="flex flex-col items-center w-96 sm:w-48 "
+          className="flex flex-col items-center w-96 sm:w-56 "
           // style={{
           //   width: "600px",
           //   height: "400px",
@@ -232,7 +232,7 @@ const Meet = (props) => {
         {peers.map((peer, index) => {
           return (
             <div
-              className="flex flex-col items-center w-96 sm:w-48 "
+              className="flex flex-col items-center w-96 sm:w-56 "
               // style={{
               //   height: "400px",
               //   width: "600px",
