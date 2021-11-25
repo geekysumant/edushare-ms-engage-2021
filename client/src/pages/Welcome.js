@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { GoogleLogin } from "react-google-login";
 import GoogleButton from "react-google-button";
 
@@ -28,12 +28,26 @@ const Welcome = () => {
   const navigate = useNavigate();
   const userDetails = useSelector((state) => state.userDetails);
   const { isAuthenticated, loading } = userDetails;
+  const [background, setBackground] = useState("transparent");
 
   useEffect(() => {
     if (isAuthenticated) {
       return navigate("/home");
     }
   }, [isAuthenticated, navigate]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 0) {
+        setBackground("white");
+      } else if (window.scrollY === 0) {
+        setBackground("transparent");
+      }
+    });
+    return () => {
+      window.removeEventListener("scroll", null);
+    };
+  }, []);
   const onSuccessHandler = (res) => {
     dispatch(userLogin(res.tokenId));
   };
@@ -41,15 +55,22 @@ const Welcome = () => {
   return (
     <>
       <div className="relative w-full mx-auto bg-haikei shadow-xl  rounded p-4 h-screen bg-cover flex flex-row justify-between sm:w-full">
-        <header className=" h-20 fixed left-0 top-0 bg-white shadow-lg flex w-full justify-between items-center sm:h-24">
-          <div className="ml-8 flex flex-row items-center sm:flex-col">
+        <header
+          className={`h-20 fixed left-0 top-0 bg-${background} shadow-lg flex w-screen md:justify-between lg:justify-between xl:justify-between sm:flex-start items-center sm:h-24`}
+          style={{
+            transition: "background-color 200ms linear",
+          }}
+        >
+          <div className="ml-8 flex flex-row items-center sm:flex-col sm:ml-4">
             <img
               alt=""
               className="mr-2"
               src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-color-vitaly-gorbachev/60/000000/external-online-class-online-learning-vitaliy-gorbachev-lineal-color-vitaly-gorbachev.png"
             />
             <p
-              className="text-lg font-bold  "
+              className={`text-xl font-bold ${
+                background === "white" ? "text-black" : "text-white"
+              } `}
               style={{
                 fontFamily: ["Montserrat", "sans-serif"],
               }}
@@ -85,7 +106,6 @@ const Welcome = () => {
               />
             )}
           </div>
-          {/* <div className="flex flex-row sm:flex-col items-center z-10"></div> */}
         </header>
 
         <div
@@ -282,17 +302,17 @@ const Welcome = () => {
         </div>
       </div>
 
-      <div className="flex flex-row-reverse justify-between p-8 rounded-lg sm:flex-col-reverse sm:flex-wrap-reverse">
+      <div className="flex flex-row-reverse justify-between p-8 rounded-lg sm:flex-col-reverse sm:flex-wrap-reverse sm:text-left sm:p-0 sm:flex-start">
         <div>
           <img src={DocAnimation} alt="" />
         </div>
         <div
-          className="flex flex-col items-center justify-center w-11/12 mx-auto "
+          className="flex flex-col items-center justify-center w-11/12 mx-auto sm:flex-start "
           style={{
             fontFamily: ["Sen", "sans-serif"],
           }}
         >
-          <div className="w-4/5">
+          <div className="w-4/5 sm:w-full">
             <div className="text-5xl font-extrabold">
               <h1
                 className="my-8"
@@ -323,12 +343,12 @@ const Welcome = () => {
         </div>
       </div>
 
-      <div className="flex justify-between p-8 rounded-lg sm:flex-col-reverse sm:flex-wrap-reverse">
+      <div className="flex justify-between p-8 rounded-lg sm:flex-col-reverse sm:flex-wrap-reverse sm:p-0">
         <div>
           <img src={CodeAnimation} alt="" />
         </div>
         <div
-          className="flex flex-col items-center justify-center w-11/12 mx-auto "
+          className="flex flex-col items-center justify-center w-11/12 mx-auto sm:w-full "
           style={{
             fontFamily: ["Sen", "sans-serif"],
           }}
@@ -346,9 +366,9 @@ const Welcome = () => {
 
           <div className="flex ">
             <div className="flex flex-col items-center justify-center">
-              <div className="text-2xl font-extrabold flex items-center mx-4">
+              <div className="text-2xl font-extrabold flex mx-4 sm:mx-0 ">
                 Sumant Pathak
-                <span className="mx-4">
+                <span className="">
                   <a href="https://www.linkedin.com/in/geekysumant/">
                     <LinkedInIcon
                       className="mx-4 text-xl cursor-pointer "
@@ -371,7 +391,7 @@ const Welcome = () => {
 
                   <a href="mailto:sumantk778@gmail.com">
                     <EmailIcon
-                      className="mx-4 text-xl cursor-pointer"
+                      className="ml-4 text-xl cursor-pointer"
                       style={{
                         fontSize: "2rem",
                         color: "red",

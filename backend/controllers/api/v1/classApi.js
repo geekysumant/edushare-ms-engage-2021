@@ -4,13 +4,17 @@ const mongoose = require("mongoose");
 
 const Class = require("../../../models/Class");
 const User = require("../../../models/User");
-const { INVALID_CLASS_ID } = require("../../../utils/Constants");
+const {
+  INVALID_CLASS_ID,
+  INTERNAL_SERVER_ERROR,
+  USER_CLASSROOM_OWNER,
+  USER_ALREADY_JOINED_CLASSROOM,
+} = require("../../../utils/Constants");
 
 //  CONTROLLER: createClass
 //  DESC.: This method creates new class with the given parameters by the user
 module.exports.createClass = async (req, res) => {
   try {
-    const createdBy = req.user._id;
     const { className, subject, room } = req.body;
 
     //search if a class already exists with the given class name
@@ -18,9 +22,11 @@ module.exports.createClass = async (req, res) => {
       className,
     });
     if (exisitingClass) {
-      throw new Error(
+      const error = new Error(
         `Class with name ${className} already exists. Please try with a different name`
       );
+      error.code = 400;
+      throw error;
     }
     const newClass = await Class.create({
       createdBy: req.user._id,
@@ -34,15 +40,15 @@ module.exports.createClass = async (req, res) => {
     user.createdClasses.push(newClass);
     await user.save();
 
-    res.status(200).json({
+    res.json({
       message: {
         class: newClass,
       },
     });
-  } catch (err) {
-    res.status(500).send({
-      message: err.message,
-    });
+  } catch (error) {
+    if (error.code) {
+      res.status(error.code).send(error.message);
+    } else res.status(500).send(INTERNAL_SERVER_ERROR);
   }
 };
 
@@ -51,7 +57,6 @@ module.exports.createClass = async (req, res) => {
 module.exports.fetchClasses = async (req, res) => {
   try {
     //fetching all the classes user has created/joined and populating required
-
     const userClasses = await User.findById(
       req.user.id,
       "createdClasses joinedClasses"
@@ -80,7 +85,7 @@ module.exports.fetchClasses = async (req, res) => {
       classes: userClasses,
     });
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).send(INTERNAL_SERVER_ERROR);
   }
 };
 
@@ -89,23 +94,36 @@ module.exports.fetchClasses = async (req, res) => {
 module.exports.joinClass = async (req, res) => {
   try {
     const requestedClassId = req.body.classId;
+
+    const isValidClassId = mongoose.Types.ObjectId(requestedClassId);
+    if (!isValidClassId) {
+      const error = new Error(INVALID_CLASS_ID);
+      error.code = 404;
+      throw error;
+    }
     const requestedClass = await Class.findById(requestedClassId);
 
     //if requested class does not exist
     if (!requestedClass) {
-      throw new Error("No class with that class code!");
+      const error = new Error(INVALID_CLASS_ID);
+      error.code = 404;
+      throw error;
     }
 
     //check if the request is being made by the classroom's owner
     if (requestedClass.createdBy == req.user.id) {
-      throw new Error("Error! You are the owner of this classroom");
+      const error = new Error(USER_CLASSROOM_OWNER);
+      error.code = 400;
+      throw error;
     }
 
     const currentUser = await User.findById(req.user.id);
 
     //check if user has already joined the clasroom
     if (currentUser.joinedClasses.includes(requestedClassId)) {
-      throw new Error("You have already joined this classroom");
+      const error = new Error(USER_ALREADY_JOINED_CLASSROOM);
+      error.code = 400;
+      throw error;
     }
 
     //all checks are performed, now user can join the classroom
@@ -118,19 +136,35 @@ module.exports.joinClass = async (req, res) => {
     res.json({
       joinedClass: requestedClass,
     });
-  } catch (err) {
-    res.status(400).send(err.message);
+  } catch (error) {
+    if (error.code) {
+      res.status(error.code).send(error.message);
+    } else res.status(500).send(INTERNAL_SERVER_ERROR);
   }
 };
 
+//  CONTROLLER: fetchClass
+//  DESC.: This method fetches details for a particular classroom
 module.exports.fetchClass = async (req, res) => {
   try {
     const classId = req.params.classId;
 
+    const isValidClassId = mongoose.Types.ObjectId(classId);
+
+    if (!isValidClassId) {
+      const error = new Error(INVALID_CLASS_ID);
+      error.code = 404;
+      throw error;
+    }
     const classDetails = await Class.findById(
       classId,
       "createdBy className subject room"
     );
+    if (!classDetails) {
+      const error = new Error(INVALID_CLASS_ID);
+      error.code = 404;
+      throw error;
+    }
 
     res.json({
       createdBy: classDetails.createdBy,
@@ -138,11 +172,15 @@ module.exports.fetchClass = async (req, res) => {
       subject: classDetails.subject,
       room: classDetails.room,
     });
-  } catch (err) {
-    res.status(500).send(err.message);
+  } catch (error) {
+    if (error.code) {
+      res.status(error.code).send(error.message);
+    } else res.status(500).send(INTERNAL_SERVER_ERROR);
   }
 };
 
+//  CONTROLLER: fetchUsersInClass
+//  DESC.: This method fetches all the users that are part of a classroom
 module.exports.fetchUsersInClass = async (req, res) => {
   try {
     const classId = req.params.classId;

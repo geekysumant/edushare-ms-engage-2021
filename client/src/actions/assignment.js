@@ -77,7 +77,7 @@ export const fetchAssignments = (classId) => {
     } catch (err) {
       dispatch({
         type: FETCH_ASSIGNMENTS_FAIL,
-        payload: err.response.data,
+        payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
       });
     }
   };
@@ -113,7 +113,7 @@ export const createQuiz = (classId, questions, title) => {
     } catch (err) {
       dispatch({
         type: CREATE_QUIZ_FAIL,
-        payload: err.message,
+        payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
       });
     }
   };
@@ -151,7 +151,7 @@ export const fetchQuiz = (quizId) => {
     } catch (err) {
       dispatch({
         type: FETCH_QUIZ_FAIL,
-        payload: err.message,
+        payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
       });
     }
   };
@@ -183,7 +183,7 @@ export const submitQuiz = (quizId, submission) => {
     } catch (err) {
       dispatch({
         type: SUBMIT_QUIZ_FAIL,
-        payload: err.response.data,
+        payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
       });
     }
   };
@@ -217,7 +217,7 @@ export const fetchQuizSubmissions = (quizId) => {
     } catch (err) {
       dispatch({
         type: FETCH_QUIZ_SUBMISSIONS_FAIL,
-        payload: err.response.data,
+        payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
       });
     }
   };
@@ -284,7 +284,7 @@ export const fetchUsersQuizSubmission = (quizId, userId) => {
     } catch (err) {
       dispatch({
         type: FETCH_USERS_QUIZ_SUBMISSION_FAIL,
-        payload: err.response.data,
+        payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
       });
     }
   };
@@ -409,7 +409,7 @@ export const uploadAssignmentSubmission = (formData) => {
     } catch (err) {
       dispatch({
         type: CREATE_ASSIGNMENT_SUBMISSION_FAIL,
-        payload: err.response.data,
+        payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
       });
     }
   };
@@ -449,7 +449,7 @@ export const downloadAssignment = (assignmentId) => {
     } catch (err) {
       dispatch({
         type: DOWNLOAD_ASSIGNMENT_FAIL,
-        payload: err.response.data,
+        payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
       });
     }
   };
@@ -529,7 +529,7 @@ export const gradeAssignment = (assignmentId, userId, grade) => {
     } catch (err) {
       dispatch({
         type: GRADE_ASSIGNMENT_FAIL,
-        payload: err.response.data,
+        payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
       });
     }
   };

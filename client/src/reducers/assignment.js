@@ -179,7 +179,7 @@ export const fetchQuizSubmissionsReducer = (
     case FETCH_QUIZ_SUBMISSIONS_FAIL:
       return {
         loading: false,
-        error: action.payload.error,
+        error: action.payload,
       };
     default:
       return state;
@@ -207,7 +207,7 @@ export const fetchAssignmentSubmissionsReducer = (
     case FETCH_ASSIGNMENT_SUBMISSIONS_FAIL:
       return {
         loading: false,
-        error: action.payload.error,
+        error: action.payload,
       };
     default:
       return state;

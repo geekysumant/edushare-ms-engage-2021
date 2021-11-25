@@ -23,10 +23,11 @@ function App() {
   const location = useLocation();
 
   const onHomeScreen = location.pathname.startsWith("/home");
+  const onClassScreen = location.pathname.startsWith("/enter");
 
   return (
     <div className="App">
-      <>{onHomeScreen ? <HeaderHome /> : <HeaderClass />}</>
+      <>{onHomeScreen ? <HeaderHome /> : onClassScreen && <HeaderClass />}</>
 
       <Routes>
         <Route path="/" element={<Navigate to="/welcome" />} exact />

@@ -6,6 +6,7 @@ import {
   USER_LOGOUT_REQUEST,
 } from "./actionTypes";
 
+const SOME_ERROR_OCCURRED = "Some error occurred";
 export const userLogin = (token) => {
   return async (dispatch, getState) => {
     dispatch({ type: USER_LOGIN_REQUEST });
@@ -26,9 +27,12 @@ export const userLogin = (token) => {
         "userDetails",
         JSON.stringify(getState().userDetails)
       );
-    } catch (error) {
+    } catch (err) {
       localStorage.removeItem("userDetails");
-      dispatch({ type: USER_LOGIN_FAIL, payload: error.response.data });
+      dispatch({
+        type: USER_LOGIN_FAIL,
+        payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
+      });
     }
   };
 };

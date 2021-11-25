@@ -17,3 +17,7 @@ module.exports.SUBMISSION_ATTACHED =
   "You have already submitted the assignment";
 module.exports.QUIZ_ALREADY_ATTEMPTED = "YOu have already attempted this quiz";
 module.exports.INVALID_CREDENTIALS = "Invalid credentials, please try again";
+module.exports.USER_CLASSROOM_OWNER =
+  "Error! You are the owner of this classroom";
+module.exports.USER_ALREADY_JOINED_CLASSROOM =
+  "You have already joined this classroom";

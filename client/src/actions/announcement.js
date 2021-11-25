@@ -8,6 +8,7 @@ import {
   FETCH_ANNOUNCEMENTS_SUCCESS,
 } from "./actionTypes";
 
+const SOME_ERROR_OCCURRED = "Some error occurred";
 export const fetchAnnouncements = (classId) => {
   return async (dispatch, getState) => {
     try {
@@ -37,7 +38,7 @@ export const fetchAnnouncements = (classId) => {
     } catch (err) {
       dispatch({
         type: FETCH_ANNOUNCEMENTS_FAIL,
-        payload: err.response.data,
+        payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
       });
     }
   };
@@ -73,7 +74,7 @@ export const createAnnouncement = (classId, content) => {
     } catch (err) {
       dispatch({
         type: CREATE_ANNOUNCEMENT_FAIL,
-        payload: err.response.data,
+        payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
       });
     }
   };

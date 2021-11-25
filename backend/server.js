@@ -15,8 +15,8 @@ app.use(express.json());
 
 app.use("/", require("./routes"));
 
+//socket.io logic for video calling
 const users = {};
-
 const socketToRoom = {};
 io.on("connection", (socket) => {
   socket.on("join room", ({ roomID, userName }) => {
@@ -32,7 +32,7 @@ io.on("connection", (socket) => {
     }
     socketToRoom[socket.id] = roomID;
     const usersInThisRoom = users[roomID].filter(
-      ({ userID, userName }) => userID !== socket.id
+      ({ userID }) => userID !== socket.id
     );
 
     socket.emit("all users", usersInThisRoom);
@@ -58,13 +58,11 @@ io.on("connection", (socket) => {
     if (room) {
       room = room.filter((id) => id !== socket.id);
       users[roomID] = room;
-      const usersInThisRoom = users[roomID].filter((id) => id !== socket.id);
-      // socket.emit("all users", usersInThisRoom);
     }
     socket.broadcast.emit("disconnect successful", socket.id);
   });
   socket.on("disconnect", () => {
-    // socket.broadcast.emit("disconnect successful", socket.id);
+    socket.broadcast.emit("disconnect successful", socket.id);
   });
 });
 

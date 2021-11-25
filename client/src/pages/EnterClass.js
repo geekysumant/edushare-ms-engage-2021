@@ -34,7 +34,6 @@ const EnterClass = () => {
     error: fetchAssignmentsError,
   } = useSelector((state) => state.assignmentDetails);
 
-  console.log(urlParams);
   const classId = urlParams.classId;
 
   useEffect(() => {

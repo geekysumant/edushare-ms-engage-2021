@@ -17,6 +17,7 @@ import {
 } from "./actionTypes";
 import axios from "axios";
 
+const SOME_ERROR_OCCURRED = "Some error occurred";
 export const createClass = (className, subject, room) => {
   return async (dispatch, getState) => {
     try {
@@ -43,10 +44,10 @@ export const createClass = (className, subject, room) => {
         payload: data.message,
       });
       dispatch(fetchClasses());
-    } catch (e) {
+    } catch (err) {
       dispatch({
         type: CREATE_CLASS_FAIL,
-        payload: e.message,
+        payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
       });
     }
   };
@@ -79,7 +80,7 @@ export const fetchClasses = () => {
     } catch (err) {
       dispatch({
         type: FETCH_CLASS_FAIL,
-        payload: err.response.data,
+        payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
       });
     }
   };
@@ -115,7 +116,7 @@ export const joinClass = (classId) => {
     } catch (err) {
       dispatch({
         type: JOIN_CLASS_FAIL,
-        payload: err.response.data,
+        payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
       });
     }
   };
@@ -187,7 +188,7 @@ export const fetchUsersInClass = (classId) => {
     } catch (err) {
       dispatch({
         type: FETCH_USERS_FAIL,
-        payload: err.response.data,
+        payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
       });
     }
   };

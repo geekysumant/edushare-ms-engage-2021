@@ -221,7 +221,6 @@ module.exports.fetchPendingAssignments = async (req, res) => {
       //   pendingQuizzes.push(quiz);
       // }
     });
-    console.log(pendingQuizzes);
 
     res.json({
       data: {
@@ -453,7 +452,6 @@ module.exports.fetchAssignmentSubmissions = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
     if (error.code) {
       res.status(error.code).send(error.message);
     } else {
@@ -552,7 +550,6 @@ module.exports.fetchUsersAssignmentSubmission = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
     if (error.code) {
       res.status(error.code).send(error.message);
     } else {
@@ -807,7 +804,7 @@ module.exports.downloadAssignmentSubmission = async (req, res) => {
     const fileKeyInS3 = usersAssignmentSubmission.submission;
     const readStream = downloadFile(fileKeyInS3);
     readStream.pipe(res);
-  } catch (err) {
+  } catch (error) {
     if (error.code) {
       res.status(error.code).send(error.message);
     } else {
