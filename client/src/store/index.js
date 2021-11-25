@@ -5,7 +5,6 @@ import { composeWithDevTools } from "redux-devtools-extension";
 
 const middlewares = [thunk];
 
-// if user closes the browser, fetch their details from local storage
 const initialLoginState = localStorage.getItem("userDetails")
   ? JSON.parse(localStorage.getItem("userDetails"))
   : {
@@ -14,16 +13,8 @@ const initialLoginState = localStorage.getItem("userDetails")
       userInfo: null,
     };
 
-// if user closes the browser, fetch created questions till now from local storage
-const initialQuestionsState = localStorage.getItem("questions")
-  ? JSON.parse(localStorage.getItem("questions"))
-  : {
-      questions: [],
-      totalMarks: 0,
-    };
-
 export const store = createStore(
   reducers,
-  { userDetails: initialLoginState, questions: initialQuestionsState },
+  { userDetails: initialLoginState },
   composeWithDevTools(applyMiddleware(...middlewares))
 );

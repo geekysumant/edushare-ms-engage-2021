@@ -10,6 +10,5 @@ const router = express.Router();
 
 //the router here is of form: /api/v1/ <route>
 router.post("/", loginController.loginUser);
-router.get("/checkAuthentication", loginController.checkAuthentication);
 
 module.exports = router;

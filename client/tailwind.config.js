@@ -42,6 +42,7 @@ module.exports = {
         boxes: "url('/src/assets/svg/boxes.svg')",
         pattern: "url('/src/assets/svg/pattern.svg')",
         haikei: "url('/src/assets/svg/blurry-gradient-haikei.svg')",
+        service: "url('/src/assets/images/service-bg.jpeg')",
       },
     },
     screens: {

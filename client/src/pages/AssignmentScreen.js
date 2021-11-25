@@ -1,8 +1,6 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import {
   downloadAssignment,
   downloadAssignmentSubmission,
@@ -19,8 +17,8 @@ import Button from "@material-tailwind/react/Button";
 const AssignmentScreen = () => {
   const [file, setFile] = useState(null);
   const dispatch = useDispatch();
-  const location = useLocation();
   const navigate = useNavigate();
+  const params = useParams();
 
   const { userInfo, isAuthenticated } = useSelector(
     (state) => state.userDetails
@@ -46,8 +44,8 @@ const AssignmentScreen = () => {
   const downloadedSubmissionLoading = downloadedSubmission.loading;
   const downloadedSubmissionError = downloadedSubmission.error;
 
-  const assignmentId = location.pathname.split("/")[6];
-  const classId = location.pathname.split("/")[3];
+  const assignmentId = params.assignmentId;
+  const classId = params.classId;
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -57,10 +55,6 @@ const AssignmentScreen = () => {
   useEffect(() => {
     dispatch(fetchAssignment(assignmentId));
   }, []);
-
-  useEffect(() => {
-    console.log(uploadSubmissionLoading);
-  }, [uploadSubmissionLoading]);
 
   const uploadAssignmentHandler = (e) => {
     e.preventDefault();

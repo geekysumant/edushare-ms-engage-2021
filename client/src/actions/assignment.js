@@ -62,7 +62,10 @@ export const fetchAssignments = (classId) => {
       };
 
       //dummy : now only just fetching quizzes
-      const { data } = await axios.get(`/api/v1/quiz/fetch/${classId}`, config);
+      const { data } = await axios.get(
+        `/api/v1/quiz/fetch/all/${classId}`,
+        config
+      );
 
       dispatch({
         type: FETCH_ASSIGNMENTS_SUCCESS,
@@ -130,11 +133,7 @@ export const fetchQuiz = (quizId) => {
         },
       };
 
-      const { data } = await axios.get(
-        `/api/v1/quiz/fetch/quiz/${quizId}`,
-        config
-      );
-      console.log(data);
+      const { data } = await axios.get(`/api/v1/quiz/fetch/${quizId}`, config);
       dispatch({
         type: FETCH_QUIZ_SUCCESS,
         payload: {

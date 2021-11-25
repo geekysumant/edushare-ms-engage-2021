@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Banner from "../components/UI/Banner";
-import axios from "axios";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { createAssignment } from "../actions/assignment";
 import { fetchEnterClassDetails } from "../actions/class";
@@ -16,11 +15,11 @@ const CreateAssignment = () => {
   const [marks, setMarks] = useState(0);
   const [fieldError, setFieldError] = useState("");
 
-  const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const params = useParams();
 
-  const classId = location.pathname.split("/")[3];
+  const classId = params.classId;
   const { isAuthenticated, userInfo } = useSelector(
     (state) => state.userDetails
   );
@@ -43,6 +42,10 @@ const CreateAssignment = () => {
 
     if (!title || !marks) {
       setFieldError("One or more fields are invalid.");
+      return;
+    }
+    if (!file) {
+      setFieldError("Please upload assignment file");
       return;
     }
     let formData = new FormData();
@@ -111,22 +114,19 @@ const CreateAssignment = () => {
 
             <label className="flex flex-row items-center">
               <span className="text-gray-700 mr-16">
-                Additional File (optional)
+                Additional File (Reqd.)
               </span>
 
               <div>
-                <label class="w-36 flex flex-col items-center px-4 py-2 bg-white text-blue rounded-lg shadow-lg tracking-wide  border border-blue cursor-pointer bg-green-300 hover:text-white">
+                <label className="w-36 flex flex-col items-center px-4 py-2 bg-white text-blue rounded-lg shadow-lg tracking-wide  border border-blue cursor-pointer bg-green-300 hover:text-white">
                   <svg
-                    class="w-8 h-8"
+                    className="w-8 h-8"
                     fill="currentColor"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
                   >
                     <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
                   </svg>
-                  {/* <span class="mt-2 text-base leading-normal">
-                    Additional File(optional)
-                  </span> */}
                   <input
                     type="file"
                     className="hidden"
@@ -136,9 +136,15 @@ const CreateAssignment = () => {
                     }}
                   />
                 </label>
+                <div>{file && <p className="normal-case">{file.name}</p>}</div>
               </div>
             </label>
             <div className="mt-8 max-w-md  sm:text-center">
+              <input
+                className="bg-green-300 cursor-pointer p-2 rounded hover:bg-green-500 mb-4"
+                type="submit"
+                value="Create assignment"
+              />
               {loading ? (
                 <Spinner />
               ) : error ? (
@@ -146,13 +152,8 @@ const CreateAssignment = () => {
               ) : success ? (
                 <Alert color="green" message="Assignment created!" />
               ) : (
-                <input
-                  className="bg-green-300 cursor-pointer p-2 rounded hover:bg-green-500 mb-4"
-                  type="submit"
-                  value="Create assignment"
-                />
+                fieldError && <Alert color="red" message={fieldError} />
               )}
-              {fieldError && <Alert color="red" message={fieldError} />}
             </div>
           </div>
         </form>

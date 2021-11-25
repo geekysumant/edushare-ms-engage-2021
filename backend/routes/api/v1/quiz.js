@@ -6,31 +6,26 @@ const jwt = require("jsonwebtoken");
 const protect = require("../../../middleware/authMiddleware").protect;
 
 //import controllers
-const quizController = require("../../../controllers/api/v1/quizApi");
+const taskController = require("../../../controllers/api/v1/taskApi");
 
 //initialise express router
 const router = express.Router();
 
 //the route here is of form: /api/v1/quiz/ <route>
-router.post("/create", protect, quizController.createQuiz);
-router.get("/fetch/:classId", protect, quizController.fetchAssignments);
-router.get("/fetch/quiz/:quizId", protect, quizController.fetchQuiz);
-router.get(
-  "/fetch/assignment/:assignmentId",
-  protect,
-  quizController.fetchQuiz
-);
+router.post("/create", protect, taskController.createQuiz);
+router.get("/fetch/all/:classId", protect, taskController.fetchTasks);
+router.get("/fetch/:quizId", protect, taskController.fetchQuiz);
 router.get(
   "/fetch/pending/:classId",
   protect,
-  quizController.fetchPendingAssignments
+  taskController.fetchPendingAssignments
 );
-router.post("/submit", protect, quizController.submitQuiz);
+router.post("/submit", protect, taskController.submitQuiz);
 router.get(
   "/submissions/:quizId",
   protect,
-  quizController.fetchQuizSubmissions
+  taskController.fetchQuizSubmissions
 );
-router.get("/submission", protect, quizController.fetchUsersQuizSubmission);
+router.get("/submission", protect, taskController.fetchUsersQuizSubmission);
 
 module.exports = router;

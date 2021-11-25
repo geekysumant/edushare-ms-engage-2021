@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import QuestionContainer from "../components/QuestionContainer";
 import Banner from "../components/UI/Banner";
 import { createQuiz } from "../actions/assignment";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import Spinner from "../components/UI/Spinner";
 import Alert from "../components/UI/Alert";
 import QuestionSVG from "../assets/svg/question.svg";
@@ -25,10 +25,10 @@ const CreateMcq = () => {
   const [title, setTitle] = useState("");
 
   const dispatch = useDispatch();
-  const location = useLocation();
   const navigate = useNavigate();
+  const params = useParams();
 
-  const classId = location.pathname.split("/")[3];
+  const classId = params.classId;
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -108,7 +108,7 @@ const CreateMcq = () => {
               {error && <Alert color={"red"} message={error} />}
               {questions && questions.length === 0 && (
                 <div className="w-1/2 mx-auto">
-                  <img src={AddQuestionSVG} />
+                  <img src={AddQuestionSVG} alt="" />
                 </div>
               )}
               <div className="flex flex-row justify-between w-full px-6 sm:flex-col sm:items-center">

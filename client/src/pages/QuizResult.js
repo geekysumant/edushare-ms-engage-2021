@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { fetchQuiz } from "../actions/assignment";
 import QuizResultDisplay from "../components/QuizResultDisplay";
 import Alert from "../components/UI/Alert";
@@ -10,11 +10,10 @@ import WinnerSVG from "../assets/svg/winner.svg";
 
 const QuizResult = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
   const navigate = useNavigate();
+  const params = useParams();
   const {
     questions,
-    createdBy,
     loading,
     error,
     hasSubmitted,
@@ -22,12 +21,10 @@ const QuizResult = () => {
     totalQuizScore,
     totalUserScore,
   } = useSelector((state) => state.fetchQuiz);
-  const { userInfo, isAuthenticated } = useSelector(
-    (state) => state.userDetails
-  );
+  const { isAuthenticated } = useSelector((state) => state.userDetails);
 
-  const quizId = location.pathname.split("/")[6];
-  const classId = location.pathname.split("/")[3];
+  const quizId = params.quizId;
+  const classId = params.classId;
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -35,6 +32,7 @@ const QuizResult = () => {
     }
     dispatch(fetchQuiz(quizId));
   }, []);
+
   return (
     <div>
       <Banner
@@ -47,7 +45,9 @@ const QuizResult = () => {
       {loading ? (
         <Spinner />
       ) : error ? (
-        <Alert color="red" message={error} />
+        <div className="w-80 mx-auto">
+          <Alert color="red" message={error} />
+        </div>
       ) : (
         hasSubmitted && (
           <QuizResultDisplay

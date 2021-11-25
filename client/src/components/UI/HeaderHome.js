@@ -22,6 +22,7 @@ const HeaderHome = () => {
       <header className="p-4 h-16 bg-white shadow-lg flex w-full justify-between items-center sm:h-32">
         <div className="ml-8 flex flex-row items-center sm:flex-col">
           <img
+            alt=""
             className="mr-2"
             src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-color-vitaly-gorbachev/60/000000/external-online-class-online-learning-vitaliy-gorbachev-lineal-color-vitaly-gorbachev.png"
           />

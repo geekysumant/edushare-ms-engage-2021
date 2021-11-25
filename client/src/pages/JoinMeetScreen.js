@@ -2,7 +2,7 @@ import Button from "@material-tailwind/react/Button";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { v1 as uuid } from "uuid";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import Spinner from "../components/UI/Spinner";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
@@ -28,7 +28,6 @@ const JoinMeetScreen = () => {
         setStream(stream);
       })
       .catch((err) => {
-        console.log(err);
         alert("Please allow camera access", err.message);
       });
   };
@@ -101,12 +100,11 @@ const JoinMeetScreen = () => {
         <video
           width="384px"
           height="384px"
-          className="video-ref"
+          className="video-ref rounded-lg border border-black"
           src=""
           ref={userVideo}
           autoPlay
           muted
-          className="rounded-lg border border-black"
         ></video>
       )}
 

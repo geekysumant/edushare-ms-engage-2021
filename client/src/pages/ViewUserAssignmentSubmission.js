@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import {
   downloadAssignmentSubmission,
   fetchAssignment,
-  fetchQuiz,
   fetchUsersAssignmentSubmission,
   gradeAssignment,
 } from "../actions/assignment";
-import QuizResultDisplay from "../components/QuizResultDisplay";
 import Alert from "../components/UI/Alert";
 import Banner from "../components/UI/Banner";
 import Spinner from "../components/UI/Spinner";
@@ -17,16 +15,13 @@ import Button from "@material-tailwind/react/Button";
 
 const ViewUserQuizSubmission = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
   const navigate = useNavigate();
+  const params = useParams();
 
   const [grade, setGrade] = useState(0);
-  const {
-    userInfo,
-    isAuthenticated,
-    loading: userInfoLoading,
-    error: userInfoError,
-  } = useSelector((state) => state.userDetails);
+  const { userInfo, isAuthenticated } = useSelector(
+    (state) => state.userDetails
+  );
   const {
     assignment,
     createdBy,
@@ -44,13 +39,12 @@ const ViewUserQuizSubmission = () => {
     loading: fetchSubmissionLoading,
     error: fetchSubmissionError,
   } = useSelector((state) => state.fetchUsersAssignmentSubmission);
-  const { loading, success, error } = useSelector(
+  const { loading, error } = useSelector(
     (state) => state.downloadAssignmentSubmission
   );
 
-  const assignmentId = location.pathname.split("/")[6];
-  const classId = location.pathname.split("/")[3];
-  const userId = location.pathname.split("/")[8];
+  const assignmentId = params.assignmentId;
+  const userId = params.userId;
 
   useEffect(() => {
     if (!isAuthenticated) {

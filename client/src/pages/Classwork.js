@@ -33,10 +33,6 @@ const Classwork = () => {
     dispatch(fetchAssignments(classId));
   }, [isAuthenticated]);
 
-  useEffect(() => {
-    console.log(quizzes);
-  }, [quizzes]);
-
   return (
     <>
       <Banner

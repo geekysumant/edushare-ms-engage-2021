@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from "react";
 import Banner from "../components/UI/Banner";
 import BannerSVG from "../assets/svg/online_class.svg";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchQuiz, submitQuiz } from "../actions/assignment";
 import DisplayQuiz from "../components/DisplayQuiz";
 import Spinner from "../components/UI/Spinner";
 import Alert from "../components/UI/Alert";
 import Button from "@material-tailwind/react/Button";
-import QuizResult from "./QuizResult";
 import QuestionContainer from "../components/QuestionContainer";
 
 const QuizScreen = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
+  const params = useParams();
   const navigate = useNavigate();
 
   const {
@@ -23,7 +22,6 @@ const QuizScreen = () => {
     loading,
     error,
     hasSubmitted,
-    submission,
     totalQuizScore,
   } = useSelector((state) => state.fetchQuiz);
   const { userInfo, isAuthenticated } = useSelector(
@@ -31,8 +29,8 @@ const QuizScreen = () => {
   );
   const submitQuizDetails = useSelector((state) => state.submitQuiz);
   const [userSubmission, setUserSubmission] = useState([]);
-  const quizId = location.pathname.split("/")[6];
-  const classId = location.pathname.split("/")[3];
+  const quizId = params.quizId;
+  const classId = params.classId;
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -70,7 +68,9 @@ const QuizScreen = () => {
         ) : submitQuizDetails.success ? (
           <Alert color="green" message="Quiz submitted successfully" />
         ) : submitQuizDetails.error ? (
-          <Alert color="red" message={submitQuizDetails.error} />
+          <div className="w-96 mx-auto">
+            <Alert color="red" message={submitQuizDetails.error} />
+          </div>
         ) : null}
       </div>
 
@@ -105,7 +105,9 @@ const QuizScreen = () => {
       {loading ? (
         <Spinner />
       ) : error ? (
-        <Alert color="red" message={error} />
+        <div className="w-96 mx-auto">
+          <Alert color="red" message={error} />
+        </div>
       ) : createdBy && createdBy === userInfo.id ? (
         <div className="bg-white py-2 flex flex-col items-center border rounded mx-auto w-4/5 sm:w-full">
           {marksComponent}

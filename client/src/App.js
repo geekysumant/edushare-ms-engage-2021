@@ -1,8 +1,5 @@
-import Header from "./components/UI/Header/Header";
 import { Route, Routes, useLocation } from "react-router";
-import Welcome from "./pages/Welcome";
 import { Navigate } from "react-router-dom";
-import Footer from "./components/UI/Footer/Footer";
 import EnterClass from "./pages/EnterClass";
 import Home from "./pages/Home";
 import Classwork from "./pages/Classwork";
@@ -20,26 +17,20 @@ import AssignmentScreen from "./pages/AssignmentScreen";
 import JoinMeetScreen from "./pages/JoinMeetScreen";
 import Meet from "./pages/Meet";
 import ViewUsersScreen from "./pages/ViewUsersScreen";
-import HeaderNew from "./components/UI/HeaderNew";
+import Welcome from "./pages/Welcome";
 
 function App() {
   const location = useLocation();
 
   const onHomeScreen = location.pathname.startsWith("/home");
-  const onWelcomeScreen = location.pathname.startsWith("/welcome");
 
   return (
     <div className="App">
-      {/* {onWelcomeScreen ? (
-        
-          {/* <HeaderNew /> */}
-      {/* <Header /> */}
-      {/* */}
       <>{onHomeScreen ? <HeaderHome /> : <HeaderClass />}</>
 
       <Routes>
         <Route path="/" element={<Navigate to="/welcome" />} exact />
-        <Route path="/welcome" element={<Header />} />
+        <Route path="/welcome" element={<Welcome />} />
         <Route path="/home" element={<Home />} />
         <Route path="/join/meet" element={<JoinMeetScreen />} />
         <Route path="/join/meet/:roomID" element={<Meet />} />
@@ -111,7 +102,7 @@ function App() {
         <Route path="*" element={<Home />} />
       </Routes>
 
-      {onWelcomeScreen && <Footer />}
+      {/* {onWelcomeScreen && <Footer />} */}
     </div>
   );
 }

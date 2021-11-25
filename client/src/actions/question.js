@@ -21,12 +21,9 @@ export const addQuestion = (classId, question) => {
         }
       }
     }
-    console.log(payload);
     dispatch({
       type: ADD_QUESTION,
       payload,
     });
-    // const { questions } = getState();
-    // localStorage.setItem("questions", JSON.stringify(questions));
   };
 };

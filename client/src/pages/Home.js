@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
-import HeaderHome from "../components/UI/HeaderHome";
-import Input from "@material-tailwind/react/Input";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ClassCard from "../components/ClassCard";
-import { createClass, fetchClasses } from "../actions/class";
+import { fetchClasses } from "../actions/class";
 import Spinner from "../components/UI/Spinner";
 import Alert from "../components/UI/Alert";
 import StudySVG from "../assets/svg/study.svg";
@@ -51,7 +49,7 @@ const Home = () => {
               createdClasses.length === 0 && (
                 <div className="w-full">
                   <div className="w-60  mx-auto">
-                    <img src={VoidSVG} />
+                    <img alt="" src={VoidSVG} />
                     <h3 className="text-sm text-gray-600 my-6">
                       You havent't joined or created any class
                     </h3>

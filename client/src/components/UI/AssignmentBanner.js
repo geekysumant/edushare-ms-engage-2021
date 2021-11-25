@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@material-tailwind/react/Button";
 import { Link } from "react-router-dom";
-import { useLocation } from "react-router";
+import { useParams } from "react-router";
 
 const AssignmentBanner = ({
   title,
@@ -11,29 +11,30 @@ const AssignmentBanner = ({
   createdBy,
   time,
 }) => {
-  const location = useLocation();
-  const urlPath = location.pathname;
-  const classId = urlPath.split("/")[3];
+  const params = useParams();
+  const classId = params.classId;
   return (
-    <div class="flex bg-white   w-full shadow-lg rounded-lg mx-4 md:mx-auto my-4  md:max-w-2xl ">
-      <div class="flex flex-col items-start px-4 py-6 w-full">
+    <div className="flex bg-white   w-full shadow-lg rounded-lg mx-4 md:mx-auto my-4  md:max-w-2xl ">
+      <div className="flex flex-col items-start px-4 py-6 w-full">
         <div className="flex w-full">
           <img
-            class="w-10 h-10 rounded object-cover mr-4 shadow"
+            className="w-10 h-10 rounded object-cover mr-4 shadow"
             src={"/images/quiz.png"}
             alt="avatar"
           />
-          <div class="flex items-center justify-between w-full">
-            <h2 class="text-lg font-semibold text-gray-900 -mt-1">{title} </h2>
-            <small class="text-sm text-gray-700">
+          <div className="flex items-center justify-between w-full">
+            <h2 className="text-lg font-semibold text-gray-900 -mt-1">
+              {title}{" "}
+            </h2>
+            <small className="text-sm text-gray-700">
               {new Date(time).toDateString()}
             </small>
           </div>
         </div>
 
-        <div class="flex flex-col w-full">
+        <div className="flex flex-col w-full">
           <div className="flex flex-row w-full justify-between mt-4 sm:flex-col sm:items-center">
-            <p class="mt-3 text-gray-700 text-sm">Total marks : {marks}</p>
+            <p className="mt-3 text-gray-700 text-sm">Total marks : {marks}</p>
             <Link
               className="sm:my-4"
               to={`/enter/class/${classId}/classwork/assignment/${assignmentId}`}

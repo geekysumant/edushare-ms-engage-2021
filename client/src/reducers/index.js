@@ -31,9 +31,7 @@ import {
 export default combineReducers({
   userDetails: userLogin,
   userLogout: userLogoutReducer,
-  //dont keep crated class details here, instead call the fetchClass api to also request the created classes
   classDetails: fetchClassesReducer,
-  // fetchClasses: fetchClassesReducer,
   createClass: createClassReducer,
   joinClass: joinClassReducer,
   fetchAnnouncements: fetchAnnouncementsReducer,
@@ -45,7 +43,6 @@ export default combineReducers({
   fetchQuiz: fetchQuizReducer,
   fetchAssignment: fetchAssignmentReducer,
   submitQuiz: submitQuizReducer,
-  //change to fetch quiz submissions
   fetchQuizSubmissions: fetchQuizSubmissionsReducer,
   fetchAssignmentSubmissions: fetchAssignmentSubmissionsReducer,
   fetchUsersQuizSubmission: fetchUsersQuizSubmissionReducer,
@@ -56,6 +53,4 @@ export default combineReducers({
   userVideo: userVideoReducer,
   gradeAssignment: gradeAssignmentReducer,
   fetchUsersInClass: fetchUsersInClassReducer,
-  //not needed questions state
-  // allQuestions: addQuestionReducer,
 });

@@ -19,6 +19,7 @@ const HeaderClass = () => {
           className="flex flex-row items-center text-lg font-bold ml-8 sm:w-full sm:mx-auto"
         >
           <img
+            alt=""
             className=""
             src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-color-vitaly-gorbachev/60/000000/external-online-class-online-learning-vitaliy-gorbachev-lineal-color-vitaly-gorbachev.png"
           />
@@ -26,7 +27,7 @@ const HeaderClass = () => {
             style={{
               fontFamily: ["Montserrat", "sans-serif"],
             }}
-            className="sm:hidden"
+            className="sm:hidden ml-2"
           >
             edushare
           </p>

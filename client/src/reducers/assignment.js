@@ -105,7 +105,6 @@ const initialFetchQuizState = {
 };
 
 export const fetchQuizReducer = (state = initialFetchQuizState, action) => {
-  console.log(action);
   switch (action.type) {
     case FETCH_QUIZ_REQUEST:
       return {
@@ -310,7 +309,6 @@ export const fetchAssignmentReducer = (
   state = initialFetchAssignmentState,
   action
 ) => {
-  console.log(action);
   switch (action.type) {
     case FETCH_ASSIGNMENT_REQUEST:
       return {

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { fetchQuizSubmissions } from "../actions/assignment";
 import { fetchEnterClassDetails } from "../actions/class";
 import Alert from "../components/UI/Alert";
@@ -10,7 +10,7 @@ import NoSubmissionSVG from "../assets/svg/no_submission.svg";
 
 const QuizSubmissions = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
+
   const navigate = useNavigate();
   const params = useParams();
 
@@ -61,7 +61,7 @@ const QuizSubmissions = () => {
 
           {submissions && submissions.length === 0 && (
             <div className="mx-auto h-56 w-56 my-16">
-              <img src={NoSubmissionSVG} />
+              <img src={NoSubmissionSVG} alt="" />
               <p
                 style={{
                   fontFamily: ["Poppins", "sans-serif"],

@@ -45,7 +45,7 @@ export default function CreateClassForm({
         <ModalBody>
           <form className="w-96 p-2 mb-4">
             <div className="mb-4">
-              <label class="block text-gray-700 text-sm font-bold mb-2">
+              <label className="block text-gray-700 text-sm font-bold mb-2">
                 Class name
               </label>
               <input

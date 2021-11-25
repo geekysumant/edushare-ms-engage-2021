@@ -26,6 +26,7 @@ const assignmentSchema = mongoose.Schema(
     },
     file: {
       type: String,
+      required: true,
     },
     submissions: [
       {

@@ -28,7 +28,7 @@ const UserAssignmentSubmissionCard = ({
 
   useEffect(() => {
     dispatch(fetchUsersAssignmentSubmission(assignmentId, userInfo.id));
-  }, []);
+  }, [assignmentId, userInfo]);
   return (
     <div
       className="flex flex-col w-1/3 items-center justify-center border border-yellow-600 shadow-lg rounded-lg mx-4 my-4 sm:w-4/5 p-4"
@@ -48,16 +48,16 @@ const UserAssignmentSubmissionCard = ({
           id="myform"
           encType="multipart/form-data"
         >
-          <label class="w-full flex rounded-lg flex-row p-2 items-center justify-center   text-blue -lg shadow-lg tracking-wide  border border-blue-400 cursor-pointer  hover:text-blue-500">
+          <label className="w-full flex rounded-lg flex-row p-2 items-center justify-center   text-blue -lg shadow-lg tracking-wide  border border-blue-400 cursor-pointer  hover:text-blue-500">
             <svg
-              class="w-8 h-8"
+              className="w-8 h-8"
               fill="currentColor"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
             >
               <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
             </svg>
-            <span class="ml-8 text-base leading-normal">Add file</span>
+            <span className="ml-8 text-base leading-normal">Add file</span>
             <input
               type="file"
               className="hidden"
@@ -85,11 +85,6 @@ const UserAssignmentSubmissionCard = ({
               >
                 Submit assignment
               </Button>
-              // <input
-              //   className=" w-full p-2 rounded border border-yellow-500 cursor-pointer hover:bg-yellow-600"
-              //   type="submit"
-              //   value="Submit assignment"
-              // />
             )}
           </div>
         </form>

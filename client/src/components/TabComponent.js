@@ -8,7 +8,6 @@ function classNames(...classes) {
 }
 
 const TabComponent = ({ categories, userInfo, createdBy }) => {
-  console.log(createdBy);
   return (
     <div className="w-full px-2 py-16 sm:px-0">
       <Tab.Group>
@@ -41,7 +40,7 @@ const TabComponent = ({ categories, userInfo, createdBy }) => {
             >
               {quizzes.length === 0 && (
                 <div className="w-40  mx-auto">
-                  <img src={VoidSVG} />
+                  <img src={VoidSVG} alt="" />
                   <h3 className="text-sm text-gray-600 my-6">
                     Hooray, no pending tasks
                   </h3>

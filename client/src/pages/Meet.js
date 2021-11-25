@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled from "styled-components";
-import { useLocation, useParams, useNavigate } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import VideoControls from "../components/UI/VideoControls";
 import { useSelector } from "react-redux";
 
@@ -55,7 +55,7 @@ const Meet = () => {
       .then((stream) => {
         userVideo.current.srcObject = stream;
         setStream(stream);
-        console.log(roomID);
+
         socketRef.current.emit("join room", {
           roomID: roomID,
           userName: userInfo.name,
@@ -83,7 +83,6 @@ const Meet = () => {
             peer,
           });
           const newUser = payload.userName;
-          console.log(newUser);
           setUsersInCall((users) => [...users, newUser]);
           setPeers((users) => [...users, peer]);
         });
@@ -183,7 +182,7 @@ const Meet = () => {
       stream.getAudioTracks()[0].enabled = true;
       userVideo.current.srcObject = stream;
     }
-    console.log(micState);
+
     setMicState(!micState);
   };
   const callEnd = async () => {

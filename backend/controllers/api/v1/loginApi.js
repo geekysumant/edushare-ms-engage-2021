@@ -3,11 +3,16 @@ const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
 const crypto = require("crypto");
 const User = require("../../../models/User");
+const { INVALID_CREDENTIALS } = require("../../../utils/Constants");
 
 const JWT_SECRET = process.env.JWT_SECRET_KEY;
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
+
+//  CONTROLLER: loginUser
+//  DESC.: This method receives a token from Google Auth, then creates a new JWT token
+// for the user.
 module.exports.loginUser = async (req, res) => {
   const { token } = req.body;
   try {
@@ -18,9 +23,9 @@ module.exports.loginUser = async (req, res) => {
     const { email, name, picture, email_verified } = response.payload;
 
     if (!email_verified) {
-      res.statusCode(401).json({
-        message: "Invalid credentials, please try again.",
-      });
+      const error = new Error(INVALID_CREDENTIALS);
+      error.code = 401;
+      throw error;
     }
 
     //search if user exists or not in db
@@ -30,9 +35,7 @@ module.exports.loginUser = async (req, res) => {
 
     if (!user) {
       //user does not exist;
-
       const randomPassword = crypto.randomBytes(20).toString("hex");
-      console.log(randomPassword);
       const newUser = await User.create({
         name: name,
         email: email,
@@ -51,7 +54,6 @@ module.exports.loginUser = async (req, res) => {
       });
     } else {
       const newToken = jwt.sign({ id: user.id }, JWT_SECRET);
-      console.log(newToken);
       res.json({
         message: {
           id: user._id,
@@ -63,27 +65,8 @@ module.exports.loginUser = async (req, res) => {
       });
     }
   } catch (err) {
-    console.log(err);
-  }
-};
-
-module.exports.checkAuthentication = async (req, res) => {
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    try {
-      const token = req.headers.authorization.split(" ")[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-
-      res.json({
-        message: "OK",
-      });
-    } catch (error) {
-      res.status(401).send("Not authorised");
-    }
-  } else {
-    res.status(401).send("Not authorised");
-    // throw new Error("Not Authorized");
+    if (err.code) {
+      res.status(err.code).send(err.message);
+    } else res.status(401).send(err.message);
   }
 };

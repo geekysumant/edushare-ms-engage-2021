@@ -6,7 +6,6 @@ const QuizResultDisplay = ({
   questions,
   submission,
 }) => {
-  console.log(questions);
   return (
     <>
       <div className="mb-8">

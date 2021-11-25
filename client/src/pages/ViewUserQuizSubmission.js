@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { fetchQuiz, fetchUsersQuizSubmission } from "../actions/assignment";
 import QuizResultDisplay from "../components/QuizResultDisplay";
 import Alert from "../components/UI/Alert";
@@ -10,30 +10,28 @@ import WinnerSVG from "../assets/svg/winner.svg";
 
 const ViewUserQuizSubmission = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
   const navigate = useNavigate();
-  const {
-    questions,
-    createdBy,
-    loading,
-    error,
-    hasSubmitted,
-    totalQuizScore,
-    totalUserScore,
-  } = useSelector((state) => state.fetchQuiz);
+  const params = useParams();
+  const { questions, createdBy, loading, error, totalQuizScore } = useSelector(
+    (state) => state.fetchQuiz
+  );
   const { userInfo, isAuthenticated } = useSelector(
     (state) => state.userDetails
   );
   const { submission } = useSelector((state) => state.fetchUsersQuizSubmission);
 
-  const quizId = location.pathname.split("/")[6];
-  const classId = location.pathname.split("/")[3];
-  const userId = location.pathname.split("/")[8];
+  const quizId = params.quizId;
+  const userId = params.userId;
 
   useEffect(() => {
     if (!isAuthenticated) {
       return navigate("/welcome");
     }
+    if (createdBy && createdBy !== userInfo.id) {
+      return navigate("/home");
+    }
+  }, [isAuthenticated, createdBy]);
+  useEffect(() => {
     dispatch(fetchQuiz(quizId));
     dispatch(fetchUsersQuizSubmission(quizId, userId));
   }, []);

@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { fetchEnterClassDetails } from "../actions/class";
 import Announcement from "../components/UI/Announcement";
 import Banner from "../components/UI/Banner";
-import HeaderClass from "../components/UI/HeaderClass";
-import Classwork from "./Classwork";
-import CreateMcq from "./CreateMcq";
 import BannerSVG from "../assets/svg/online_class.svg";
 import Button from "@material-tailwind/react/Button";
-import { v1 as uuid } from "uuid";
 import { fetchAnnouncements } from "../actions/announcement";
 import Spinner from "../components/UI/Spinner";
 import Alert from "../components/UI/Alert";
@@ -21,7 +17,6 @@ import AnnouncementSVG from "../assets/svg/announcement.svg";
 const EnterClass = () => {
   const urlParams = useParams();
   const dispatch = useDispatch();
-  const location = useLocation();
   const navigate = useNavigate();
 
   const [roomId, setRoomId] = useState("");
@@ -30,16 +25,16 @@ const EnterClass = () => {
     (state) => state.fetchAnnouncements
   );
   const { isAuthenticated } = useSelector((state) => state.userDetails);
-  const { className, room, cratedBy, subject } = useSelector(
+  const { className, room, subject } = useSelector(
     (state) => state.enterClassDetails
   );
   const {
     quizzes,
-    assignments,
     loading: fetchAssignmentsLoading,
     error: fetchAssignmentsError,
   } = useSelector((state) => state.assignmentDetails);
 
+  console.log(urlParams);
   const classId = urlParams.classId;
 
   useEffect(() => {
@@ -53,7 +48,7 @@ const EnterClass = () => {
   }, []);
 
   const joinMeetScreen = () => {
-    navigate(`/join/meet?roomId=${roomId}`);
+    if (roomId) navigate(`/join/meet?roomId=${roomId}`);
   };
 
   const createMeetScreen = () => {
@@ -174,7 +169,7 @@ const EnterClass = () => {
               }}
             >
               <>
-                <img src={AnnouncementSVG} />
+                <img alt="" src={AnnouncementSVG} />
                 <p className="text-xs">Announce something to your class</p>
               </>
             </div>

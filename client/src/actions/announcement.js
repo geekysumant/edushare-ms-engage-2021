@@ -58,7 +58,7 @@ export const createAnnouncement = (classId, content) => {
         },
       };
 
-      const { data } = await axios.post(
+      await axios.post(
         `/api/v1/announcement/create/${classId}`,
         {
           content,
