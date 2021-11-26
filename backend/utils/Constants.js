@@ -21,3 +21,4 @@ module.exports.USER_CLASSROOM_OWNER =
   "Error! You are the owner of this classroom";
 module.exports.USER_ALREADY_JOINED_CLASSROOM =
   "You have already joined this classroom";
+module.exports.INVALID_ANNOUNCEMENT_ID = "Oops, no such announcement found";

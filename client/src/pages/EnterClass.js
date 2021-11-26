@@ -24,7 +24,9 @@ const EnterClass = () => {
   const { loading, error, announcements } = useSelector(
     (state) => state.fetchAnnouncements
   );
-  const { isAuthenticated } = useSelector((state) => state.userDetails);
+  const { isAuthenticated, userInfo } = useSelector(
+    (state) => state.userDetails
+  );
   const { className, room, subject } = useSelector(
     (state) => state.enterClassDetails
   );
@@ -152,10 +154,15 @@ const EnterClass = () => {
               announcements &&
               announcements.map((announcement) => (
                 <UserAnnouncement
+                  key={announcement._id}
+                  announcementId={announcement._id}
+                  userId={userInfo.id}
+                  announcementMadeBy={announcement.user._id}
                   name={announcement.user.name}
                   picture={announcement.user.picture}
                   content={announcement.content}
                   time={announcement.createdAt}
+                  classId={classId}
                 />
               ))
             )}

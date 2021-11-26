@@ -21,4 +21,9 @@ router.get(
   protect,
   announcementController.fetchAnnouncements
 );
+router.delete(
+  "/delete/:announcementId",
+  protect,
+  announcementController.deleteAnnouncement
+);
 module.exports = router;

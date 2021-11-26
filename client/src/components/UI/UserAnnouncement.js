@@ -1,6 +1,24 @@
 import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-const UserAnnouncement = ({ picture, name, time, content }) => {
+import { deleteAnnouncement } from "../../actions/announcement";
+import { useDispatch, useSelector } from "react-redux";
+import Spinner from "./Spinner";
+const UserAnnouncement = ({
+  picture,
+  name,
+  time,
+  content,
+  userId,
+  announcementMadeBy,
+  announcementId,
+  classId,
+}) => {
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.deleteAnnouncement);
+
+  const deleteAnnouncementHandler = () => {
+    dispatch(deleteAnnouncement(announcementId, classId));
+  };
   return (
     <div className="flex bg-white shadow-lg rounded-lg mx-4 my-2">
       <div className="flex  px-4 py-6 w-full">
@@ -18,9 +36,22 @@ const UserAnnouncement = ({ picture, name, time, content }) => {
               <small className="text-sm text-gray-700">
                 {new Date(time).toDateString()}
               </small>
-              <span>
-                <DeleteIcon />
-              </span>
+              {userId === announcementMadeBy && (
+                <>
+                  {loading ? (
+                    <div className="mx-4">
+                      <Spinner />
+                    </div>
+                  ) : (
+                    <span
+                      onClick={deleteAnnouncementHandler}
+                      className="mx-4 cursor-pointer"
+                    >
+                      <DeleteIcon />
+                    </span>
+                  )}
+                </>
+              )}
             </div>
           </div>
           <p className="mt-3 text-gray-700 text-sm">{content}</p>

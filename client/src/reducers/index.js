@@ -25,6 +25,7 @@ import {
 } from "./assignment";
 import {
   createNewAnnouncementReducer,
+  deleteAnnouncementReducer,
   fetchAnnouncementsReducer,
 } from "./announcement";
 
@@ -36,6 +37,7 @@ export default combineReducers({
   joinClass: joinClassReducer,
   fetchAnnouncements: fetchAnnouncementsReducer,
   createNewAnnouncement: createNewAnnouncementReducer,
+  deleteAnnouncement: deleteAnnouncementReducer,
   assignmentDetails: fetchAssignmentsReducer,
   enterClassDetails: fetchEnterClassDetailsReducer,
   createQuiz: createQuizReducer,

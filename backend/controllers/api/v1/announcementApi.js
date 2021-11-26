@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const {
   INVALID_CLASS_ID,
   INTERNAL_SERVER_ERROR,
+  INVALID_ANNOUNCEMENT_ID,
 } = require("../../../utils/Constants");
 
 //  CONTROLLER: createAnnouncement
@@ -103,5 +104,38 @@ module.exports.fetchAnnouncements = async (req, res) => {
     if (error.code) {
       res.status(error.code).send(error.message);
     } else res.status(500).send(INTERNAL_SERVER_ERROR);
+  }
+};
+
+//  CONTROLLER: deleteAnnouncement
+//  DESC.: This method deletes an announcement requested by user
+module.exports.deleteAnnouncement = async (req, res) => {
+  try {
+    const announcementId = req.params.announcementId;
+    const isValidAnnouncementId =
+      mongoose.Types.ObjectId.isValid(announcementId);
+    if (!isValidAnnouncementId) {
+      const error = new Error(INVALID_ANNOUNCEMENT_ID);
+      error.code = 404;
+      throw error;
+    }
+
+    const announcementToDelete = await Announcement.findOneAndDelete({
+      user: req.user._id,
+      _id: announcementId,
+    });
+    if (!announcementToDelete) {
+      const error = new Error(INVALID_ANNOUNCEMENT_ID);
+      error.code = 404;
+      throw error;
+    }
+
+    res.json({
+      message: "SUCCESS",
+    });
+  } catch (error) {
+    if (error.code) {
+      res.send(error.code).send(error.message);
+    } else res.send(500).send(INTERNAL_SERVER_ERROR);
   }
 };
