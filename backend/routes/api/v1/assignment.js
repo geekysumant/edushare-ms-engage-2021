@@ -15,6 +15,11 @@ router.post("/create", protect, taskController.createAssignment);
 router.get("/fetch/:assignmentId", protect, taskController.fetchAssignment);
 router.post("/submit", protect, taskController.uploadAssignmentSubmission);
 router.get(
+  "/fetch/pending/:classId",
+  protect,
+  taskController.fetchPendingAssignments
+);
+router.get(
   "/download/:assignmentId",
   protect,
   taskController.downloadAssignment

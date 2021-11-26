@@ -23,6 +23,9 @@ import {
   FETCH_ASSIGNMENT_SUBMISSIONS_REQUEST,
   FETCH_ASSIGNMENT_SUBMISSIONS_SUCCESS,
   FETCH_ASSIGNMENT_SUCCESS,
+  FETCH_PENDING_TASKS_FAIL,
+  FETCH_PENDING_TASKS_REQUEST,
+  FETCH_PENDING_TASKS_SUCCESS,
   FETCH_QUIZ_FAIL,
   FETCH_QUIZ_REQUEST,
   FETCH_QUIZ_SUBMISSIONS_FAIL,
@@ -441,6 +444,40 @@ export const gradeAssignmentReducer = (
         success: true,
       };
     case GRADE_ASSIGNMENT_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+const initialPendingTasksState = {
+  loading: true,
+  quizzes: [],
+  assignments: [],
+};
+
+export const fetchPendingTasksReducer = (
+  state = initialPendingTasksState,
+  action
+) => {
+  switch (action.type) {
+    case FETCH_PENDING_TASKS_REQUEST:
+      return {
+        loading: true,
+        quizzes: [],
+        assignments: [],
+      };
+    case FETCH_PENDING_TASKS_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        quizzes: [...action.payload.quizzes],
+        assignments: [...action.payload.assignments],
+      };
+    case FETCH_PENDING_TASKS_FAIL:
       return {
         loading: false,
         error: action.payload,

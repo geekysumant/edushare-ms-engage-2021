@@ -66,6 +66,7 @@ const Home = () => {
                         classRoom={element.classRoom}
                         classTeacher="Teacher"
                         classCode={element._id}
+                        instructorName={element.createdBy.name}
                       />
                     </div>
                   );
@@ -80,6 +81,7 @@ const Home = () => {
                         classRoom={element.classRoom}
                         classTeacher="Teacher"
                         classCode={element._id}
+                        instructorName={element.createdBy.name}
                       />
                     </div>
                   );

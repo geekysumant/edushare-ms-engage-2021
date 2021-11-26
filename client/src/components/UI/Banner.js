@@ -16,13 +16,14 @@ const Banner = ({
           style={{
             fontFamily: ["Poppins", "sans-serif"],
           }}
-          className={`text-5xl text-${textColor}-50`}
+          className={`text-6xl text-${textColor}-50 font-semibold`}
         >
           {heading}
         </h2>
         <p
           style={{
             fontFamily: ["Poppins", "sans-serif"],
+            fontSize: "1.5rem",
           }}
           className={textColor && `text-${textColor}-50`}
         >

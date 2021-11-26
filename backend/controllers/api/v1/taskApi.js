@@ -172,11 +172,9 @@ module.exports.fetchQuiz = async (req, res) => {
   }
 };
 
-//( under developement)
-//  CONTROLLER: fetchPendingAssignments
-//  DESC.:  This controller fetches a particular MCQ Quiz along with the students submission
-//  on the same
-module.exports.fetchPendingAssignments = async (req, res) => {
+//  CONTROLLER: fetchPendingQuizzes
+//  DESC.:  This controller fetches all the unsubmitted MCQ quizzes by the student
+module.exports.fetchPendingQuizzes = async (req, res) => {
   try {
     const classId = req.params.classId;
     const isValidClassId = mongoose.Types.ObjectId.isValid(classId);
@@ -191,15 +189,14 @@ module.exports.fetchPendingAssignments = async (req, res) => {
       {
         classId,
       },
-      "_id"
+      "_id title"
     );
     const allSubmissions = await QuizSubmission.find(
       {
         classId,
       },
-      "user"
+      "quizId"
     );
-
     if (!allQuizzes) {
       const error = new Error(INVALID_CLASS_ID);
       err.code = 404;
@@ -208,26 +205,73 @@ module.exports.fetchPendingAssignments = async (req, res) => {
 
     let pendingQuizzes = [];
     allQuizzes.forEach((quiz) => {
-      if (!allSubmissions.find((sub) => sub.quizId.equals(quiz._id))) {
-        pendingQuizzes.push(quiz.id);
-      }
-      // if (
-      //   !allSubmissions.find(
-      //     (quizSubmission) =>
-      //       quizSubmission.quizId.equals(quiz._id) &&
-      //       quizSubmission.user.equals(req.user._id)
-      //   )
-      // ) {
-      //   pendingQuizzes.push(quiz);
-      // }
+      if (!allSubmissions.find((sub) => sub.quizId.equals(quiz._id)))
+        pendingQuizzes.push(quiz);
     });
-
     res.json({
       data: {
         pendingQuizzes,
       },
     });
-  } catch (err) {}
+  } catch (err) {
+    if (err.code) {
+      res.status(error.code).send(err.message);
+    } else {
+      res.status(500).send(INTERNAL_SERVER_ERROR);
+    }
+  }
+};
+
+//  CONTROLLER: fetchPendingAssignments
+//  DESC.:  This controller fetches all the unsubmitted assignments by the student
+module.exports.fetchPendingAssignments = async (req, res) => {
+  try {
+    const classId = req.params.classId;
+    const isValidClassId = mongoose.Types.ObjectId.isValid(classId);
+
+    if (!isValidClassId) {
+      const error = new Error(INVALID_CLASS_ID);
+      err.code = 404;
+      throw error;
+    }
+
+    const allAssignments = await Assignment.find(
+      {
+        classId,
+      },
+      "_id title"
+    );
+    const allSubmissions = await AssignmentSubmission.find(
+      {
+        classId,
+      },
+      "assignmentId"
+    );
+    if (!allAssignments) {
+      const error = new Error(INVALID_CLASS_ID);
+      err.code = 404;
+      throw error;
+    }
+
+    let pendingAssignments = [];
+    allAssignments.forEach((assignment) => {
+      if (
+        !allSubmissions.find((sub) => sub.assignmentId.equals(assignment._id))
+      )
+        pendingAssignments.push(assignment);
+    });
+    res.json({
+      data: {
+        pendingAssignments,
+      },
+    });
+  } catch (err) {
+    if (err.code) {
+      res.status(error.code).send(err.message);
+    } else {
+      res.status(500).send(INTERNAL_SERVER_ERROR);
+    }
+  }
 };
 
 //  CONTROLLER: fetchAssignment
@@ -602,19 +646,17 @@ module.exports.createAssignment = async (req, res) => {
         throw error;
       }
 
+      // create the assignment & save the file key of the uploaded file in AWS S3 i
+      //n the created assignment's file attribute
       const newAssignment = await Assignment.create({
         createdBy: req.user._id,
         classId,
         title,
         instructions,
         marks,
+        file: fileKeyInS3,
       });
 
-      //save the file key of the uploaded file in AWS S3 in the created assignment's file attribute
-      if (req.file) {
-        newAssignment.file = fileKeyInS3;
-        await newAssignment.save();
-      }
       requestedClass.assignments.push(newAssignment);
       await requestedClass.save();
 

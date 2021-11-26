@@ -18,7 +18,7 @@ router.get("/fetch/:quizId", protect, taskController.fetchQuiz);
 router.get(
   "/fetch/pending/:classId",
   protect,
-  taskController.fetchPendingAssignments
+  taskController.fetchPendingQuizzes
 );
 router.post("/submit", protect, taskController.submitQuiz);
 router.get(

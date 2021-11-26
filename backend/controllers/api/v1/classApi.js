@@ -61,8 +61,28 @@ module.exports.fetchClasses = async (req, res) => {
       req.user.id,
       "createdClasses joinedClasses"
     )
-      .populate("createdClasses", "createdBy subject className room createdAt")
-      .populate("joinedClasses", "createdBy subject className room createdAt");
+      .populate([
+        {
+          path: "createdClasses",
+          select: "createdBy subject className room createdAt",
+          populate: {
+            path: "createdBy",
+            select: "_id name",
+          },
+        },
+      ])
+      .populate([
+        {
+          path: "joinedClasses",
+          select: "createdBy subject className room createdAt",
+          populate: {
+            path: "createdBy",
+            select: "_id name",
+          },
+        },
+      ]);
+    // .populate("createdClasses", "createdBy subject className room createdAt")
+    // .populate("joinedClasses", "createdBy subject className room createdAt");
 
     userClasses.createdClasses.sort((a, b) => {
       if (

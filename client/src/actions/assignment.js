@@ -23,6 +23,9 @@ import {
   FETCH_ASSIGNMENT_SUBMISSIONS_REQUEST,
   FETCH_ASSIGNMENT_SUBMISSIONS_SUCCESS,
   FETCH_ASSIGNMENT_SUCCESS,
+  FETCH_PENDING_TASKS_FAIL,
+  FETCH_PENDING_TASKS_REQUEST,
+  FETCH_PENDING_TASKS_SUCCESS,
   FETCH_QUIZ_FAIL,
   FETCH_QUIZ_REQUEST,
   FETCH_QUIZ_SUBMISSIONS_FAIL,
@@ -61,7 +64,6 @@ export const fetchAssignments = (classId) => {
         },
       };
 
-      //dummy : now only just fetching quizzes
       const { data } = await axios.get(
         `/api/v1/quiz/fetch/all/${classId}`,
         config
@@ -77,6 +79,46 @@ export const fetchAssignments = (classId) => {
     } catch (err) {
       dispatch({
         type: FETCH_ASSIGNMENTS_FAIL,
+        payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
+      });
+    }
+  };
+};
+
+export const fetchPendingTasks = (classId) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: FETCH_PENDING_TASKS_REQUEST,
+      });
+
+      const { userInfo } = getState().userDetails;
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data: pendingQuizzes } = await axios.get(
+        `/api/v1/quiz/fetch/pending/${classId}`,
+        config
+      );
+      const { data: pendingAssignments } = await axios.get(
+        `/api/v1/assignment/fetch/pending/${classId}`,
+        config
+      );
+      dispatch({
+        type: FETCH_PENDING_TASKS_SUCCESS,
+        payload: {
+          quizzes: pendingQuizzes.data.pendingQuizzes,
+          assignments: pendingAssignments.data.pendingAssignments,
+        },
+      });
+    } catch (err) {
+      console.log(err.message);
+      dispatch({
+        type: FETCH_PENDING_TASKS_FAIL,
         payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
       });
     }
