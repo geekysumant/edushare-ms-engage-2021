@@ -40,7 +40,7 @@ Link to deployed app: [https://stormy-hamlet-67915.herokuapp.com](https://stormy
 - Teacher can create as many MCQ quizzes and file based assignments.
 - Students can make their individual submissions on MCQ/assignments.
 
-![Entity Relationship Diagram](./screenshots/ERDiagram.png)
+![Entity Relationship Diagram](./screenshots/ErDiagram.png)
 
 ## Application Setup Guidelines
 
