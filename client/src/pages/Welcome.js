@@ -335,8 +335,17 @@ const Welcome = () => {
                 }
               >
                 View detailed documentation about the complete flow of the
-                project including how to setup on your local machine here. Feel
-                free to clone the project and make any modifications.
+                project including how to setup on your local machine
+                <a
+                  href="https://github.com/geekysumant/edushare-ms-engage-2021"
+                  style={{
+                    color: "blue",
+                  }}
+                >
+                  {" "}
+                  here
+                </a>
+                . Feel free to clone the project and make any modifications.
               </h1>
             </div>
           </div>
