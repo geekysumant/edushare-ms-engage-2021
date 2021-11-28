@@ -14,7 +14,7 @@ const UserAnnouncement = ({
   classId,
 }) => {
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.deleteAnnouncement);
+  const { loading } = useSelector((state) => state.deleteAnnouncement);
 
   const deleteAnnouncementHandler = () => {
     dispatch(deleteAnnouncement(announcementId, classId));

@@ -116,7 +116,6 @@ export const fetchPendingTasks = (classId) => {
         },
       });
     } catch (err) {
-      console.log(err.message);
       dispatch({
         type: FETCH_PENDING_TASKS_FAIL,
         payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,

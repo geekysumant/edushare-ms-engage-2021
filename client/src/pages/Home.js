@@ -60,7 +60,7 @@ const Home = () => {
               {createdClasses &&
                 createdClasses.map((element) => {
                   return (
-                    <div className="w-72 m-6">
+                    <div className="w-72 m-6" key={element._id}>
                       <ClassCard
                         classTitle={element.className}
                         classRoom={element.classRoom}

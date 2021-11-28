@@ -24,7 +24,6 @@ const QuizResult = () => {
   const { isAuthenticated } = useSelector((state) => state.userDetails);
 
   const quizId = params.quizId;
-  const classId = params.classId;
 
   useEffect(() => {
     if (!isAuthenticated) {

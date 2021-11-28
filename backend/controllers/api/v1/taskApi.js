@@ -1,11 +1,9 @@
 require("dotenv").config();
-const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const fs = require("fs");
 
 const Quiz = require("../../../models/Quiz");
 const Class = require("../../../models/Class");
-const User = require("../../../models/User");
 const QuizSubmission = require("../../../models/QuizSubmission");
 const Assignment = require("../../../models/Assignment.js");
 const path = require("path");
@@ -430,15 +428,15 @@ module.exports.fetchQuizSubmissions = async (req, res) => {
       },
     ]);
 
-    if (!quiz.createdBy.equals(req.user._id)) {
-      const error = new Error(NOT_AUTHORISED);
-      error.code = 401;
-      throw error;
-    }
-
     if (!quiz) {
       const error = new Error(INVALID_QUIZ_ID);
       error.code = 404;
+      throw error;
+    }
+
+    if (!quiz.createdBy.equals(req.user._id)) {
+      const error = new Error(NOT_AUTHORISED);
+      error.code = 401;
       throw error;
     }
 
@@ -476,17 +474,16 @@ module.exports.fetchAssignmentSubmissions = async (req, res) => {
         populate: { path: "user", select: "id name email picture" },
       },
     ]);
+    if (!assignment) {
+      const error = new Error(INVALID_ASSIGNMENT_ID);
+      error.code = 404;
+      throw error;
+    }
 
     //if the user that is hitting this api is not the creator of this assignment, return them error
     if (!assignment.createdBy.equals(req.user._id)) {
       const error = new Error(NOT_AUTHORISED);
       error.code = 401;
-      throw error;
-    }
-
-    if (!assignment) {
-      const error = new Error(INVALID_ASSIGNMENT_ID);
-      error.code = 404;
       throw error;
     }
 
@@ -736,6 +733,12 @@ module.exports.getFileExtensionAssignmentSubmission = async (req, res) => {
       user: userId,
     });
 
+    if (!usersAssignmentSubmission) {
+      const error = new Error(INVALID_ASSIGNMENT_ID);
+      error.code = 404;
+      throw error;
+    }
+
     //if the user that is hitting this api is not the creator of assignment or if the student is
     //trying to fetch other student's assignment, return them unauthorised
     if (
@@ -747,11 +750,6 @@ module.exports.getFileExtensionAssignmentSubmission = async (req, res) => {
       throw error;
     }
 
-    if (!usersAssignmentSubmission) {
-      const error = new Error(INVALID_ASSIGNMENT_ID);
-      error.code = 404;
-      throw error;
-    }
     const fileExtension = path.extname(usersAssignmentSubmission.submission);
 
     res.json({
@@ -959,6 +957,11 @@ module.exports.gradeAssignment = async (req, res) => {
       assignmentId,
       user: userId,
     });
+    if (!usersSubmission) {
+      const error = new Error(NO_SUBMISSION_FOUND);
+      error.code = 404;
+      throw error;
+    }
 
     if (!usersSubmission.createdBy.equals(req.user._id)) {
       const error = new Error(NOT_AUTHORISED);
@@ -966,11 +969,6 @@ module.exports.gradeAssignment = async (req, res) => {
       throw error;
     }
 
-    if (!usersSubmission) {
-      const error = new Error(NO_SUBMISSION_FOUND);
-      error.code = 404;
-      throw error;
-    }
     if (usersSubmission.grade) {
       const error = new Error(ASSIGNMENT_GRADED);
       error.code = 400;

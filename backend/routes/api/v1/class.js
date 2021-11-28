@@ -1,6 +1,5 @@
 //import packages
 const express = require("express");
-const jwt = require("jsonwebtoken");
 
 //authetication middleware
 const protect = require("../../../middleware/authMiddleware").protect;

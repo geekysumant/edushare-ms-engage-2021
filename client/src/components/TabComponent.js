@@ -47,7 +47,7 @@ const TabComponent = ({ categories, userInfo, createdBy }) => {
                 </div>
               )}
               {quizzes.map((quiz) => (
-                <div className="flex flex-col items-center ">
+                <div className="flex flex-col items-center" key={quiz._id}>
                   {idx === 0 ? (
                     <QuizBanner
                       questions={quiz.questions}
@@ -56,6 +56,7 @@ const TabComponent = ({ categories, userInfo, createdBy }) => {
                       createdBy={createdBy}
                       title={quiz.title}
                       time={quiz.createdAt}
+                      key={quiz._id}
                     />
                   ) : (
                     <AssignmentBanner
@@ -65,6 +66,7 @@ const TabComponent = ({ categories, userInfo, createdBy }) => {
                       time={quiz.createdAt}
                       createdBy={createdBy}
                       userInfo={userInfo}
+                      key={quiz._id}
                     />
                   )}
                 </div>

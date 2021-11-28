@@ -106,8 +106,7 @@ const Meet = () => {
   useEffect(() => {
     if (socketRef.current) {
       socketRef.current.on("disconnect successful", (userId) => {
-        let remainingPeers = [...peers];
-        remainingPeers = peersRef.current.filter(
+        const remainingPeers = peersRef.current.filter(
           (peer) => peer.peerID !== userId
         );
 

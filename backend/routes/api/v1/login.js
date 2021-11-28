@@ -1,6 +1,5 @@
 //import packages
 const express = require("express");
-const jwt = require("jsonwebtoken");
 
 //import controllers
 const loginController = require("../../../controllers/api/v1/loginApi");

@@ -1,5 +1,4 @@
 require("dotenv").config();
-const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 
 const Class = require("../../../models/Class");
@@ -34,6 +33,7 @@ module.exports.createClass = async (req, res) => {
       className,
       subject,
       room,
+      users: [req.user._id],
     });
     // once the user creates the class, also save it in their createdClasses
     const user = await User.findById(req.user._id);
@@ -188,7 +188,10 @@ module.exports.fetchClass = async (req, res) => {
       throw error;
     }
 
-    if (!classDetails.users.includes(req.user._id)) {
+    if (
+      !classDetails.users.includes(req.user._id) &&
+      !classDetails.createdBy.equals(req.user._id)
+    ) {
       const error = new Error(INVALID_CLASS_ID);
       error.code = 404;
       throw error;
