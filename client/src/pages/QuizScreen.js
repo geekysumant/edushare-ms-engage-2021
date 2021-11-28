@@ -40,7 +40,7 @@ const QuizScreen = () => {
   }, []);
 
   useEffect(() => {
-    if (submitQuizDetails.success || hasSubmitted)
+    if ((submitQuizDetails && submitQuizDetails.success) || hasSubmitted)
       navigate(`/enter/class/${classId}/classwork/quiz/${quizId}/results`);
   }, [submitQuizDetails.success, hasSubmitted]);
 
@@ -113,7 +113,7 @@ const QuizScreen = () => {
           {marksComponent}
           {questions &&
             questions.map((question, index) => (
-              <>
+              <React.Fragment key={index}>
                 <QuestionContainer
                   key={index}
                   questionBody={question.question}
@@ -122,7 +122,7 @@ const QuizScreen = () => {
                   correctMarks={question.correctMarks}
                   incorrectMarks={question.incorrectMarks}
                 />
-              </>
+              </React.Fragment>
             ))}
         </div>
       ) : (

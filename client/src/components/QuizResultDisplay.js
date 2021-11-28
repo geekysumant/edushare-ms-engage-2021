@@ -38,6 +38,7 @@ const QuizResultDisplay = ({
                     {question.options &&
                       question.options.map((option, ind) => (
                         <div
+                          key={ind}
                           className={`flex flex-row my-2 ${
                             option.optionNumber === question.correctOption ||
                             (question.correctOption ===

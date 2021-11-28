@@ -50,7 +50,7 @@ Link to deployed app: [https://stormy-hamlet-67915.herokuapp.com](https://stormy
    git clone https://github.com/geekysumant/edushare-ms-engage-2021.git
    ```
 
-2. Create a `.env` file in `/backend` folder, and setup [Environment Variables](environment-variables). All the required keys can be found in `./keys.txt` file.
+2. Create a `.env` file in `/backend` folder, and setup [Environment Variables](environment-variables).
 
    ```
    MONGO_URI          : MongoDB connection string

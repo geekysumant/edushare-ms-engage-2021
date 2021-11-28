@@ -203,7 +203,10 @@ const Meet = () => {
         </div>
         {peers.map((peer, index) => {
           return (
-            <div className="flex flex-col items-center w-96 sm:w-56 ">
+            <div
+              className="flex flex-col items-center w-96 sm:w-56 "
+              key={index}
+            >
               <div className="sm:w-full ">
                 <Video key={index} peer={peer} />
               </div>

@@ -61,8 +61,11 @@ const ViewUsersScreen = () => {
             </div>
           )}
           {usersInClass &&
-            usersInClass.map((user) => (
-              <div className="w-4/5 mx-auto rounded-lg bg-white shadow-lg p-4 my-2 sm:w-full ">
+            usersInClass.map((user, index) => (
+              <div
+                className="w-4/5 mx-auto rounded-lg bg-white shadow-lg p-4 my-2 sm:w-full "
+                key={index}
+              >
                 <div className="flex ">
                   <div className="w-12 h-12">
                     <img

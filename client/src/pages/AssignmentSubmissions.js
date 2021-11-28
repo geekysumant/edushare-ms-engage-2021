@@ -49,6 +49,7 @@ const QuizSubmissions = () => {
           {submissions &&
             submissions.map((submission) => (
               <UserCard
+                key={submission.user._id}
                 picture={submission.user.picture}
                 email={submission.user.email}
                 name={submission.user.name}

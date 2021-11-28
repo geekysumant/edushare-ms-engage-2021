@@ -85,7 +85,7 @@ const CreateMcq = () => {
             </div>
             <div>
               <h2 className="font-medium">
-                Total Questions: {questions.length}
+                Total Questions: {questions && questions.length}
               </h2>
               <h2 className="font-medium">Total Marks: {totalMarks} </h2>
             </div>
