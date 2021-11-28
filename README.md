@@ -3,7 +3,6 @@
 One stop application to easily manage your classroom.
 As an instructor, create as many classes to manage
 grading and assignments in an easy way.
-
 As a student, join all the classes you want to, keep track of assignments easily.
 
 Link to deployed app: [https://stormy-hamlet-67915.herokuapp.com](https://stormy-hamlet-67915.herokuapp.com)
