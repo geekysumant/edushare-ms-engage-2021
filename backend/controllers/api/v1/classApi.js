@@ -20,6 +20,7 @@ module.exports.createClass = async (req, res) => {
     //search if a class already exists with the given class name
     const exisitingClass = await Class.findOne({
       className,
+      createdBy: req.user._id,
     });
     if (exisitingClass) {
       const error = new Error(
@@ -178,9 +179,16 @@ module.exports.fetchClass = async (req, res) => {
     }
     const classDetails = await Class.findById(
       classId,
-      "createdBy className subject room"
+      "createdBy className subject room users"
     );
+
     if (!classDetails) {
+      const error = new Error(INVALID_CLASS_ID);
+      error.code = 404;
+      throw error;
+    }
+
+    if (!classDetails.users.includes(req.user._id)) {
       const error = new Error(INVALID_CLASS_ID);
       error.code = 404;
       throw error;

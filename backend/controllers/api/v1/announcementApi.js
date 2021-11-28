@@ -72,7 +72,7 @@ module.exports.fetchAnnouncements = async (req, res) => {
     //fetch announcements for the given class id
 
     const announcements = await Class.findById(classId)
-      .select("announcements")
+      .select("announcements users")
       .populate([
         {
           path: "announcements",
@@ -85,6 +85,12 @@ module.exports.fetchAnnouncements = async (req, res) => {
       error.code = 404;
       throw error;
     }
+    if (!announcements.users.includes(req.user._id)) {
+      const error = new Error(INVALID_CLASS_ID);
+      error.code = 404;
+      throw error;
+    }
+
     //sort the announcements in descending order
     announcements.announcements.sort((a, b) => {
       if (

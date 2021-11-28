@@ -153,7 +153,7 @@ export const fetchEnterClassDetails = (classId) => {
     } catch (err) {
       dispatch({
         type: FETCH_CLASS_DETAILS_FAIL,
-        payload: err,
+        payload: err.response ? err.response.data : SOME_ERROR_OCCURRED,
       });
     }
   };

@@ -1,20 +1,19 @@
-# edushare
+# Edushare
 
-One stop solution to easily manage you classroom,
-with great features.
-
+One stop application to easily manage your classroom.
 As an instructor, create as many classes to manage
 grading and assignments in an easy way.
 
 As a student, join all the classes you want to, keep track of assignments easily.
 
-Create MCQ Quizzes and let our app auto-grade all the submissions.
-Eaily share and grade file based assignments, also allowing you to view
-each students' submissions.
+Link to deployed app: [https://stormy-hamlet-67915.herokuapp.com](https://stormy-hamlet-67915.herokuapp.com)
 
-Want to take an online class? Worry not, we have it covered.
-Create an online video meet and share link or meeting code
-for students to join.
+#### Edushare Features:
+
+- Create MCQ Quizzes easily and let our app auto-grade all the submissions. You can also view individual student's submissions.
+- Easily share and grade file based assignments, also allowing you to view each students' submissions.
+- Peer-to-Peer online video call facility for taking online classes easily. Create or join video calls with ease.
+- Sign in easily using your Google Account.
 
 ## Tech Stack [MERN]
 
@@ -29,21 +28,29 @@ for students to join.
 - Database: `MongoDB`
 - API testing: `POSTMAN`
 - Authentication: `Google OAuth & JWT`
+- Video Calling : `WebRTC, Socket.io`
 
-## Screenshots
+#### CI/CD
 
-![Welcome Page](./screenshots/welcome)
-![Features](./screenshots/features)
+- Heroku
+
+## ER Diagram
+
+- User can create as many classes as they want. By default, whosoever creates the class is the teacher and the one who joins, is the student.
+- Teacher can create as many MCQ quizzes and file based assignments.
+- Students can make their individual submissions on MCQ/assignments.
+
+![Entity Relationship Diagram](./screenshots/ERDiagram.png)
 
 ## Application Setup Guidelines
 
 1. Clone the project
 
    ```
-   git clone <url>
+   git clone https://github.com/geekysumant/edushare-ms-engage-2021.git
    ```
 
-2. Create a `.env` file in `/backend` folder, and setup [Environment Variables](environment-variables).
+2. Create a `.env` file in `/backend` folder, and setup [Environment Variables](environment-variables). All the required keys can be found in `./keys.txt` file.
 
    ```
    MONGO_URI          : MongoDB connection string
@@ -152,7 +159,7 @@ Fetches all classes joined/created by the user
 | :-------- | :------- | :------------------------------------------------------------ |
 | `classId` | `string` | **Required**. Class ID in which announcement is to be created |
 
-- #### Create new announcement
+- #### Fetch announcements
 
 ```http
   POST /api/v1/announcement/fetch/${classId}
@@ -161,6 +168,16 @@ Fetches all classes joined/created by the user
 | Parameter | Type     | Description                                                     |
 | :-------- | :------- | :-------------------------------------------------------------- |
 | `classId` | `string` | **Required**. Class ID in which announcements are to be fetched |
+
+- #### Delete announcement
+
+```http
+  DELETE /api/v1/announcement/delete/${announcementId}
+```
+
+| Parameter | Type     | Description                                    |
+| :-------- | :------- | :--------------------------------------------- |
+| `classId` | `string` | **Required**. ID of announcement to be deleted |
 
 ### MCQ Quiz API
 
@@ -185,6 +202,16 @@ Fetches all classes joined/created by the user
 | Parameter | Type     | Description                                                               |
 | :-------- | :------- | :------------------------------------------------------------------------ |
 | `classId` | `string` | **Required**. Class ID in which quizzes and assignments are to be fetched |
+
+- #### Fetch all pending quizzes for a student
+
+```http
+  GET /api/v1/quiz/fetch/pending/${classId}
+```
+
+| Parameter | Type     | Description                                                                       |
+| :-------- | :------- | :-------------------------------------------------------------------------------- |
+| `classId` | `string` | **Required**. Class ID in which pending quizzes are to be fetched for the student |
 
 - #### Fetch an MCQ Quiz
 
@@ -254,6 +281,16 @@ Fetches all classes joined/created by the user
 | :------------- | :------- | :-------------------------------------- |
 | `assignmentId` | `string` | **Required**. ID of assignment to fetch |
 
+- #### Fetch all pending assignments for a student
+
+```http
+  GET /api/v1/assignment/fetch/pending/${classId}
+```
+
+| Request Body | Type     | Description                                                                           |
+| :----------- | :------- | :------------------------------------------------------------------------------------ |
+| `classId`    | `string` | **Required**. Class ID in which pending assignments are to be fetched for the student |
+
 - #### Submit an assignment (for students)
 
 ```http
@@ -265,3 +302,167 @@ Fetches all classes joined/created by the user
 | `assignmentId` | `string`             | **Required**. ID of assignment on which submission is to be made |
 | `classId`      | `string`             | **Required**. ID of class in which assignment is shared          |
 | `file`         | `multipart/formdata` | **Required**. Assignment submission file uploaded by students    |
+
+- #### Fetch all submissions for an assignment (for teachers)
+
+```http
+  GET /api/v1/assignment/submissions/${assignmentId}
+```
+
+| Request Body   | Type     | Description                                                        |
+| :------------- | :------- | :----------------------------------------------------------------- |
+| `assignmentId` | `string` | **Required**. ID of assignment whose submissions are to be fetched |
+
+- #### Fetch a particular submission
+
+```http
+  GET /api/v1/assignment/submission?assignmentId=${assignmentId}&userId=${userId}
+```
+
+| Request Body   | Type     | Description                                                                                          |
+| :------------- | :------- | :--------------------------------------------------------------------------------------------------- |
+| `assignmentId` | `string` | **Required**. ID of assignment whose submission is to be fetched                                     |
+| `userId`       | `string` | **Required** ID of user whose submission to fetch. Only teacher can view other student's submission. |
+
+- #### Grade student's submission
+
+```http
+  POST /api/v1/assignment/grade
+```
+
+| Request Body   | Type      | Description                                                     |
+| :------------- | :-------- | :-------------------------------------------------------------- |
+| `assignmentId` | `string`  | **Required**. ID of assignment whose submission is to be graded |
+| `userId`       | `string`  | **Required** ID of user whose submission to grade               |
+| `grade`        | `Integer` | **Required** The integer grade awarded to the submission        |
+
+- #### Fetch file extension of uploaded assignment
+
+```http
+  GET /api/v1/assignment/getFileExtension/${assignmentId}
+```
+
+| Request Body   | Type     | Description                                                                                                                                                 |
+| :------------- | :------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `assignmentId` | `string` | **Required**. ID of assignment to fetch file extension of uploaded file in the assignment (needed for downloading file type in original uploaded extension) |
+
+- #### Fetch file extension of uploaded assignment submission
+
+```http
+  GET /api/v1/assignment/submission/getFileExtension/${assignmentId}
+```
+
+| Request Body   | Type     | Description                                                                                                                                                 |
+| :------------- | :------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `assignmentId` | `string` | **Required**. ID of assignment to fetch file extension of uploaded file in the submission (needed for downloading file type in original uploaded extension) |
+
+- #### Download uploaded assignment file
+
+```http
+  GET /api/v1/assignment/download/${assignmentId}
+```
+
+| Request Body   | Type     | Description                                                  |
+| :------------- | :------- | :----------------------------------------------------------- |
+| `assignmentId` | `string` | **Required**. ID of assignment to download the attached file |
+
+- #### Download uploaded assignment submission file
+
+```http
+  GET /api/v1/assignment/submission/download/${assignmentId}
+```
+
+| Request Body   | Type     | Description                                                             |
+| :------------- | :------- | :---------------------------------------------------------------------- |
+| `assignmentId` | `string` | **Required**. ID of assignment to download the attached submission file |
+
+## CI/CD
+
+Heroku was used for CI/CD. I aslo followed Agile Developement methodology. Wherein, I developed features step by step. This allowed me to test every feature added thoroughly and easily.
+Agile development allows you to iteratively build a software one feature at a time.
+
+## Screenshots
+
+#### Welcome
+
+![Welcome](./screenshots/Welcome.png)
+
+#### Features
+
+![Features](./screenshots/Features.png)
+
+#### All classes
+
+![All-classes](./screenshots/AllClasses.png)
+
+#### Create New Class
+
+![create-new-class](./screenshots/CreateClass.png)
+
+#### Join a Class
+
+![join-class](./screenshots/JoinClass.png)
+
+#### View All Users In Class
+
+![view-users](./screenshots/ViewUsers.png)
+
+#### Classroom Feed
+
+![class-feed](./screenshots/ClassroomFeed.png)
+
+#### Classwork
+
+![classwork](./screenshots/Classwork.png)
+
+#### Add Question in MCQ Quiz
+
+![add-ques](./screenshots/AddQuestion.png)
+
+#### List Of Added Question(s)
+
+![list-questions](./screenshots/ListOfQuestions.png)
+
+#### Take MCQ Quiz- For Student
+
+![take-quiz](./screenshots/TakeQuiz.png)
+
+#### Quiz Performance- For Student
+
+![quiz-result](./screenshots/QuizResults.png)
+
+#### View All Quiz Submissions- For Teacher
+
+![view-sub](./screenshots/ViewQuizSubmissions.png)
+
+#### View A Student's Submissions- For Teacher
+
+![view-student-sub](./screenshots/ViewStudentsSubmission.png)
+
+#### Create File-based Assignment
+
+![create-assignment](./screenshots/CreateAssignment.png)
+
+#### View Assignment - Student Screen
+
+![view-assignment](./screenshots/ViewAssignmentSub.png)
+
+#### After assignment submit screen
+
+![view-sub](./screenshots/AssignmentSubmitStudent.png)
+
+#### View All Assignment submissions- For Teacher
+
+![view-sub](./screenshots/AssignmentSubmitStudent.png)
+
+#### View/Grade a student's assignment submission- For Teacher
+
+![grade-sub](./screenshots/ViewStudentsAssignmentSub.png)
+
+#### View Assignment (Graded) - Student Screen
+
+![view-assignment-graded](./screenshots/ViewStudentGradedSub.png)
+
+## Developer
+
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/geekysumant/)
