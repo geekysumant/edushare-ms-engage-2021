@@ -383,10 +383,6 @@ Agile development allows you to iteratively build a software one feature at a ti
 
 ## Screenshots
 
-#### Welcome
-
-![Welcome](./screenshots/Welcome.png)
-
 #### Features
 
 ![Features](./screenshots/Features.png)
@@ -395,25 +391,9 @@ Agile development allows you to iteratively build a software one feature at a ti
 
 ![All-classes](./screenshots/AllClasses.png)
 
-#### Create New Class
-
-![create-new-class](./screenshots/CreateClass.png)
-
-#### Join a Class
-
-![join-class](./screenshots/JoinClass.png)
-
-#### View All Users In Class
-
-![view-users](./screenshots/ViewUsers.png)
-
 #### Classroom Feed
 
 ![class-feed](./screenshots/ClassroomFeed.png)
-
-#### Create Video Call
-
-![video-call](./screenshots/VideoCall.png)
 
 #### Video Calling
 
@@ -423,14 +403,6 @@ Agile development allows you to iteratively build a software one feature at a ti
 
 ![classwork](./screenshots/Classwork.png)
 
-#### Add Question in MCQ Quiz
-
-![add-ques](./screenshots/AddQuestion.png)
-
-#### List Of Added Question(s)
-
-![list-questions](./screenshots/ListOfQuestions.png)
-
 #### Take MCQ Quiz- For Student
 
 ![take-quiz](./screenshots/TakeQuiz.png)
@@ -439,30 +411,6 @@ Agile development allows you to iteratively build a software one feature at a ti
 
 ![quiz-result](./screenshots/QuizResults.png)
 
-#### View All Quiz Submissions- For Teacher
-
-![view-sub](./screenshots/ViewQuizSubmissions.png)
-
-#### View A Student's Submissions- For Teacher
-
-![view-student-sub](./screenshots/ViewStudentsSubmission.png)
-
-#### Create File-based Assignment
-
-![create-assignment](./screenshots/CreateAssignment.png)
-
-#### View Assignment - Student Screen
-
-![view-assignment](./screenshots/ViewAssignmentSub.png)
-
-#### After assignment submit screen
-
-![view-sub](./screenshots/AssignmentSubmitStudent.png)
-
-#### View All Assignment submissions- For Teacher
-
-![view-sub](./screenshots/AssignmentSubmitStudent.png)
-
 #### View/Grade a student's assignment submission- For Teacher
 
 ![grade-sub](./screenshots/ViewStudentsAssignmentSub.png)
@@ -470,6 +418,8 @@ Agile development allows you to iteratively build a software one feature at a ti
 #### View Assignment (Graded) - Student Screen
 
 ![view-assignment-graded](./screenshots/ViewStudentGradedSub.png)
+
+View more pictures here: [./screenshots](./screenshots)
 
 ## Developer
 
