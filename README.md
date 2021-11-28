@@ -7,6 +7,8 @@ As a student, join all the classes you want to, keep track of assignments easily
 
 Link to deployed app: [https://stormy-hamlet-67915.herokuapp.com](https://stormy-hamlet-67915.herokuapp.com)
 
+See the video demo here: [https://www.youtube.com/watch?v=OE_pIxRdlno](https://www.youtube.com/watch?v=OE_pIxRdlno)
+
 #### Edushare Features:
 
 - Create MCQ Quizzes easily and let our app auto-grade all the submissions. You can also view individual student's submissions.
