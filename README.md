@@ -29,6 +29,7 @@ See the video demo here: [https://www.youtube.com/watch?v=OE_pIxRdlno](https://w
 - Database: `MongoDB`
 - API testing: `POSTMAN`
 - Authentication: `Google OAuth & JWT`
+- File Storage: `AWS S3`
 - Video Calling : `WebRTC, Socket.io`
 
 #### CI/CD
